@@ -13,11 +13,14 @@ class ViewController: UIViewController {
   
   // MARK: - Properties
   
-  private let middleView: UIView = {
+  private let contentView: UIView = {
     let view = UIView()
     view.backgroundColor = .blue
     return view
   }()
+  
+  let topStackView = TopNavigationStackView()
+  let bottomStackView = HomeBottomControlStackView()
   
   // MARK: - View Life Cycle
   
@@ -31,11 +34,8 @@ class ViewController: UIViewController {
   
   private func setupViews() {
     view.backgroundColor = .white
-
-    let topStackView = TopNavigationStackView()
-    let bottomStackView = HomeBottomControlStackView()
     
-    let mainStackView = UIStackView(arrangedSubviews: [topStackView, middleView, bottomStackView])
+    let mainStackView = UIStackView(arrangedSubviews: [topStackView, contentView, bottomStackView])
     mainStackView.axis = .vertical
     
     view.addSubview(mainStackView)
