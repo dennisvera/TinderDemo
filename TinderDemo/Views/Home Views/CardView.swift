@@ -13,9 +13,15 @@ class CardView: UIView {
   
   // MARK: - Properties
   
-  private let profileImageView: UIImageView = {
+  let userInformationLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .white
+    label.numberOfLines = 0
+    return label
+  }()
+  
+  let profileImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = #imageLiteral(resourceName: "profile_1_icon")
     imageView.clipsToBounds = true
     imageView.contentMode = .scaleAspectFill
     return imageView
@@ -44,6 +50,12 @@ class CardView: UIView {
     addSubview(profileImageView)
     profileImageView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
+    }
+    
+    addSubview(userInformationLabel)
+    userInformationLabel.snp.makeConstraints { make in
+      make.leading.equalToSuperview().offset(16)
+      make.bottom.trailing.equalToSuperview().offset(-16)
     }
     
     let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
@@ -93,13 +105,17 @@ class CardView: UIView {
                     } else {
                       // Set Transform Back to Center
                       self.transform = .identity
-                      self.frame = CGRect(x: Layout.zero,
-                                          y: Layout.zero,
-                                          width: self.superview!.frame.width,
-                                          height: self.superview!.frame.height)
                     }
     }) { (_) in
       self.transform = .identity
+      
+      if shouldDismissCard {
+        self.removeFromSuperview()
+      }
+//      self.frame = CGRect(x: Layout.zero,
+//                          y: Layout.zero,
+//                          width: self.superview!.frame.width,
+//                          height: self.superview!.frame.height)
     }
   }
 }
@@ -120,9 +136,9 @@ extension CardView {
     }
     
     enum Animation {
-      static let duration = 0.75
       static let delay: Double = 0
-      static let frameX: CGFloat = 1000
+      static let duration: Double = 1
+      static let frameX: CGFloat = 600
       static let springDamping: CGFloat = 0.6
       static let springVelocity: CGFloat = 0.1
     }

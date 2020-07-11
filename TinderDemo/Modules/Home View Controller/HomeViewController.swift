@@ -13,13 +13,18 @@ class HomeViewController: UIViewController {
   
   // MARK: - Properties
   
-  private let topStackView = TopNavigationStackView()
-  let bottomStackView = HomeBottomControlStackView()
-  
   private let cardsDeckView: UIView = {
     let view = UIView()
     return view
   }()
+  
+  private let topStackView = TopNavigationStackView()
+  private let bottomStackView = HomeBottomControlStackView()
+  
+  private let users = [
+    User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "kelly"),
+    User(name: "Jane", age: 18, profession: "Teacher", imageName: "jane")
+  ]
   
   // MARK: - View Life Cycle
   
@@ -56,10 +61,25 @@ class HomeViewController: UIViewController {
   }
   
   private func setupCardview() {
-    let cardView = CardView()
-    cardsDeckView.addSubview(cardView)
-    cardView.snp.makeConstraints { make in
-      make.edges.equalToSuperview()
+    users.forEach { (user) in
+      let cardView = CardView()
+      cardView.profileImageView.image = UIImage(named: user.imageName)
+      
+      let attributedText = NSMutableAttributedString(string: user.name,
+                                                     attributes: [.font: UIFont.systemFont(ofSize: 34,
+                                                                                           weight: .heavy)])
+      attributedText.append(NSAttributedString(string: " \(user.age)",
+        attributes: [.font : UIFont.systemFont(ofSize: 24, weight: .regular)]))
+      
+      attributedText.append(NSAttributedString(string: "\n\(user.profession)",
+        attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)]))
+      
+      cardView.userInformationLabel.attributedText = attributedText
+      
+      cardsDeckView.addSubview(cardView)
+      cardView.snp.makeConstraints { make in
+        make.edges.equalToSuperview()
+      }
     }
   }
 }

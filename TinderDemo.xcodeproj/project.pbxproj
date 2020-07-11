@@ -15,6 +15,7 @@
 		E1DFBC1324B903EB0092622B /* HomeBottomControlStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC1224B903EB0092622B /* HomeBottomControlStackView.swift */; };
 		E1DFBC1524B912280092622B /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC1424B912280092622B /* TopNavigationStackView.swift */; };
 		E1DFBC1824B9FD070092622B /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC1724B9FD070092622B /* CardView.swift */; };
+		E1DFBC1B24BA617B0092622B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC1A24BA617B0092622B /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		E1DFBC1224B903EB0092622B /* HomeBottomControlStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlStackView.swift; sourceTree = "<group>"; };
 		E1DFBC1424B912280092622B /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
 		E1DFBC1724B9FD070092622B /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		E1DFBC1A24BA617B0092622B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				E1DFBC0A24B7A5830092622B /* Appplication Delegates */,
+				E1DFBC1924BA61610092622B /* Models */,
 				E1DFBC0F24B7A5EF0092622B /* Modules */,
 				E1DFBC1024B9039F0092622B /* Views */,
 				E1DFBC0C24B7A5C50092622B /* Resources */,
@@ -156,6 +159,14 @@
 				E1DFBBFA24B7A5710092622B /* HomeViewController.swift */,
 			);
 			path = "Home View Controller";
+			sourceTree = "<group>";
+		};
+		E1DFBC1924BA61610092622B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E1DFBC1A24BA617B0092622B /* User.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,6 +270,7 @@
 				E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */,
 				E1DFBC1824B9FD070092622B /* CardView.swift in Sources */,
 				E1DFBC1324B903EB0092622B /* HomeBottomControlStackView.swift in Sources */,
+				E1DFBC1B24BA617B0092622B /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
