@@ -21,11 +21,11 @@ class HomeViewController: UIViewController {
   private let topStackView = TopNavigationStackView()
   private let bottomStackView = HomeBottomControlStackView()
   
-  private let users = [
-    User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "kelly"),
-    User(name: "Jane", age: 18, profession: "Teacher", imageName: "jane")
+  private let viewModel = [
+    User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "kelly").toCardViewModel(),
+    User(name: "Jane", age: 18, profession: "Teacher", imageName: "jane").toCardViewModel()
   ]
-  
+    
   // MARK: - View Life Cycle
   
   override func viewDidLoad() {
@@ -61,20 +61,11 @@ class HomeViewController: UIViewController {
   }
   
   private func setupCardview() {
-    users.forEach { (user) in
+    viewModel.forEach { (viewModel) in
       let cardView = CardView()
-      cardView.profileImageView.image = UIImage(named: user.imageName)
-      
-      let attributedText = NSMutableAttributedString(string: user.name,
-                                                     attributes: [.font: UIFont.systemFont(ofSize: 34,
-                                                                                           weight: .heavy)])
-      attributedText.append(NSAttributedString(string: " \(user.age)",
-        attributes: [.font : UIFont.systemFont(ofSize: 24, weight: .regular)]))
-      
-      attributedText.append(NSAttributedString(string: "\n\(user.profession)",
-        attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)]))
-      
-      cardView.userInformationLabel.attributedText = attributedText
+      cardView.profileImageView.image = UIImage(named: viewModel.imageName)
+      cardView.userInformationLabel.attributedText = viewModel.attributedString
+      cardView.userInformationLabel.textAlignment = viewModel.textAlignment
       
       cardsDeckView.addSubview(cardView)
       cardView.snp.makeConstraints { make in
