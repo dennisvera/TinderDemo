@@ -10,10 +10,11 @@
 		04ADFAD7E2601CBE8FB74312 /* libPods-TinderDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0405048EC731647225E0A3D /* libPods-TinderDemo.a */; };
 		E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF624B7A5710092622B /* AppDelegate.swift */; };
 		E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF824B7A5710092622B /* SceneDelegate.swift */; };
-		E1DFBBFB24B7A5710092622B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBFA24B7A5710092622B /* ViewController.swift */; };
+		E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBFA24B7A5710092622B /* HomeViewController.swift */; };
 		E1DFBC0024B7A5740092622B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E1DFBBFF24B7A5740092622B /* Assets.xcassets */; };
 		E1DFBC1324B903EB0092622B /* HomeBottomControlStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC1224B903EB0092622B /* HomeBottomControlStackView.swift */; };
 		E1DFBC1524B912280092622B /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC1424B912280092622B /* TopNavigationStackView.swift */; };
+		E1DFBC1824B9FD070092622B /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC1724B9FD070092622B /* CardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,11 +24,12 @@
 		E1DFBBF324B7A5710092622B /* TinderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1DFBBF624B7A5710092622B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1DFBBF824B7A5710092622B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E1DFBBFA24B7A5710092622B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E1DFBBFA24B7A5710092622B /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E1DFBBFF24B7A5740092622B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E1DFBC0424B7A5740092622B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E1DFBC1224B903EB0092622B /* HomeBottomControlStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlStackView.swift; sourceTree = "<group>"; };
 		E1DFBC1424B912280092622B /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
+		E1DFBC1724B9FD070092622B /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,7 +127,7 @@
 		E1DFBC0F24B7A5EF0092622B /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				E1DFBBFA24B7A5710092622B /* ViewController.swift */,
+				E1DFBC1624B9FCA90092622B /* Home View Controller */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -133,18 +135,27 @@
 		E1DFBC1024B9039F0092622B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E1DFBC1124B903AE0092622B /* HomeViews */,
+				E1DFBC1124B903AE0092622B /* Home Views */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		E1DFBC1124B903AE0092622B /* HomeViews */ = {
+		E1DFBC1124B903AE0092622B /* Home Views */ = {
 			isa = PBXGroup;
 			children = (
+				E1DFBC1724B9FD070092622B /* CardView.swift */,
 				E1DFBC1424B912280092622B /* TopNavigationStackView.swift */,
 				E1DFBC1224B903EB0092622B /* HomeBottomControlStackView.swift */,
 			);
-			path = HomeViews;
+			path = "Home Views";
+			sourceTree = "<group>";
+		};
+		E1DFBC1624B9FCA90092622B /* Home View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E1DFBBFA24B7A5710092622B /* HomeViewController.swift */,
+			);
+			path = "Home View Controller";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,10 +253,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E1DFBBFB24B7A5710092622B /* ViewController.swift in Sources */,
+				E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */,
 				E1DFBC1524B912280092622B /* TopNavigationStackView.swift in Sources */,
 				E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */,
 				E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */,
+				E1DFBC1824B9FD070092622B /* CardView.swift in Sources */,
 				E1DFBC1324B903EB0092622B /* HomeBottomControlStackView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

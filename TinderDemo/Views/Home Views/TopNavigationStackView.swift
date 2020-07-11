@@ -55,6 +55,7 @@ class TopNavigationStackView: UIStackView {
     distribution = .equalCentering
     heightAnchor.constraint(equalToConstant: Layout.heightAnchorConstraint).isActive = true
     
+    // Set constraints Relative to the SuperView Margins
     isLayoutMarginsRelativeArrangement = true
     layoutMargins = .init(top: Layout.zero,
                           left: Layout.leadingMarging,
@@ -64,6 +65,8 @@ class TopNavigationStackView: UIStackView {
 }
 
 private extension TopNavigationStackView {
+  
+  // MARK: - Types
   
   enum Layout {
     static let zero: CGFloat = 0
