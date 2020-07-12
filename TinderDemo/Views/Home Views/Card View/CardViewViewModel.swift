@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol CardViewViewModelProtocol {
+  
+  func toCardViewModel() -> CardViewViewModel
+}
+
 struct CardViewViewModel {
 
   // MARK: - Properties

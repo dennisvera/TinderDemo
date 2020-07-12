@@ -21,10 +21,17 @@ class HomeViewController: UIViewController {
   private let topStackView = TopNavigationStackView()
   private let bottomStackView = HomeBottomControlStackView()
   
-  private let viewModel = [
-    User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "kelly").toCardViewModel(),
-    User(name: "Jane", age: 18, profession: "Teacher", imageName: "jane").toCardViewModel()
-  ]
+  private let viewModel: [CardViewViewModel] = {
+    let cards = [
+      User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "kelly"),
+      User(name: "Jane", age: 18, profession: "Teacher", imageName: "jane"),
+      Advertiser(title: "Slide out Menu", brandName: "Lets Build That App", posterImageName: "slide_out_menu_poster")
+      ] as [CardViewViewModelProtocol]
+    
+    let viewModel = cards.map({ return $0.toCardViewModel() })
+    
+    return viewModel
+  }()
     
   // MARK: - View Life Cycle
   
@@ -63,9 +70,7 @@ class HomeViewController: UIViewController {
   private func setupCardview() {
     viewModel.forEach { (viewModel) in
       let cardView = CardView()
-      cardView.profileImageView.image = UIImage(named: viewModel.imageName)
-      cardView.userInformationLabel.attributedText = viewModel.attributedString
-      cardView.userInformationLabel.textAlignment = viewModel.textAlignment
+      cardView.viewModel = viewModel
       
       cardsDeckView.addSubview(cardView)
       cardView.snp.makeConstraints { make in

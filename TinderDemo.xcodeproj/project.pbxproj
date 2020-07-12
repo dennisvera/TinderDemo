@@ -17,6 +17,7 @@
 		E1DFBC1824B9FD070092622B /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC1724B9FD070092622B /* CardView.swift */; };
 		E1DFBC1B24BA617B0092622B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC1A24BA617B0092622B /* User.swift */; };
 		E1DFBC1E24BA7F080092622B /* CardViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC1D24BA7F080092622B /* CardViewViewModel.swift */; };
+		E1DFBC2224BB8B500092622B /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC2124BB8B500092622B /* Advertiser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		E1DFBC1724B9FD070092622B /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		E1DFBC1A24BA617B0092622B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E1DFBC1D24BA7F080092622B /* CardViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewViewModel.swift; sourceTree = "<group>"; };
+		E1DFBC2124BB8B500092622B /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				E1DFBC1A24BA617B0092622B /* User.swift */,
+				E1DFBC2124BB8B500092622B /* Advertiser.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 			files = (
 				E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */,
 				E1DFBC1524B912280092622B /* TopNavigationStackView.swift in Sources */,
+				E1DFBC2224BB8B500092622B /* Advertiser.swift in Sources */,
 				E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */,
 				E1DFBC1E24BA7F080092622B /* CardViewViewModel.swift in Sources */,
 				E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */,

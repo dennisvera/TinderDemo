@@ -11,24 +11,32 @@ import SnapKit
 
 class CardView: UIView {
   
-  // MARK: - Properties
+  // MARK: - Private Properties
   
-  let userInformationLabel: UILabel = {
+  private let userInformationLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
-    label.numberOfLines = 0
+    label.numberOfLines = Layout.numberOfLines
     return label
   }()
   
-  let profileImageView: UIImageView = {
+  private let profileImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.clipsToBounds = true
     imageView.contentMode = .scaleAspectFill
     return imageView
   }()
   
-  private let threshold: CGFloat = 80
+  // MARK: - Public Properties
   
+  var viewModel: CardViewViewModel? {
+    didSet {
+      userInformationLabel.textAlignment = viewModel!.textAlignment
+      userInformationLabel.attributedText = viewModel?.attributedString
+      profileImageView.image = UIImage(named: viewModel?.imageName ?? "")
+    }
+  }
+    
   // MARK: - Initialization
   
   override init(frame: CGRect) {
@@ -54,8 +62,8 @@ class CardView: UIView {
     
     addSubview(userInformationLabel)
     userInformationLabel.snp.makeConstraints { make in
-      make.leading.equalToSuperview().offset(16)
-      make.bottom.trailing.equalToSuperview().offset(-16)
+      make.leading.equalToSuperview().offset(Layout.User.leading)
+      make.bottom.trailing.equalToSuperview().offset(Layout.User.trailing)
     }
     
     let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
@@ -89,7 +97,7 @@ class CardView: UIView {
   
   private func handleEndedAnimation(_ gesture: UIPanGestureRecognizer) {
     let translationDirection: CGFloat = gesture.translation(in: nil).x > Layout.zero ? Layout.one : Layout.negativeOne
-    let shouldDismissCard = abs(gesture.translation(in: nil).x) > threshold
+    let shouldDismissCard = abs(gesture.translation(in: nil).x) > Layout.threshold
     
     UIView.animate(withDuration: Layout.Animation.duration,
                    delay: Layout.Animation.delay,
@@ -127,6 +135,8 @@ extension CardView {
   enum Layout {
     static let one: CGFloat = 1
     static let zero: CGFloat = 0
+    static let numberOfLines: Int = 0
+    static let threshold: CGFloat = 80
     static let negativeOne: CGFloat = -1
     static let cornerRadius: CGFloat = 10
     
@@ -141,6 +151,11 @@ extension CardView {
       static let frameX: CGFloat = 600
       static let springDamping: CGFloat = 0.6
       static let springVelocity: CGFloat = 0.1
+    }
+    
+    enum User {
+      static let leading = 16
+      static let trailing = -16
     }
   }
 }

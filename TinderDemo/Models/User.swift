@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct User {
+struct User: CardViewViewModelProtocol {
   
   // MARK: - Properties
   
@@ -16,6 +16,8 @@ struct User {
   let age: Int
   let profession: String
   let imageName: String
+  
+  // MARK: - Helper Methods
   
   func toCardViewModel() -> CardViewViewModel {
     let attributedText = NSMutableAttributedString(string: name,
@@ -28,8 +30,5 @@ struct User {
       attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)]))
     
     return CardViewViewModel(imageName: imageName, attributedString: attributedText, textAlignment: .left)
-    
-    
-    
   }
 }
