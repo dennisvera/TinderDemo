@@ -13,11 +13,41 @@ protocol CardViewViewModelProtocol {
   func toCardViewModel() -> CardViewViewModel
 }
 
-struct CardViewViewModel {
+class CardViewViewModel {
+  
+  // MARK: - Private Properties
 
-  // MARK: - Properties
+  private var imageIndex = 0 {
+    didSet {
+      let imageName = imageNames[imageIndex]
+      let image = UIImage(named: imageName)
+      imageIndexObserver?(imageIndex, image)
+    }
+  }
+  
+  // MARK: - Public Properties
   
   let imageNames: [String]
   let attributedString: NSAttributedString
   let textAlignment: NSTextAlignment
+  
+  var imageIndexObserver: ((Int, UIImage?) -> ())?
+  
+  // MARK: - Intilaization
+  
+  init(imageNames: [String], attributedString: NSAttributedString, textAlignment: NSTextAlignment) {
+    self.imageNames = imageNames
+    self.attributedString = attributedString
+    self.textAlignment = textAlignment
+  }
+  
+  // MARK: - Helper Methods
+  
+  func moveToNextImage() {
+    imageIndex = min(imageIndex + 1, imageNames.count - 1)
+  }
+  
+  func moveToPreviousImage() {
+    imageIndex = max(0, imageIndex - 1)
+  }
 }

@@ -20,14 +20,13 @@ class CardView: UIView {
     return label
   }()
   
-  private let profileImageView: UIImageView = {
+  private let cardImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.clipsToBounds = true
     imageView.contentMode = .scaleAspectFill
     return imageView
   }()
   
-  private var imageIndex = 0
   private let topBarStackView = UIStackView()
   private let gradientLayer = CAGradientLayer()
   private let topBarDeselectedColor = UIColor(white: 0, alpha: 0.1)
@@ -37,7 +36,7 @@ class CardView: UIView {
   var viewModel: CardViewViewModel? {
     didSet {
       let image = viewModel?.imageNames.first ?? ""
-      profileImageView.image = UIImage(named: image)
+      cardImageView.image = UIImage(named: image)
       userInformationLabel.textAlignment = viewModel!.textAlignment
       userInformationLabel.attributedText = viewModel?.attributedString
       
@@ -48,6 +47,8 @@ class CardView: UIView {
       }
       
       topBarStackView.arrangedSubviews.first?.backgroundColor = .white
+      
+      setupImageIndexObserver()
     }
   }
   
@@ -78,8 +79,8 @@ class CardView: UIView {
     clipsToBounds = true
     layer.cornerRadius = Layout.cornerRadius
     
-    addSubview(profileImageView)
-    profileImageView.snp.makeConstraints { make in
+    addSubview(cardImageView)
+    cardImageView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
     }
     
@@ -114,13 +115,27 @@ class CardView: UIView {
   private func setupTopBarStackView() {
     addSubview(topBarStackView)
     topBarStackView.snp.makeConstraints { make in
-      make.height.equalTo(5)
-      make.trailing.equalToSuperview().offset(-8)
-      make.top.leading.equalToSuperview().offset(8)
+      make.height.equalTo(Layout.TopBarStackview.height)
+      make.trailing.equalToSuperview().offset(Layout.TopBarStackview.trailing)
+      make.top.leading.equalToSuperview().offset(Layout.TopBarStackview.leading)
     }
     
-    topBarStackView.spacing = 4
     topBarStackView.distribution = .fillEqually
+    topBarStackView.spacing = Layout.TopBarStackview.spacing
+  }
+  
+  private func setupImageIndexObserver() {
+    viewModel?.imageIndexObserver = { [weak self] (imageIndex, image) in
+      self?.cardImageView.image = image
+      
+      // Set top bar color to dark for non selected images
+      self?.topBarStackView.arrangedSubviews.forEach { subview in
+        subview.backgroundColor = self?.topBarDeselectedColor
+      }
+      
+      // Set top bar to white for selcted image
+      self?.topBarStackView.arrangedSubviews[imageIndex].backgroundColor = .white
+    }
   }
   
   // MARK: - Actions
@@ -130,21 +145,10 @@ class CardView: UIView {
     let shouldAdvanceToNextPhoto = tapLocation.x > frame.width / 2 ? true : false
     
     if shouldAdvanceToNextPhoto {
-      imageIndex = min(imageIndex + 1, viewModel!.imageNames.count - 1)
+      viewModel?.moveToNextImage()
     } else {
-      imageIndex = max(0, imageIndex - 1)
+      viewModel?.moveToPreviousImage()
     }
-    
-    guard let imageName = viewModel?.imageNames[imageIndex] else { return }
-    profileImageView.image = UIImage(named: imageName)
-    
-    // Set the top bar background color to dark when scrolling through the images
-    topBarStackView.arrangedSubviews.forEach { subview in
-      subview.backgroundColor = topBarDeselectedColor
-    }
-    
-    // Set the top bar to white when scrolling through the images
-    topBarStackView.arrangedSubviews[imageIndex].backgroundColor = .white
   }
   
   @objc private func handlePan(gesture: UIPanGestureRecognizer) {
@@ -235,6 +239,13 @@ extension CardView {
     enum Gradient {
       static let topOfTheViewPoint: NSNumber = 0.5
       static let bottomOfTheViewPoint: NSNumber = 1.1
+    }
+    
+    enum TopBarStackview {
+      static let height: CGFloat = 5
+      static let spacing: CGFloat = 4
+      static let leading: CGFloat = 8
+      static let trailing: CGFloat = -8
     }
   }
 }
