@@ -25,7 +25,9 @@ class HomeViewController: UIViewController {
     let cards = [
       User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "kelly"),
       User(name: "Jane", age: 18, profession: "Teacher", imageName: "jane"),
-      Advertiser(title: "Slide out Menu", brandName: "Lets Build That App", posterImageName: "slide_out_menu_poster")
+      Advertiser(title: "Slide out Menu", brandName: "Lets Build That App", posterImageName: "slide_out_menu_poster"),
+      User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "kelly"),
+      User(name: "Jane", age: 18, profession: "Teacher", imageName: "jane")
       ] as [CardViewViewModelProtocol]
     
     let viewModel = cards.map({ return $0.toCardViewModel() })
