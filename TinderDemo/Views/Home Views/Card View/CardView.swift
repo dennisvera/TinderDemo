@@ -27,15 +27,27 @@ class CardView: UIView {
     return imageView
   }()
   
+  private var imageIndex = 0
+  private let topBarStackView = UIStackView()
   private let gradientLayer = CAGradientLayer()
+  private let topBarDeselectedColor = UIColor(white: 0, alpha: 0.1)
   
   // MARK: - Public Properties
   
   var viewModel: CardViewViewModel? {
     didSet {
+      let image = viewModel?.imageNames.first ?? ""
+      profileImageView.image = UIImage(named: image)
       userInformationLabel.textAlignment = viewModel!.textAlignment
       userInformationLabel.attributedText = viewModel?.attributedString
-      profileImageView.image = UIImage(named: viewModel?.imageName ?? "")
+      
+      (0..<(viewModel?.imageNames.count ?? 0)).forEach { (_) in
+        let barview = UIView()
+        barview.backgroundColor = topBarDeselectedColor
+        topBarStackView.addArrangedSubview(barview)
+      }
+      
+      topBarStackView.arrangedSubviews.first?.backgroundColor = .white
     }
   }
   
@@ -45,7 +57,7 @@ class CardView: UIView {
     super.init(frame: frame)
     
     setupView()
-    setupPangesture()
+    setupGestureRecognizers()
   }
   
   required init?(coder: NSCoder) {
@@ -71,6 +83,8 @@ class CardView: UIView {
       make.edges.equalToSuperview()
     }
     
+    setupTopBarStackView()
+    
     // The gradient layer needs to be called before the userInfoLabel,
     // in order to get the gradient to appear underneath the label.
     setupGradientLayer()
@@ -82,9 +96,12 @@ class CardView: UIView {
     }
   }
   
-  private func setupPangesture() {
-    let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+  private func setupGestureRecognizers() {
+    let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
     addGestureRecognizer(panGesture)
+    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+    addGestureRecognizer(tapGesture)
   }
   
   private func setupGradientLayer() {
@@ -94,9 +111,43 @@ class CardView: UIView {
     layer.addSublayer(gradientLayer)
   }
   
+  private func setupTopBarStackView() {
+    addSubview(topBarStackView)
+    topBarStackView.snp.makeConstraints { make in
+      make.height.equalTo(5)
+      make.trailing.equalToSuperview().offset(-8)
+      make.top.leading.equalToSuperview().offset(8)
+    }
+    
+    topBarStackView.spacing = 4
+    topBarStackView.distribution = .fillEqually
+  }
+  
   // MARK: - Actions
   
-  @objc private func handlePanGesture(gesture: UIPanGestureRecognizer) {
+  @objc private func handleTap(gesture: UITapGestureRecognizer) {
+    let tapLocation = gesture.location(in: nil)
+    let shouldAdvanceToNextPhoto = tapLocation.x > frame.width / 2 ? true : false
+    
+    if shouldAdvanceToNextPhoto {
+      imageIndex = min(imageIndex + 1, viewModel!.imageNames.count - 1)
+    } else {
+      imageIndex = max(0, imageIndex - 1)
+    }
+    
+    guard let imageName = viewModel?.imageNames[imageIndex] else { return }
+    profileImageView.image = UIImage(named: imageName)
+    
+    // Set the top bar background color to dark when scrolling through the images
+    topBarStackView.arrangedSubviews.forEach { subview in
+      subview.backgroundColor = topBarDeselectedColor
+    }
+    
+    // Set the top bar to white when scrolling through the images
+    topBarStackView.arrangedSubviews[imageIndex].backgroundColor = .white
+  }
+  
+  @objc private func handlePan(gesture: UIPanGestureRecognizer) {
     switch gesture.state {
     case .began:
       superview?.subviews.last?.layer.removeAllAnimations()
