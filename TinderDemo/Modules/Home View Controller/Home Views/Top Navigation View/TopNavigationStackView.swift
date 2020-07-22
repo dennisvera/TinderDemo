@@ -19,7 +19,7 @@ class TopNavigationStackView: UIStackView {
     return imageView
   }()
   
-  private let settingsButton: UIButton = {
+  let settingsButton: UIButton = {
     let button = UIButton(type: .system)
     let image = #imageLiteral(resourceName: "top_left_profile_icon").withRenderingMode(.alwaysOriginal)
     button.setImage(image, for: .normal)

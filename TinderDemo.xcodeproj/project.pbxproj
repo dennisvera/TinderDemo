@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		04ADFAD7E2601CBE8FB74312 /* libPods-TinderDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0405048EC731647225E0A3D /* libPods-TinderDemo.a */; };
+		E145083824C8C4B000DC7727 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E145083724C8C4B000DC7727 /* RegistrationViewController.swift */; };
+		E145083B24C8D00F00DC7727 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E145083A24C8D00F00DC7727 /* CustomTextField.swift */; };
 		E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF624B7A5710092622B /* AppDelegate.swift */; };
 		E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF824B7A5710092622B /* SceneDelegate.swift */; };
 		E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBFA24B7A5710092622B /* HomeViewController.swift */; };
@@ -24,6 +26,8 @@
 		858FFD1C708859F93C632539 /* Pods-TinderDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderDemo.debug.xcconfig"; path = "Target Support Files/Pods-TinderDemo/Pods-TinderDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		8AEC39223F2A9BC60A4909DB /* Pods-TinderDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderDemo.release.xcconfig"; path = "Target Support Files/Pods-TinderDemo/Pods-TinderDemo.release.xcconfig"; sourceTree = "<group>"; };
 		B0405048EC731647225E0A3D /* libPods-TinderDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TinderDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E145083724C8C4B000DC7727 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		E145083A24C8D00F00DC7727 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		E1DFBBF324B7A5710092622B /* TinderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1DFBBF624B7A5710092622B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1DFBBF824B7A5710092622B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +71,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E145083624C8C48800DC7727 /* Registration View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E145083724C8C4B000DC7727 /* RegistrationViewController.swift */,
+			);
+			path = "Registration View Controller";
+			sourceTree = "<group>";
+		};
+		E145083924C8CFC800DC7727 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				E145083A24C8D00F00DC7727 /* CustomTextField.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		E1DFBBEA24B7A5710092622B = {
 			isa = PBXGroup;
 			children = (
@@ -91,6 +111,7 @@
 				E1DFBC0A24B7A5830092622B /* Appplication Delegates */,
 				E1DFBC1924BA61610092622B /* Models */,
 				E1DFBC0F24B7A5EF0092622B /* Modules */,
+				E145083924C8CFC800DC7727 /* Helpers */,
 				E1DFBC0C24B7A5C50092622B /* Resources */,
 				E1DFBC0E24B7A5DC0092622B /* Supporting Files */,
 			);
@@ -133,8 +154,8 @@
 		E1DFBC0F24B7A5EF0092622B /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				E145083624C8C48800DC7727 /* Registration View Controller */,
 				E1DFBC1624B9FCA90092622B /* Home View Controller */,
-				E1DFBC1124B903AE0092622B /* Home Views */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -153,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				E1DFBBFA24B7A5710092622B /* HomeViewController.swift */,
+				E1DFBC1124B903AE0092622B /* Home Views */,
 			);
 			path = "Home View Controller";
 			sourceTree = "<group>";
@@ -287,9 +309,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */,
+				E145083B24C8D00F00DC7727 /* CustomTextField.swift in Sources */,
 				E1DFBC1524B912280092622B /* TopNavigationStackView.swift in Sources */,
 				E1DFBC2224BB8B500092622B /* Advertiser.swift in Sources */,
 				E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */,
+				E145083824C8C4B000DC7727 /* RegistrationViewController.swift in Sources */,
 				E1DFBC1E24BA7F080092622B /* CardViewViewModel.swift in Sources */,
 				E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */,
 				E1DFBC1824B9FD070092622B /* CardView.swift in Sources */,

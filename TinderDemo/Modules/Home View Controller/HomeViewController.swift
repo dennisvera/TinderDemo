@@ -40,7 +40,7 @@ class HomeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    
+    topNavigationStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
     
     setupView()
     setupCardview()
@@ -81,6 +81,11 @@ class HomeViewController: UIViewController {
         make.edges.equalToSuperview()
       }
     }
+  }
+  
+  @objc private func handleSettings() {
+    let registrationController = RegistrationViewController()
+    present(registrationController, animated: true)
   }
 }
 
