@@ -18,8 +18,8 @@ class HomeViewController: UIViewController {
     return view
   }()
   
-  private let topStackView = TopNavigationStackView()
-  private let bottomStackView = HomeBottomControlStackView()
+  private let topNavigationStackView = TopNavigationStackView()
+  private let bottomControlStackView = HomeBottomControlStackView()
   
   private let viewModel: [CardViewViewModel] = {
     let cards = [
@@ -40,6 +40,8 @@ class HomeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    
+    
     setupView()
     setupCardview()
   }
@@ -49,7 +51,7 @@ class HomeViewController: UIViewController {
   private func setupView() {
     view.backgroundColor = .white
     
-    let mainStackView = UIStackView(arrangedSubviews: [topStackView, cardsDeckView, bottomStackView])
+    let mainStackView = UIStackView(arrangedSubviews: [topNavigationStackView, cardsDeckView, bottomControlStackView])
     mainStackView.axis = .vertical
     
     view.addSubview(mainStackView)

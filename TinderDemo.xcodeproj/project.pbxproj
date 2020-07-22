@@ -91,7 +91,6 @@
 				E1DFBC0A24B7A5830092622B /* Appplication Delegates */,
 				E1DFBC1924BA61610092622B /* Models */,
 				E1DFBC0F24B7A5EF0092622B /* Modules */,
-				E1DFBC1024B9039F0092622B /* Views */,
 				E1DFBC0C24B7A5C50092622B /* Resources */,
 				E1DFBC0E24B7A5DC0092622B /* Supporting Files */,
 			);
@@ -135,16 +134,9 @@
 			isa = PBXGroup;
 			children = (
 				E1DFBC1624B9FCA90092622B /* Home View Controller */,
-			);
-			path = Modules;
-			sourceTree = "<group>";
-		};
-		E1DFBC1024B9039F0092622B /* Views */ = {
-			isa = PBXGroup;
-			children = (
 				E1DFBC1124B903AE0092622B /* Home Views */,
 			);
-			path = Views;
+			path = Modules;
 			sourceTree = "<group>";
 		};
 		E1DFBC1124B903AE0092622B /* Home Views */ = {
