@@ -11,9 +11,9 @@ import SnapKit
 
 class RegistrationViewController: UIViewController {
   
-  // MARK: Properties
+  // MARK: Private Properties
   
-  let selectPhotoButton: UIButton = {
+  private let selectPhotoButton: UIButton = {
     let button = UIButton(type: .system)
     button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     button.layer.cornerRadius = 16
@@ -24,14 +24,14 @@ class RegistrationViewController: UIViewController {
     return button
   }()
   
-  let fullNameTextField: CustomTextField = {
+  private let fullNameTextField: CustomTextField = {
     let textField = CustomTextField(padding: 16)
     textField.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     textField.placeholder = "Enter full name"
     return textField
   }()
   
-  let emailTextField: CustomTextField = {
+  private let emailTextField: CustomTextField = {
     let textField = CustomTextField(padding: 16)
     textField.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     textField.placeholder = "Enter email"
@@ -39,13 +39,34 @@ class RegistrationViewController: UIViewController {
     return textField
   }()
   
-  let passwordTextField: CustomTextField = {
+  private let passwordTextField: CustomTextField = {
     let textField = CustomTextField(padding: 16)
     textField.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     textField.isSecureTextEntry = true
     textField.placeholder = "Enter password"
     return textField
   }()
+  
+  private let registerButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.backgroundColor = #colorLiteral(red: 0.822586894, green: 0.09319851547, blue: 0.3174999356, alpha: 1)
+    button.layer.cornerRadius = 22
+    button.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
+    button.setTitle("Register", for: .normal)
+    button.heightAnchor.constraint(equalToConstant: 44).isActive = true
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+    return button
+  }()
+  
+  // MARK: - Public Properties
+  
+  lazy var stackView = UIStackView(arrangedSubviews: [
+    selectPhotoButton,
+    fullNameTextField,
+    emailTextField,
+    passwordTextField,
+    registerButton
+  ])
   
   // MARK: - View Life Cycle 
   
@@ -54,6 +75,14 @@ class RegistrationViewController: UIViewController {
     
     setupGradientLayer()
     setupStackView()
+    setuptapGesture()
+    setupNotificationObservers()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    
+    NotificationCenter.default.removeObserver(self)
   }
   
   // MARK: - Helper Methods
@@ -73,11 +102,6 @@ class RegistrationViewController: UIViewController {
   
   private func setupStackView() {
     // Configure Stack View
-    let stackView = UIStackView(arrangedSubviews: [
-      selectPhotoButton,
-      fullNameTextField,
-      emailTextField,
-      passwordTextField])
     stackView.axis = .vertical
     stackView.spacing = 8
     
@@ -88,5 +112,55 @@ class RegistrationViewController: UIViewController {
       make.leading.equalToSuperview().offset(50)
       make.trailing.equalToSuperview().offset(-50)
     }
+  }
+  
+  // MARK: - Notification Methods
+  
+  private func setupNotificationObservers() {
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(handleKeyboardShow(notification:)),
+                                           name: UIResponder.keyboardWillShowNotification,
+                                           object: nil)
+    
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(handleKeyboardHide(notification:)),
+                                           name: UIResponder.keyboardWillHideNotification,
+                                           object: nil)
+  }
+  
+  @objc private func handleKeyboardShow(notification: Notification) {
+    // Find the Keybaord frame
+    guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+    let keyboardFrame = value.cgRectValue
+    
+    // Calculate the height from the bottom of the main view to the bottom of the stack view
+    // Push up (transform) the view up to show the full stackview when the keyboard is shown
+    let bottomSpace = view.frame.height - stackView.frame.origin.y - stackView.frame.height
+    let difference = keyboardFrame.height - bottomSpace
+    let bottomPadding: CGFloat = 8
+    view.transform = CGAffineTransform(translationX: 0, y: -difference - bottomPadding)
+  }
+  
+  @objc private func handleKeyboardHide(notification: Notification) {
+    // Set view back to the original frame
+    UIView.animate(withDuration: 0.5,
+                   delay: 0,
+                   usingSpringWithDamping: 1,
+                   initialSpringVelocity: 1,
+                   options: .curveEaseOut,
+                   animations: {
+                    self.view.transform = .identity
+    })
+  }
+  
+  // MARK: - TapGesture Methods
+  
+  private func setuptapGesture() {
+    view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
+  }
+  
+  @objc private func handleTapDismiss() {
+    // Dismisse Keyboard
+    view.endEditing(true)
   }
 }
