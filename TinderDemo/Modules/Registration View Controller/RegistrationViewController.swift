@@ -19,6 +19,7 @@ class RegistrationViewController: UIViewController {
     button.layer.cornerRadius = 16
     button.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
     button.setTitle("Select Photo", for: .normal)
+    button.widthAnchor.constraint(equalToConstant: 275).isActive = true
     button.heightAnchor.constraint(equalToConstant: 300).isActive = true
     button.titleLabel?.font = UIFont.systemFont(ofSize: 32, weight: .heavy)
     return button
@@ -58,15 +59,32 @@ class RegistrationViewController: UIViewController {
     return button
   }()
   
-  // MARK: - Public Properties
+  // MARK: -
   
-  lazy var stackView = UIStackView(arrangedSubviews: [
-    selectPhotoButton,
-    fullNameTextField,
-    emailTextField,
-    passwordTextField,
-    registerButton
-  ])
+  private let gradientLayer = CAGradientLayer()
+  
+  private lazy var verticalStackView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [
+      fullNameTextField,
+      emailTextField,
+      passwordTextField,
+      registerButton
+    ])
+    stackView.spacing = 8
+    stackView.axis = .vertical
+    stackView.distribution = .fillEqually
+    return stackView
+  }()
+  
+  private lazy var mainStackView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [
+      selectPhotoButton,
+      verticalStackView
+    ])
+    stackView.spacing = 8
+    stackView.axis = .vertical
+    return stackView
+  }()
   
   // MARK: - View Life Cycle 
   
@@ -79,17 +97,34 @@ class RegistrationViewController: UIViewController {
     setupNotificationObservers()
   }
   
+  override func viewWillLayoutSubviews() {
+    super.viewWillLayoutSubviews()
+    // Set the gradient layer to equal the view bounds
+    // when the device rotates
+    gradientLayer.frame = view.bounds
+  }
+  
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     
     NotificationCenter.default.removeObserver(self)
   }
   
+  // MARK: - Overrides
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    // Configure Stack View orientation when device is rotated
+    if traitCollection.verticalSizeClass == .compact {
+      mainStackView.axis = .horizontal
+    } else {
+      mainStackView.axis = .vertical
+    }
+  }
+  
   // MARK: - Helper Methods
   
   private func setupGradientLayer() {
     // Configure Gradient Layer
-    let gradientLayer = CAGradientLayer()
     let topColor = #colorLiteral(red: 0.9827533364, green: 0.3668525219, blue: 0.365799427, alpha: 1)
     let bottomColor = #colorLiteral(red: 0.8863948584, green: 0.1081401929, blue: 0.4572728276, alpha: 1)
     gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
@@ -101,13 +136,9 @@ class RegistrationViewController: UIViewController {
   }
   
   private func setupStackView() {
-    // Configure Stack View
-    stackView.axis = .vertical
-    stackView.spacing = 8
-    
     // Add Stack View to Sub View
-    view.addSubview(stackView)
-    stackView.snp.makeConstraints { make in
+    view.addSubview(mainStackView)
+    mainStackView.snp.makeConstraints { make in
       make.centerY.equalToSuperview()
       make.leading.equalToSuperview().offset(50)
       make.trailing.equalToSuperview().offset(-50)
@@ -135,7 +166,7 @@ class RegistrationViewController: UIViewController {
     
     // Calculate the height from the bottom of the main view to the bottom of the stack view
     // Push up (transform) the view up to show the full stackview when the keyboard is shown
-    let bottomSpace = view.frame.height - stackView.frame.origin.y - stackView.frame.height
+    let bottomSpace = view.frame.height - mainStackView.frame.origin.y - mainStackView.frame.height
     let difference = keyboardFrame.height - bottomSpace
     let bottomPadding: CGFloat = 8
     view.transform = CGAffineTransform(translationX: 0, y: -difference - bottomPadding)
