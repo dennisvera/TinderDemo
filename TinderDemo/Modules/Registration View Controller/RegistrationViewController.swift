@@ -29,6 +29,8 @@ class RegistrationViewController: UIViewController {
     let textField = CustomTextField(padding: 16)
     textField.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     textField.placeholder = "Enter full name"
+    textField.addTarget(self, action: #selector(handleTextChanged(textField:)),
+                        for: .editingChanged)
     return textField
   }()
   
@@ -37,6 +39,8 @@ class RegistrationViewController: UIViewController {
     textField.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     textField.placeholder = "Enter email"
     textField.keyboardType = .emailAddress
+    textField.addTarget(self, action: #selector(handleTextChanged(textField:)),
+                        for: .editingChanged)
     return textField
   }()
   
@@ -45,24 +49,25 @@ class RegistrationViewController: UIViewController {
     textField.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     textField.isSecureTextEntry = true
     textField.placeholder = "Enter password"
+    textField.addTarget(self, action: #selector(handleTextChanged(textField:)),
+                        for: .editingChanged)
     return textField
   }()
   
   private let registerButton: UIButton = {
     let button = UIButton(type: .system)
-    button.backgroundColor = #colorLiteral(red: 0.822586894, green: 0.09319851547, blue: 0.3174999356, alpha: 1)
+    button.isEnabled = false
     button.layer.cornerRadius = 22
-    button.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
+    button.backgroundColor = .lightGray
     button.setTitle("Register", for: .normal)
+    button.setTitleColor(.darkGray, for: .disabled)
     button.heightAnchor.constraint(equalToConstant: 44).isActive = true
     button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
     return button
   }()
   
   // MARK: -
-  
-  private let gradientLayer = CAGradientLayer()
-  
+    
   private lazy var verticalStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [
       fullNameTextField,
@@ -86,6 +91,11 @@ class RegistrationViewController: UIViewController {
     return stackView
   }()
   
+  // MARK: -
+  
+  private let gradientLayer = CAGradientLayer()
+  private var viewModel = RegistrationViewModel()
+  
   // MARK: - View Life Cycle 
   
   override func viewDidLoad() {
@@ -95,6 +105,7 @@ class RegistrationViewController: UIViewController {
     setupStackView()
     setuptapGesture()
     setupNotificationObservers()
+    setupRegistrationViewModelObserver()
   }
   
   override func viewWillLayoutSubviews() {
@@ -142,6 +153,31 @@ class RegistrationViewController: UIViewController {
       make.centerY.equalToSuperview()
       make.leading.equalToSuperview().offset(50)
       make.trailing.equalToSuperview().offset(-50)
+    }
+  }
+  
+  @objc private func handleTextChanged(textField: UITextField) {
+    if textField == fullNameTextField {
+      viewModel.fullName = textField.text
+    } else if textField == emailTextField {
+      viewModel.email = textField.text
+    } else {
+      viewModel.password = textField.text
+    }
+  }
+  
+  private func setupRegistrationViewModelObserver() {
+    viewModel.isRegistrationValid = { [weak self] isValid in      
+      guard let strongSelf = self else { return }
+      strongSelf.registerButton.isEnabled = isValid
+
+      if isValid {
+        strongSelf.registerButton.backgroundColor = #colorLiteral(red: 0.822586894, green: 0.09319851547, blue: 0.3174999356, alpha: 1)
+        strongSelf.registerButton.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
+      } else {
+        strongSelf.registerButton.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        strongSelf.registerButton.setTitleColor(.darkGray, for: .disabled)
+      }
     }
   }
   

@@ -10,6 +10,7 @@
 		04ADFAD7E2601CBE8FB74312 /* libPods-TinderDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0405048EC731647225E0A3D /* libPods-TinderDemo.a */; };
 		E145083824C8C4B000DC7727 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E145083724C8C4B000DC7727 /* RegistrationViewController.swift */; };
 		E145083B24C8D00F00DC7727 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E145083A24C8D00F00DC7727 /* CustomTextField.swift */; };
+		E145088424CE181400DC7727 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E145088324CE181400DC7727 /* RegistrationViewModel.swift */; };
 		E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF624B7A5710092622B /* AppDelegate.swift */; };
 		E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF824B7A5710092622B /* SceneDelegate.swift */; };
 		E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBFA24B7A5710092622B /* HomeViewController.swift */; };
@@ -28,6 +29,7 @@
 		B0405048EC731647225E0A3D /* libPods-TinderDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TinderDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E145083724C8C4B000DC7727 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		E145083A24C8D00F00DC7727 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		E145088324CE181400DC7727 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		E1DFBBF324B7A5710092622B /* TinderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1DFBBF624B7A5710092622B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1DFBBF824B7A5710092622B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				E145083724C8C4B000DC7727 /* RegistrationViewController.swift */,
+				E145088224CE17F900DC7727 /* View Models */,
 			);
 			path = "Registration View Controller";
 			sourceTree = "<group>";
@@ -85,6 +88,14 @@
 				E145083A24C8D00F00DC7727 /* CustomTextField.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		E145088224CE17F900DC7727 /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				E145088324CE181400DC7727 /* RegistrationViewModel.swift */,
+			);
+			path = "View Models";
 			sourceTree = "<group>";
 		};
 		E1DFBBEA24B7A5710092622B = {
@@ -309,6 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */,
+				E145088424CE181400DC7727 /* RegistrationViewModel.swift in Sources */,
 				E145083B24C8D00F00DC7727 /* CustomTextField.swift in Sources */,
 				E1DFBC1524B912280092622B /* TopNavigationStackView.swift in Sources */,
 				E1DFBC2224BB8B500092622B /* Advertiser.swift in Sources */,
