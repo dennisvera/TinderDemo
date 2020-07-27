@@ -17,13 +17,16 @@ class RegistrationViewController: UIViewController {
   
   private let selectPhotoButton: UIButton = {
     let button = UIButton(type: .system)
+    button.clipsToBounds = true
     button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     button.layer.cornerRadius = 16
     button.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
     button.setTitle("Select Photo", for: .normal)
+    button.imageView?.contentMode = .scaleAspectFill
     button.widthAnchor.constraint(equalToConstant: 275).isActive = true
     button.heightAnchor.constraint(equalToConstant: 300).isActive = true
     button.titleLabel?.font = UIFont.systemFont(ofSize: 32, weight: .heavy)
+    button.addTarget(self, action: #selector(handleSelectButtontapped), for: .touchUpInside)
     return button
   }()
   
@@ -108,7 +111,7 @@ class RegistrationViewController: UIViewController {
     setupStackView()
     setuptapGesture()
     setupNotificationObservers()
-    setupRegistrationViewModelObserver()
+    setupRegistrationViewModelObservers()
   }
   
   override func viewWillLayoutSubviews() {
@@ -169,8 +172,9 @@ class RegistrationViewController: UIViewController {
     }
   }
   
-  private func setupRegistrationViewModelObserver() {
-    viewModel.isRegistrationValid = { [weak self] isValid in      
+  private func setupRegistrationViewModelObservers() {
+    // Configure registration isValid observer
+    viewModel.isRegistrationValidObserver = { [weak self] isValid in      
       guard let strongSelf = self else { return }
       strongSelf.registerButton.isEnabled = isValid
 
@@ -181,6 +185,12 @@ class RegistrationViewController: UIViewController {
         strongSelf.registerButton.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         strongSelf.registerButton.setTitleColor(.darkGray, for: .disabled)
       }
+    }
+    
+    // Configure image observer
+    viewModel.imageObserver = { [weak self] image in
+      guard let strongSelf = self else { return }
+      strongSelf.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
     }
   }
   
@@ -255,6 +265,12 @@ class RegistrationViewController: UIViewController {
     }
   }
   
+  @objc private func handleSelectButtontapped() {
+    let imagePickerController = UIImagePickerController()
+    imagePickerController.delegate = self
+    present(imagePickerController, animated: true)
+  }
+  
   // MARK: - Alerts
   
   private func showHudWithError(with error: Error) {
@@ -263,5 +279,22 @@ class RegistrationViewController: UIViewController {
     hud.detailTextLabel.text = error.localizedDescription
     hud.show(in: view)
     hud.dismiss(afterDelay: 4)
+  }
+}
+
+extension RegistrationViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate  {
+  
+  func imagePickerController(_ picker: UIImagePickerController,
+                             didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    let selectedImage = info[.originalImage] as? UIImage
+    
+    viewModel.image = selectedImage
+    
+    // Dismiss UIPicker Controller
+    dismiss(animated: true)
+  }
+  
+  func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    dismiss(animated: true)
   }
 }

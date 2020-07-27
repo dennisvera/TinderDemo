@@ -30,7 +30,16 @@ class RegistrationViewModel {
     }
   }
   
-  var isRegistrationValid: ((Bool) -> ())?
+  var image: UIImage? {
+    didSet {
+      imageObserver?(image)
+    }
+  }
+  
+  // MARK: - Observers
+  
+  var imageObserver: ((UIImage?) -> ())?
+  var isRegistrationValidObserver: ((Bool) -> ())?
   
   // MARK: Helper Methods
   
@@ -41,6 +50,6 @@ class RegistrationViewModel {
     
     let isFormValid = fullNameIsValid && emailIsValid && passwordIsValid
         
-    isRegistrationValid?(isFormValid)
+    isRegistrationValidObserver?(isFormValid)
   }
 }
