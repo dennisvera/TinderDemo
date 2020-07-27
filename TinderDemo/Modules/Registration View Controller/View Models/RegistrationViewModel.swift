@@ -55,6 +55,33 @@ class RegistrationViewModel {
     isRegistrationValidObserver?(isFormValid)
   }
   
+  private func performImageUpload(completion: @escaping (Error?) -> ()) {
+    // Upload user profile image after the user has successfully created an account
+    let fileName = UUID().uuidString
+    let reference = Storage.storage().reference(withPath: "/images/\(fileName)")
+    let imageData = image?.jpegData(compressionQuality: 0.75) ?? Data()
+    
+    reference.putData(imageData, metadata: nil) { [weak self] (_, error) in
+      guard let strongSelf = self else { return }
+      
+      if let error = error {
+        completion(error)
+        return
+      }
+      
+      // Downnload Firebase image url
+      reference.downloadURL { (url, error) in
+        if let error = error {
+          completion(error)
+          return
+        }
+        
+        // Set the isRegistering observer to false
+        strongSelf.isRegistering?(false)
+      }
+    }
+  }
+  
   // MARK: - Public Methods
   
   func performRagistration(completion: @escaping (Error?) -> ()) {
@@ -65,7 +92,7 @@ class RegistrationViewModel {
     isRegistering?(true)
     
     // Create user with email and password
-    Auth.auth().createUser(withEmail: email, password: password) { [weak self] (result, error) in
+    Auth.auth().createUser(withEmail: email, password: password) { [weak self] (_, error) in
       guard let strongSelf = self else { return }
       
       if let error = error {
@@ -73,28 +100,7 @@ class RegistrationViewModel {
         return
       }
       
-      // Upload user profile image after the user has successfully created an account
-      let fileName = UUID().uuidString
-      let reference = Storage.storage().reference(withPath: "/images/\(fileName)")
-      let imageData = strongSelf.image?.jpegData(compressionQuality: 0.75) ?? Data()
-      
-      reference.putData(imageData, metadata: nil) { (_, error) in
-        if let error = error {
-          completion(error)
-          return
-        }
-        
-        // Downnload Firebase image url
-        reference.downloadURL { (url, error) in
-          if let error = error {
-            completion(error)
-            return
-          }
-          
-          // Set the isRegistering observer to false
-          strongSelf.isRegistering?(false)
-        }
-      }
+      strongSelf.performImageUpload(completion: completion)
     }
   }
 }
