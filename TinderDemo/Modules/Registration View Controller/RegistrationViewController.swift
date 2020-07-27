@@ -73,7 +73,7 @@ class RegistrationViewController: UIViewController {
   }()
   
   // MARK: -
-    
+  
   private lazy var verticalStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [
       fullNameTextField,
@@ -99,6 +99,7 @@ class RegistrationViewController: UIViewController {
   
   // MARK: -
   
+  private let resgisterHud = JGProgressHUD()
   private let gradientLayer = CAGradientLayer()
   private var viewModel = RegistrationViewModel()
   
@@ -177,7 +178,7 @@ class RegistrationViewController: UIViewController {
     viewModel.isRegistrationValidObserver = { [weak self] isValid in      
       guard let strongSelf = self else { return }
       strongSelf.registerButton.isEnabled = isValid
-
+      
       if isValid {
         strongSelf.registerButton.backgroundColor = #colorLiteral(red: 0.822586894, green: 0.09319851547, blue: 0.3174999356, alpha: 1)
         strongSelf.registerButton.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
@@ -191,6 +192,18 @@ class RegistrationViewController: UIViewController {
     viewModel.imageObserver = { [weak self] image in
       guard let strongSelf = self else { return }
       strongSelf.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+    }
+    
+    // Configure isRegistering observer
+    viewModel.isRegistering = { [weak self] isRegistering in
+      guard let strongSelf = self else { return }
+      
+      if isRegistering == true {
+        strongSelf.resgisterHud.textLabel.text = "Register"
+        strongSelf.resgisterHud.show(in: strongSelf.view)
+      } else {
+        strongSelf.resgisterHud.dismiss()
+      }
     }
   }
   
@@ -247,21 +260,16 @@ class RegistrationViewController: UIViewController {
   // MARK: - Actions
   
   @objc private func handleRegisterButtonTapped() {
-    // Dismiss keyboard when user attmepts ot login
+    // Dismiss keyboard when user attempts to login
     handleTapDismiss()
     
-    guard let email = emailTextField.text else { return }
-    guard let password = passwordTextField.text else { return }
-    
-    // Create user with email and password
-    Auth.auth().createUser(withEmail: email, password: password) { [weak self] (result, error) in
+    // Create user registration
+    viewModel.performRagistration { [weak self] error in
       if let error = error {
         guard let strongSelf = self else { return }
         strongSelf.showHudWithError(with: error)
         return
       }
-      
-      print("Succesfully registered user:", result?.user.uid ?? "")
     }
   }
   
@@ -274,6 +282,10 @@ class RegistrationViewController: UIViewController {
   // MARK: - Alerts
   
   private func showHudWithError(with error: Error) {
+    // Dismiss Register Hud
+    resgisterHud.dismiss()
+    
+    // Configure Registration Error Hud
     let hud = JGProgressHUD(style: .dark)
     hud.textLabel.text = "Failed to Register"
     hud.detailTextLabel.text = error.localizedDescription
