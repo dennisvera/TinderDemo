@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,7 @@
 		E145083824C8C4B000DC7727 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E145083724C8C4B000DC7727 /* RegistrationViewController.swift */; };
 		E145083B24C8D00F00DC7727 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E145083A24C8D00F00DC7727 /* CustomTextField.swift */; };
 		E145088424CE181400DC7727 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E145088324CE181400DC7727 /* RegistrationViewModel.swift */; };
+		E145088624CF478300DC7727 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E145088524CF478300DC7727 /* GoogleService-Info.plist */; };
 		E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF624B7A5710092622B /* AppDelegate.swift */; };
 		E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF824B7A5710092622B /* SceneDelegate.swift */; };
 		E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBFA24B7A5710092622B /* HomeViewController.swift */; };
@@ -30,6 +31,7 @@
 		E145083724C8C4B000DC7727 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		E145083A24C8D00F00DC7727 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		E145088324CE181400DC7727 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
+		E145088524CF478300DC7727 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E1DFBBF324B7A5710092622B /* TinderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1DFBBF624B7A5710092622B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1DFBBF824B7A5710092622B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				E1DFBC0424B7A5740092622B /* Info.plist */,
+				E145088524CF478300DC7727 /* GoogleService-Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1DFBC0024B7A5740092622B /* Assets.xcassets in Resources */,
+				E145088624CF478300DC7727 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,7 +503,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.CococastsDemo.TinderDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DennisVera.TinderDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -518,7 +522,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.CococastsDemo.TinderDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DennisVera.TinderDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

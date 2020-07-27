@@ -8,6 +8,8 @@
 
 import UIKit
 import SnapKit
+import Firebase
+import JGProgressHUD
 
 class RegistrationViewController: UIViewController {
   
@@ -63,6 +65,7 @@ class RegistrationViewController: UIViewController {
     button.setTitleColor(.darkGray, for: .disabled)
     button.heightAnchor.constraint(equalToConstant: 44).isActive = true
     button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+    button.addTarget(self, action: #selector(handleRegisterButtonTapped), for: .touchUpInside)
     return button
   }()
   
@@ -229,5 +232,36 @@ class RegistrationViewController: UIViewController {
   @objc private func handleTapDismiss() {
     // Dismisse Keyboard
     view.endEditing(true)
+  }
+  
+  // MARK: - Actions
+  
+  @objc private func handleRegisterButtonTapped() {
+    // Dismiss keyboard when user attmepts ot login
+    handleTapDismiss()
+    
+    guard let email = emailTextField.text else { return }
+    guard let password = passwordTextField.text else { return }
+    
+    // Create user with email and password
+    Auth.auth().createUser(withEmail: email, password: password) { [weak self] (result, error) in
+      if let error = error {
+        guard let strongSelf = self else { return }
+        strongSelf.showHudWithError(with: error)
+        return
+      }
+      
+      print("Succesfully registered user:", result?.user.uid ?? "")
+    }
+  }
+  
+  // MARK: - Alerts
+  
+  private func showHudWithError(with error: Error) {
+    let hud = JGProgressHUD(style: .dark)
+    hud.textLabel.text = "Failed to Register"
+    hud.detailTextLabel.text = error.localizedDescription
+    hud.show(in: view)
+    hud.dismiss(afterDelay: 4)
   }
 }
