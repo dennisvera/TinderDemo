@@ -18,13 +18,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   // MARK: - Application Life Cycle
   
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    // The Firebase configure needs to be called before main window is initialized
     // Configure Firebase
     FirebaseApp.configure()
+    let db = Firestore.firestore()
+    let settings = db.settings
+    settings.areTimestampsInSnapshotsEnabled = true
+    db.settings = settings
     
     // Initialize and Configure Main Window
     guard let windowScene = scene as? UIWindowScene else { return }
     window = UIWindow(windowScene: windowScene)
-    window?.rootViewController = RegistrationViewController()
+    window?.rootViewController = HomeViewController()
     window?.makeKeyAndVisible()
   }
   

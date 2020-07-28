@@ -264,12 +264,14 @@ class RegistrationViewController: UIViewController {
     handleTapDismiss()
     
     // Create user registration
-    viewModel.performRagistration { [weak self] error in
+    viewModel.registerUser { [weak self] error in
       if let error = error {
         guard let strongSelf = self else { return }
         strongSelf.showHudWithError(with: error)
         return
       }
+      
+      print("\nUser Registered Successfully!")
     }
   }
   

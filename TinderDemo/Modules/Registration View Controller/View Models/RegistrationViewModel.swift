@@ -11,6 +11,10 @@ import Firebase
 
 class RegistrationViewModel {
   
+  // MARK: - TypeAlias
+  
+  typealias Completion = (Error?) -> ()
+  
   // MARK: - Properties
   
   var fullName: String? {
@@ -43,6 +47,28 @@ class RegistrationViewModel {
   var imageObserver: ((UIImage?) -> ())?
   var isRegistrationValidObserver: ((Bool) -> ())?
   
+  // MARK: - Public Methods
+  
+  func registerUser(completion: @escaping Completion) {
+    guard let email = email else { return }
+    guard let password = password else { return }
+    
+    // Set the isRegistering observer to true
+    isRegistering?(true)
+    
+    // Create user with email and password
+    Auth.auth().createUser(withEmail: email, password: password) { [weak self] (_, error) in
+      guard let strongSelf = self else { return }
+      
+      if let error = error {
+        completion(error)
+        return
+      }
+      
+      strongSelf.uploadImageToFirebase(completion: completion)
+    }
+  }
+  
   // MARK: Private Methods
   
   private func checkRegistrationIsValid() {
@@ -55,7 +81,7 @@ class RegistrationViewModel {
     isRegistrationValidObserver?(isFormValid)
   }
   
-  private func performImageUpload(completion: @escaping (Error?) -> ()) {
+  private func uploadImageToFirebase(completion: @escaping Completion) {
     // Upload user profile image after the user has successfully created an account
     let fileName = UUID().uuidString
     let reference = Storage.storage().reference(withPath: "/images/\(fileName)")
@@ -76,31 +102,34 @@ class RegistrationViewModel {
           return
         }
         
+        // Save User Info to FireStore
+        let imageUrl = url?.absoluteString ?? ""
+        strongSelf.saveUserInfoToFireStore(with: imageUrl, completion: completion)
+        
         // Set the isRegistering observer to false
         strongSelf.isRegistering?(false)
       }
     }
   }
   
-  // MARK: - Public Methods
-  
-  func performRagistration(completion: @escaping (Error?) -> ()) {
-    guard let email = email else { return }
-    guard let password = password else { return }
+  private func saveUserInfoToFireStore(with imageUrl: String, completion: @escaping Completion) {
+    let uid = Auth.auth().currentUser?.uid ?? ""
+    let documentData = [
+      "uid": uid,
+      "imageUrl1": imageUrl,
+      "fullName": fullName ?? ""
+    ]
     
-    // Set the isRegistering observer to true
-    isRegistering?(true)
-    
-    // Create user with email and password
-    Auth.auth().createUser(withEmail: email, password: password) { [weak self] (_, error) in
-      guard let strongSelf = self else { return }
-      
-      if let error = error {
-        completion(error)
-        return
-      }
-      
-      strongSelf.performImageUpload(completion: completion)
+    Firestore.firestore()
+      .collection("users")
+      .document(uid)
+      .setData(documentData) { error in
+        if let error = error {
+          completion(error)
+          return
+        }
+        
+        completion(nil)
     }
   }
 }

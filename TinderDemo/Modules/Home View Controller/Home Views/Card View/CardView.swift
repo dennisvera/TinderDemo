@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import SDWebImage
 
 class CardView: UIView {
   
@@ -35,8 +36,12 @@ class CardView: UIView {
   
   var viewModel: CardViewViewModel? {
     didSet {
+      // Get the first image if it exist.
+      // Accessing index 0 this way: (imageNames.count == 0) - will crash the app
       let image = viewModel?.imageNames.first ?? ""
-      cardImageView.image = UIImage(named: image)
+      guard let imageUrl = URL(string: image) else { return }
+      cardImageView.sd_setImage(with: imageUrl)
+      
       userInformationLabel.textAlignment = viewModel!.textAlignment
       userInformationLabel.attributedText = viewModel?.attributedString
       

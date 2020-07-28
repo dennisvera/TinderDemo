@@ -12,23 +12,37 @@ struct User: CardViewViewModelProtocol {
   
   // MARK: - Properties
   
-  let name: String
-  let age: Int
-  let profession: String
-  let imageNames: [String]
+  var age: Int?
+  var uid: String?
+  var name: String?
+  var imageUrl1: String?
+  var profession: String?
+  
+  // MARK: Initialization
+  
+  init(dictionary: [String: Any]) {
+    self.age = dictionary["age"] as? Int
+    self.uid = dictionary["uid"] as? String ?? ""
+    self.name = dictionary["fullName"] as? String ?? ""
+    self.imageUrl1 = dictionary["imageUrl1"] as? String ?? ""
+    self.profession = dictionary["profession"] as? String
+  }
   
   // MARK: - Helper Methods
   
   func toCardViewModel() -> CardViewViewModel {
-    let attributedText = NSMutableAttributedString(string: name,
+    let attributedText = NSMutableAttributedString(string: name ?? "",
                                                    attributes: [.font: UIFont.systemFont(ofSize: 34,
                                                                                          weight: .heavy)])
-    attributedText.append(NSAttributedString(string: " \(age)",
+    
+    let ageString = age != nil ? "\(age!)" : "N\\A"
+    attributedText.append(NSAttributedString(string: "  \(ageString)",
       attributes: [.font : UIFont.systemFont(ofSize: 24, weight: .regular)]))
     
-    attributedText.append(NSAttributedString(string: "\n\(profession)",
+    let professionString = profession != nil ? "\(profession!)" : "Not Available"
+    attributedText.append(NSAttributedString(string: "\n\(professionString)",
       attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)]))
     
-    return CardViewViewModel(imageNames: imageNames, attributedString: attributedText, textAlignment: .left)
+    return CardViewViewModel(imageNames: [imageUrl1 ?? ""], attributedString: attributedText, textAlignment: .left)
   }
 }

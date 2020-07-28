@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Firebase
 
 class HomeViewController: UIViewController {
   
@@ -21,19 +22,9 @@ class HomeViewController: UIViewController {
   private let topNavigationStackView = TopNavigationStackView()
   private let bottomControlStackView = HomeBottomControlStackView()
   
-  private let viewModel: [CardViewViewModel] = {
-    let cards = [
-      User(name: "Kelly", age: 23, profession: "Music DJ", imageNames: ["kelly1", "kelly2", "kelly3"]),
-      User(name: "Jane", age: 18, profession: "Teacher", imageNames: ["jane1", "jane2", "jane3"]),
-      Advertiser(title: "Slide out Menu", brandName: "Lets Build That App", posterImageName: "slide_out_menu_poster"),
-      User(name: "Kelly", age: 23, profession: "Music DJ", imageNames: ["kelly1", "kelly2", "kelly3"]),
-      User(name: "Jane", age: 18, profession: "Teacher", imageNames: ["jane1", "jane2", "jane3"])
-      ] as [CardViewViewModelProtocol]
-    
-    let viewModel = cards.map({ return $0.toCardViewModel() })
-    
-    return viewModel
-  }()
+  // MARK: -
+  
+  private var viewModel = [CardViewViewModel]()
     
   // MARK: - View Life Cycle
   
@@ -44,6 +35,7 @@ class HomeViewController: UIViewController {
     
     setupView()
     setupCardview()
+    fetchUsersFromFirebaseStore()
   }
   
   // MARK: - Helper Methods
@@ -72,7 +64,7 @@ class HomeViewController: UIViewController {
   }
   
   private func setupCardview() {
-    viewModel.forEach { (viewModel) in
+    viewModel.forEach { viewModel in
       let cardView = CardView()
       cardView.viewModel = viewModel
       
@@ -80,6 +72,27 @@ class HomeViewController: UIViewController {
       cardView.snp.makeConstraints { make in
         make.edges.equalToSuperview()
       }
+    }
+  }
+  
+  private func fetchUsersFromFirebaseStore() {
+    Firestore.firestore().collection("users").getDocuments { [weak self] (snapshot, error) in
+      if let error = error {
+        print("failed to fethc user:", error)
+        return
+      }
+      
+      // Fecth user documents
+      snapshot?.documents.forEach({ [weak self] documentSnapshot in
+        let userDictionary = documentSnapshot.data()
+        let user = User(dictionary: userDictionary)
+        
+        guard let strongSelf = self else { return }
+        strongSelf.viewModel.append(user.toCardViewModel())
+      })
+      
+      guard let strongSelf = self else { return }
+      strongSelf.setupCardview()
     }
   }
   
