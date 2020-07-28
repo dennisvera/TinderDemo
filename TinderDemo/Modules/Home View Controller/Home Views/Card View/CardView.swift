@@ -130,8 +130,9 @@ class CardView: UIView {
   }
   
   private func setupImageIndexObserver() {
-    viewModel?.imageIndexObserver = { [weak self] (imageIndex, image) in
-      self?.cardImageView.image = image
+    viewModel?.imageIndexObserver = { [weak self] (imageIndex, imageUrl) in
+      guard let imageUrl = URL(string: imageUrl ?? "") else { return }
+      self?.cardImageView.sd_setImage(with: imageUrl)
       
       // Set top bar color to dark for non selected images
       self?.topBarStackView.arrangedSubviews.forEach { subview in

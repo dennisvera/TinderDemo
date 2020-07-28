@@ -19,9 +19,8 @@ class CardViewViewModel {
 
   private var imageIndex = 0 {
     didSet {
-      let imageName = imageNames[imageIndex]
-      let image = UIImage(named: imageName)
-      imageIndexObserver?(imageIndex, image)
+      let imageUrl = imageNames[imageIndex]
+      imageIndexObserver?(imageIndex, imageUrl)
     }
   }
   
@@ -31,7 +30,7 @@ class CardViewViewModel {
   let attributedString: NSAttributedString
   let textAlignment: NSTextAlignment
   
-  var imageIndexObserver: ((Int, UIImage?) -> ())?
+  var imageIndexObserver: ((Int, String?) -> ())?
   
   // MARK: - Intilaization
   

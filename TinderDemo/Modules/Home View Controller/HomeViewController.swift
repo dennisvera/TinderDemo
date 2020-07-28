@@ -34,7 +34,7 @@ class HomeViewController: UIViewController {
     topNavigationStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
     
     setupView()
-    setupCardview()
+    setupUserCardView()
     fetchUsersFromFirebaseStore()
   }
   
@@ -63,7 +63,7 @@ class HomeViewController: UIViewController {
                                         right: Layout.leadingMarging)
   }
   
-  private func setupCardview() {
+  private func setupUserCardView() {
     viewModel.forEach { viewModel in
       let cardView = CardView()
       cardView.viewModel = viewModel
@@ -76,7 +76,9 @@ class HomeViewController: UIViewController {
   }
   
   private func fetchUsersFromFirebaseStore() {
-    Firestore.firestore().collection("users").getDocuments { [weak self] (snapshot, error) in
+    let query = Firestore.firestore().collection("users")
+    
+    query.getDocuments { [weak self] (snapshot, error) in
       if let error = error {
         print("failed to fethc user:", error)
         return
@@ -92,7 +94,7 @@ class HomeViewController: UIViewController {
       })
       
       guard let strongSelf = self else { return }
-      strongSelf.setupCardview()
+      strongSelf.setupUserCardView()
     }
   }
   
