@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import Firebase
+import JGProgressHUD
 
 class HomeViewController: UIViewController {
   
@@ -20,21 +21,21 @@ class HomeViewController: UIViewController {
   }()
   
   private let topNavigationStackView = TopNavigationStackView()
-  private let bottomControlStackView = HomeBottomControlStackView()
+  private let bottomControlsStackView = HomeBottomControlStackView()
   
   // MARK: -
   
+  private var lastFetchedUser: User?
   private var viewModel = [CardViewViewModel]()
+  private let hud = JGProgressHUD(style: .light)
     
   // MARK: - View Life Cycle
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    topNavigationStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
-    
     setupView()
-    setupUserCardView()
+    setupButtonTargets()
     fetchUsersFromFirebaseStore()
   }
   
@@ -43,7 +44,7 @@ class HomeViewController: UIViewController {
   private func setupView() {
     view.backgroundColor = .white
     
-    let mainStackView = UIStackView(arrangedSubviews: [topNavigationStackView, cardsDeckView, bottomControlStackView])
+    let mainStackView = UIStackView(arrangedSubviews: [topNavigationStackView, cardsDeckView, bottomControlsStackView])
     mainStackView.axis = .vertical
     
     view.addSubview(mainStackView)
@@ -63,22 +64,19 @@ class HomeViewController: UIViewController {
                                         right: Layout.leadingMarging)
   }
   
-  private func setupUserCardView() {
-    viewModel.forEach { viewModel in
-      let cardView = CardView()
-      cardView.viewModel = viewModel
-      
-      cardsDeckView.addSubview(cardView)
-      cardView.snp.makeConstraints { make in
-        make.edges.equalToSuperview()
-      }
-    }
-  }
-  
   private func fetchUsersFromFirebaseStore() {
-    let query = Firestore.firestore().collection("users")
+    showHud()
+    
+    let query = Firestore.firestore()
+      .collection("users")
+      .order(by: "uid")
+      .start(after: [lastFetchedUser?.uid ?? ""])
+      .limit(to: 2)
     
     query.getDocuments { [weak self] (snapshot, error) in
+      guard let strongSelf = self else { return }
+      strongSelf.hud.dismiss()
+
       if let error = error {
         print("failed to fethc user:", error)
         return
@@ -91,16 +89,45 @@ class HomeViewController: UIViewController {
         
         guard let strongSelf = self else { return }
         strongSelf.viewModel.append(user.toCardViewModel())
+        
+        // Hold on to the last fetched user
+        strongSelf.lastFetchedUser = user
+        
+        strongSelf.setupCard(with: user)
       })
-      
-      guard let strongSelf = self else { return }
-      strongSelf.setupUserCardView()
     }
+  }
+  
+  private func setupCard(with user: User) {
+    let cardView = CardView(frame: .zero)
+    cardView.viewModel = user.toCardViewModel()
+    
+    cardsDeckView.addSubview(cardView)
+    cardsDeckView.sendSubviewToBack(cardView)
+    cardView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+    }
+  }
+  
+  private func showHud() {
+    hud.textLabel.text = "Fetching ..."
+    hud.show(in: view)
+  }
+  
+  // MARK: - Actions
+  
+  private func setupButtonTargets() {
+    topNavigationStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
+    bottomControlsStackView.refreshButton.addTarget(self, action: #selector(handleResfresh), for: .touchUpInside)
   }
   
   @objc private func handleSettings() {
     let registrationController = RegistrationViewController()
     present(registrationController, animated: true)
+  }
+  
+  @objc private func handleResfresh() {
+    fetchUsersFromFirebaseStore()
   }
 }
 
