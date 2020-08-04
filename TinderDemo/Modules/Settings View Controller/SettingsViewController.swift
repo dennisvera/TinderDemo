@@ -19,7 +19,7 @@ final class SettingsViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-        
+    
     setupTableViewController()
     setupNavigationController()
   }
@@ -31,6 +31,15 @@ final class SettingsViewController: UIViewController {
                                                        style: .plain,
                                                        target: self,
                                                        action: #selector(handleCancel))
+    
+    navigationItem.rightBarButtonItems = [ UIBarButtonItem(title: "Save",
+                                                           style: .plain,
+                                                           target: self,
+                                                           action: #selector(handleSave)),
+                                           UIBarButtonItem(title: "Logout",
+                                                           style: .plain,
+                                                           target: self,
+                                                           action: #selector(handleLogout))]
   }
   
   private func setupTableViewController() {
@@ -48,6 +57,14 @@ final class SettingsViewController: UIViewController {
   // MARK: Actions
   
   @objc private func handleCancel() {
+    dismiss(animated: true)
+  }
+  
+  @objc private func handleLogout() {
+    dismiss(animated: true)
+  }
+  
+  @objc private func handleSave() {
     dismiss(animated: true)
   }
 }
