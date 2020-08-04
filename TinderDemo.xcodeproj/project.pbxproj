@@ -12,6 +12,7 @@
 		E145083B24C8D00F00DC7727 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E145083A24C8D00F00DC7727 /* CustomTextField.swift */; };
 		E145088424CE181400DC7727 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E145088324CE181400DC7727 /* RegistrationViewModel.swift */; };
 		E145088624CF478300DC7727 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E145088524CF478300DC7727 /* GoogleService-Info.plist */; };
+		E14F9ED624D8D2ED00D63A96 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14F9ED524D8D2ED00D63A96 /* SettingsViewController.swift */; };
 		E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF624B7A5710092622B /* AppDelegate.swift */; };
 		E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF824B7A5710092622B /* SceneDelegate.swift */; };
 		E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBFA24B7A5710092622B /* HomeViewController.swift */; };
@@ -32,6 +33,7 @@
 		E145083A24C8D00F00DC7727 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		E145088324CE181400DC7727 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		E145088524CF478300DC7727 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E14F9ED524D8D2ED00D63A96 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		E1DFBBF324B7A5710092622B /* TinderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1DFBBF624B7A5710092622B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1DFBBF824B7A5710092622B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +100,14 @@
 				E145088324CE181400DC7727 /* RegistrationViewModel.swift */,
 			);
 			path = "View Models";
+			sourceTree = "<group>";
+		};
+		E14F9ED724D8D2F300D63A96 /* Settings View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E14F9ED524D8D2ED00D63A96 /* SettingsViewController.swift */,
+			);
+			path = "Settings View Controller";
 			sourceTree = "<group>";
 		};
 		E1DFBBEA24B7A5710092622B = {
@@ -168,8 +178,9 @@
 		E1DFBC0F24B7A5EF0092622B /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				E145083624C8C48800DC7727 /* Registration View Controller */,
 				E1DFBC1624B9FCA90092622B /* Home View Controller */,
+				E145083624C8C48800DC7727 /* Registration View Controller */,
+				E14F9ED724D8D2F300D63A96 /* Settings View Controller */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -369,6 +380,7 @@
 				E1DFBC1E24BA7F080092622B /* CardViewViewModel.swift in Sources */,
 				E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */,
 				E1DFBC1824B9FD070092622B /* CardView.swift in Sources */,
+				E14F9ED624D8D2ED00D63A96 /* SettingsViewController.swift in Sources */,
 				E1DFBC1324B903EB0092622B /* HomeBottomControlStackView.swift in Sources */,
 				E1DFBC1B24BA617B0092622B /* User.swift in Sources */,
 			);

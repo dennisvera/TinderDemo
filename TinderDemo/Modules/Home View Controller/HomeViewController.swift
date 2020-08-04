@@ -11,7 +11,7 @@ import SnapKit
 import Firebase
 import JGProgressHUD
 
-class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController {
   
   // MARK: - Properties
   
@@ -83,11 +83,10 @@ class HomeViewController: UIViewController {
       }
       
       // Fecth user documents
-      snapshot?.documents.forEach({ [weak self] documentSnapshot in
+      snapshot?.documents.forEach({ documentSnapshot in
         let userDictionary = documentSnapshot.data()
         let user = User(dictionary: userDictionary)
         
-        guard let strongSelf = self else { return }
         strongSelf.viewModel.append(user.toCardViewModel())
         
         // Hold on to the last fetched user
@@ -122,8 +121,10 @@ class HomeViewController: UIViewController {
   }
   
   @objc private func handleSettings() {
-    let registrationController = RegistrationViewController()
-    present(registrationController, animated: true)
+    let settingsViewController = SettingsViewController()
+    let navigationController = UINavigationController(rootViewController: settingsViewController)
+    navigationController.modalPresentationStyle = .fullScreen
+    present(navigationController, animated: true)
   }
   
   @objc private func handleResfresh() {

@@ -11,7 +11,7 @@ import SnapKit
 import Firebase
 import JGProgressHUD
 
-class RegistrationViewController: UIViewController {
+final class RegistrationViewController: UIViewController {
   
   // MARK: Private Properties
   
