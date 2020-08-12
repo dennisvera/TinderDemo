@@ -15,10 +15,11 @@ final class SettingsViewController: UIViewController {
   
   let tableView = UITableView(frame: .zero, style: .plain)
   
-  lazy var imageButton1 = createHeaderButtons(selector: #selector(handleSelectedPhoto(button:)))
-  lazy var imageButton2 = createHeaderButtons(selector: #selector(handleSelectedPhoto(button:)))
-  lazy var imageButton3 = createHeaderButtons(selector: #selector(handleSelectedPhoto(button:)))
-  
+  lazy var header = createHeader()
+  lazy var imageButton1 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
+  lazy var imageButton2 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
+  lazy var imageButton3 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
+    
   // MARK: View Life Cycle
   
   override func viewDidLoad() {
@@ -56,11 +57,37 @@ final class SettingsViewController: UIViewController {
     tableView.dataSource = self
     tableView.allowsSelection = false
     tableView.separatorStyle = .none
+    tableView.keyboardDismissMode = .interactive
     tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
     tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.reuseIdentifier)
   }
   
-  private func createHeaderButtons(selector: Selector) -> UIButton {
+  private func createHeader() -> UIView {
+    let header = UIView()
+    
+    header.addSubview(imageButton1)
+    imageButton1.snp.makeConstraints { make in
+      make.bottom.equalToSuperview().offset(-16)
+      make.top.leading.equalToSuperview().offset(16)
+      make.width.equalToSuperview().multipliedBy(0.45)
+    }
+    
+    let verticalStackView = UIStackView(arrangedSubviews: [imageButton2, imageButton3])
+    verticalStackView.spacing = 16
+    verticalStackView.axis = .vertical
+    verticalStackView.distribution = .fillEqually
+    
+    header.addSubview(verticalStackView)
+    verticalStackView.snp.makeConstraints { make in
+      make.top.equalToSuperview().offset(16)
+      make.bottom.trailing.equalToSuperview().offset(-16)
+      make.leading.equalTo(imageButton1.snp.trailing).offset(16)
+    }
+    
+    return header
+  }
+  
+  private func createHeaderButton(with selector: Selector) -> UIButton {
     let button = UIButton(type: .system)
     button.clipsToBounds = true
     button.layer.cornerRadius = 8
@@ -97,14 +124,28 @@ final class SettingsViewController: UIViewController {
 
 extension SettingsViewController: UITableViewDataSource {
   
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return 5
+  }
+  
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 1
+    return section == 0 ? 0 : 1
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.reuseIdentifier,
                                                    for: indexPath) as? SettingsTableViewCell else {
                                                     fatalError("\n" + "Unable to Dequeue Cell") }
+    switch indexPath.section {
+    case 1:
+      cell.textField.placeholder = "Enter Name"
+    case 2:
+      cell.textField.placeholder = "Enter Profession"
+    case 3:
+      cell.textField.placeholder = "Enter Age"
+    default:
+      cell.textField.placeholder = "Enter Bio"
+    }
     
     return cell
   }
@@ -115,33 +156,33 @@ extension SettingsViewController: UITableViewDataSource {
 extension SettingsViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let header = UIView()
-    
-    header.addSubview(imageButton1)
-    imageButton1.snp.makeConstraints { make in
-      make.bottom.equalToSuperview().offset(-16)
-      make.top.leading.equalToSuperview().offset(16)
-      make.width.equalToSuperview().multipliedBy(0.45)
+    if section == 0 {
+      return header
     }
     
-    let verticalStackView = UIStackView(arrangedSubviews: [imageButton2, imageButton3])
-    verticalStackView.spacing = 16
-    verticalStackView.axis = .vertical
-    verticalStackView.distribution = .fillEqually
+    let headerLabel = SettingsHeaderLabel()
+    headerLabel.font = .boldSystemFont(ofSize: 18)
     
-    header.addSubview(verticalStackView)
-    verticalStackView.snp.makeConstraints { make in
-      make.top.equalToSuperview().offset(16)
-      make.bottom.trailing.equalToSuperview().offset(-16)
-      make.leading.equalTo(imageButton1.snp.trailing).offset(16)
-      
+    switch section {
+    case 1:
+      headerLabel.text = "Name"
+    case 2:
+      headerLabel.text = "Profession"
+    case 3:
+      headerLabel.text = "Age"
+    default:
+      headerLabel.text = "Bio"
     }
     
-    return header
+    return headerLabel
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 300
+    if section == 0 {
+      return 300
+    }
+    
+    return 40
   }
 }
 

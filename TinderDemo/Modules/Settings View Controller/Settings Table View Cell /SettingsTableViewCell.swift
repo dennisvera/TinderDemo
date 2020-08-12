@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class SettingsTableViewCell: UITableViewCell {
   
@@ -18,17 +19,29 @@ final class SettingsTableViewCell: UITableViewCell {
   
   // MARK - Properties
   
+  let textField: UITextField = {
+    let textField = SettingsTextField()
+    return textField
+  }()
   
   // MARK: Initialization
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
-    backgroundColor = .lightGray
+    setupTextField()
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
+  // MARK: - Helper Methods
+  
+  private func setupTextField() {
+    addSubview(textField)
+    textField.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+    }
+  }
 }
