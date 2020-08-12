@@ -16,6 +16,8 @@ struct User: CardViewViewModelProtocol {
   var uid: String?
   var name: String?
   var imageUrl1: String?
+  var imageUrl2: String?
+  var imageUrl3: String?
   var profession: String?
   
   // MARK: Initialization
@@ -24,8 +26,10 @@ struct User: CardViewViewModelProtocol {
     self.age = dictionary["age"] as? Int
     self.uid = dictionary["uid"] as? String ?? ""
     self.name = dictionary["fullName"] as? String ?? ""
-    self.imageUrl1 = dictionary["imageUrl1"] as? String ?? ""
     self.profession = dictionary["profession"] as? String
+    self.imageUrl1 = dictionary["imageUrl1"] as? String ?? ""
+    self.imageUrl2 = dictionary["imageUrl2"] as? String ?? ""
+    self.imageUrl3 = dictionary["imageUrl3"] as? String ?? ""
   }
   
   // MARK: - Helper Methods

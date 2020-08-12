@@ -8,6 +8,9 @@
 
 import UIKit
 import SnapKit
+import Firebase
+import SDWebImage
+import JGProgressHUD
 
 final class SettingsViewController: UIViewController {
   
@@ -19,7 +22,9 @@ final class SettingsViewController: UIViewController {
   lazy var imageButton1 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
   lazy var imageButton2 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
   lazy var imageButton3 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
-    
+  
+  var user: User?
+  
   // MARK: View Life Cycle
   
   override func viewDidLoad() {
@@ -27,6 +32,7 @@ final class SettingsViewController: UIViewController {
     
     setupTableViewController()
     setupNavigationController()
+    fetchCurrentUser()
   }
   
   private func setupNavigationController() {
@@ -60,6 +66,45 @@ final class SettingsViewController: UIViewController {
     tableView.keyboardDismissMode = .interactive
     tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
     tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.reuseIdentifier)
+  }
+  
+  private func fetchCurrentUser() {
+    guard let userUid = Auth.auth().currentUser?.uid else { return }
+    
+    Firestore.firestore().collection("users").document(userUid).getDocument { [weak self] (snapshot, error) in
+      guard let strongSelf = self else { return }
+      
+      if let error = error {
+        print(error)
+        return
+      }
+      
+      // Fetch user data
+      guard let dictionary = snapshot?.data() else { return }
+      strongSelf.user = User(dictionary: dictionary)
+      strongSelf.loadUserPhotos()
+      
+      // Reload data before populating the fetch user data on the view
+      strongSelf.tableView.reloadData()
+    }
+  }
+  
+  private func loadUserPhotos() {
+    guard let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) else { return }
+    
+    // The SDWebImageManager will handle chaching the image for us.
+    /// Chaching the image  saves the image on the phone  after  its been fetched the first time,
+    /// thiis will guarante we dont fetch an imagea again that  we have previously loaded..
+    SDWebImageManager.shared.loadImage(with: url,
+                                       options: .continueInBackground,
+                                       progress: nil) { [weak self] (image, _, _, _, _, _) in
+                                        
+                                        guard let strongSelf = self else { return }
+                                        strongSelf.imageButton1.setImage(image?.withRenderingMode(.alwaysOriginal),
+                                                                         for: .normal)
+                                        
+                                        
+    }
   }
   
   private func createHeader() -> UIView {
@@ -139,10 +184,15 @@ extension SettingsViewController: UITableViewDataSource {
     switch indexPath.section {
     case 1:
       cell.textField.placeholder = "Enter Name"
+      cell.textField.text = user?.name
     case 2:
       cell.textField.placeholder = "Enter Profession"
+      cell.textField.text = user?.profession
     case 3:
       cell.textField.placeholder = "Enter Age"
+      if let age = user?.age {
+        cell.textField.text = String(age)
+      }
     default:
       cell.textField.placeholder = "Enter Bio"
     }
