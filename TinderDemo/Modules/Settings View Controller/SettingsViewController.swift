@@ -65,13 +65,17 @@ final class SettingsViewController: UIViewController {
     tableView.separatorStyle = .none
     tableView.keyboardDismissMode = .interactive
     tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
-    tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.reuseIdentifier)
+    tableView.register(SettingsTableViewCell.self,
+                       forCellReuseIdentifier: SettingsTableViewCell.reuseIdentifier)
   }
   
   private func fetchCurrentUser() {
     guard let userUid = Auth.auth().currentUser?.uid else { return }
     
-    Firestore.firestore().collection("users").document(userUid).getDocument { [weak self] (snapshot, error) in
+    Firestore.firestore()
+      .collection("users")
+      .document(userUid)
+      .getDocument { [weak self] (snapshot, error) in
       guard let strongSelf = self else { return }
       
       if let error = error {
@@ -143,7 +147,7 @@ final class SettingsViewController: UIViewController {
     return button
   }
   
-  // MARK: Actions
+  // MARK: - Actions
   
   @objc private func handleCancel() {
     dismiss(animated: true)
@@ -154,6 +158,33 @@ final class SettingsViewController: UIViewController {
   }
   
   @objc private func handleSave() {
+    // Save users info to Firestore
+    guard let userUid = Auth.auth().currentUser?.uid else { return }
+    
+    let documentData: [String: Any] = [
+      "uid" : userUid,
+      "age" : user?.age ?? -1,
+      "fullName" : user?.name ?? "",
+      "imageUrl1" : user?.imageUrl1 ?? "",
+      "profession" : user?.profession ?? ""
+    ]
+    
+    let progressHud = JGProgressHUD(style: .dark)
+    progressHud.textLabel.text = "Saving settings"
+    
+    Firestore.firestore()
+      .collection("users")
+      .document(userUid)
+      .setData(documentData) { error in
+        progressHud.dismiss()
+        
+      if let error = error {
+        print("Failed to save user's settings to Firestore:", error)
+      }
+        
+        print("Saved user info to Firestore")
+    }
+    
     dismiss(animated: true)
   }
   
@@ -162,6 +193,24 @@ final class SettingsViewController: UIViewController {
     customImagePicker.delegate = self
     customImagePicker.imageButton = button
     present(customImagePicker, animated: true)
+  }
+  
+  // MARK: - Actions / Save User Info
+  
+  @objc private func handleNameChange(textField: UITextField) {
+    user?.name = textField.text
+  }
+  
+  @objc private func handleProfessionChange(textField: UITextField) {
+    user?.profession = textField.text
+  }
+  
+  @objc private func handleAgeChange(textField: UITextField) {
+    user?.age = Int(textField.text ?? "")
+  }
+  
+  @objc private func handleBioChange(textField: UITextField) {
+    // TO DO
   }
 }
 
@@ -183,18 +232,26 @@ extension SettingsViewController: UITableViewDataSource {
                                                     fatalError("\n" + "Unable to Dequeue Cell") }
     switch indexPath.section {
     case 1:
-      cell.textField.placeholder = "Enter Name"
       cell.textField.text = user?.name
+      cell.textField.placeholder = "Enter Name"
+      cell.textField.addTarget(self, action: #selector(handleNameChange(textField:)),
+                               for: .editingChanged)
     case 2:
-      cell.textField.placeholder = "Enter Profession"
       cell.textField.text = user?.profession
+      cell.textField.placeholder = "Enter Profession"
+      cell.textField.addTarget(self, action: #selector(handleProfessionChange(textField:)),
+                               for: .editingChanged)
     case 3:
-      cell.textField.placeholder = "Enter Age"
       if let age = user?.age {
         cell.textField.text = String(age)
       }
+      cell.textField.placeholder = "Enter Age"
+      cell.textField.addTarget(self, action: #selector(handleAgeChange(textField:)),
+                               for: .editingChanged)
     default:
       cell.textField.placeholder = "Enter Bio"
+      cell.textField.addTarget(self, action: #selector(handleBioChange(textField:)),
+                               for: .editingChanged)
     }
     
     return cell
