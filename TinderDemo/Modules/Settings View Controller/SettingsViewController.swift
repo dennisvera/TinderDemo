@@ -67,6 +67,8 @@ final class SettingsViewController: UIViewController {
     tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
     tableView.register(SettingsTableViewCell.self,
                        forCellReuseIdentifier: SettingsTableViewCell.reuseIdentifier)
+    tableView.register(AgeRangeTableViewCell.self,
+                       forCellReuseIdentifier: AgeRangeTableViewCell.reuseIdentifier)
   }
   
   private func fetchCurrentUser() {
@@ -167,6 +169,21 @@ final class SettingsViewController: UIViewController {
     return button
   }
   
+  private func evaluateMinAndMaxSliderValue() {
+    guard let ageRangeCell = tableView.cellForRow(at: [5, 0]) as? AgeRangeTableViewCell else { return }
+    let minValue = Int(ageRangeCell.minSlider.value)
+    var maxValue = Int(ageRangeCell.maxSlider.value)
+    
+    maxValue = max(minValue, maxValue)
+    
+    ageRangeCell.maxSlider.value = Float(maxValue)
+    ageRangeCell.minLabel.text = "Min: \(minValue)"
+    ageRangeCell.maxLabel.text = "Max: \(maxValue)"
+    
+    user?.minSeekingAge = minValue
+    user?.maxSeekingAge = maxValue
+  }
+  
   // MARK: - Actions
   
   @objc private func handleCancel() {
@@ -184,11 +201,14 @@ final class SettingsViewController: UIViewController {
     let documentData: [String: Any] = [
       "uid" : userUid,
       "age" : user?.age ?? -1,
+      "bio" : user?.bio ?? "",
       "fullName" : user?.name ?? "",
       "imageUrl1" : user?.imageUrl1 ?? "",
       "imageUrl2" : user?.imageUrl2 ?? "",
       "imageUrl3" : user?.imageUrl3 ?? "",
-      "profession" : user?.profession ?? ""
+      "profession" : user?.profession ?? "",
+      "minSeekingAge" : user?.minSeekingAge ?? -1,
+      "maxSeekingAge" : user?.maxSeekingAge ?? -1
     ]
     
     let progressHud = JGProgressHUD(style: .dark)
@@ -217,6 +237,14 @@ final class SettingsViewController: UIViewController {
     present(customImagePicker, animated: true)
   }
   
+  @objc private func handleMinAgeChange(slider: UISlider) {
+    evaluateMinAndMaxSliderValue()
+  }
+  
+  @objc private func handleMaxAgeChange(slider: UISlider) {
+    evaluateMinAndMaxSliderValue()
+  }
+  
   // MARK: - Actions / Save User Info
   
   @objc private func handleNameChange(textField: UITextField) {
@@ -232,7 +260,7 @@ final class SettingsViewController: UIViewController {
   }
   
   @objc private func handleBioChange(textField: UITextField) {
-    // TO DO
+    user?.bio = textField.text
   }
 }
 
@@ -241,7 +269,7 @@ final class SettingsViewController: UIViewController {
 extension SettingsViewController: UITableViewDataSource {
   
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 5
+    return 6
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -251,7 +279,7 @@ extension SettingsViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.reuseIdentifier,
                                                    for: indexPath) as? SettingsTableViewCell else {
-                                                    fatalError("\n" + "Unable to Dequeue Cell") }
+                                                    fatalError("\n" + "Unable to Dequeue Settings Cell") }
     switch indexPath.section {
     case 1:
       cell.textField.text = user?.name
@@ -270,10 +298,29 @@ extension SettingsViewController: UITableViewDataSource {
       cell.textField.placeholder = "Enter Age"
       cell.textField.addTarget(self, action: #selector(handleAgeChange(textField:)),
                                for: .editingChanged)
-    default:
+    case 4:
+      cell.textField.text = user?.bio
       cell.textField.placeholder = "Enter Bio"
       cell.textField.addTarget(self, action: #selector(handleBioChange(textField:)),
                                for: .editingChanged)
+    default:
+      print("")
+    }
+    
+    if indexPath.section == 5 {
+      let ageRangeCell = AgeRangeTableViewCell(style: .default, reuseIdentifier: nil)
+      ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinAgeChange(slider:)), for: .valueChanged)
+      ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange(slider:)), for: .valueChanged)
+      
+      // Set the AgeRangeCell min and max labels
+      ageRangeCell.minLabel.text = "Min: \(user?.minSeekingAge ?? -1)"
+      ageRangeCell.maxLabel.text = "Max: \(user?.maxSeekingAge ?? -1)"
+      
+      // Set the AgeRangeCell min and max sliders
+      ageRangeCell.minSlider.value = Float(user?.minSeekingAge ?? -1)
+      ageRangeCell.maxSlider.value = Float(user?.maxSeekingAge ?? -1)
+      
+      return ageRangeCell
     }
     
     return cell
@@ -290,7 +337,7 @@ extension SettingsViewController: UITableViewDelegate {
     }
     
     let headerLabel = SettingsHeaderLabel()
-    headerLabel.font = .boldSystemFont(ofSize: 18)
+    headerLabel.font = .boldSystemFont(ofSize: 16)
     
     switch section {
     case 1:
@@ -299,8 +346,10 @@ extension SettingsViewController: UITableViewDelegate {
       headerLabel.text = "Profession"
     case 3:
       headerLabel.text = "Age"
-    default:
+    case 4:
       headerLabel.text = "Bio"
+    default:
+      headerLabel.text = "Seeking Age Range"
     }
     
     return headerLabel
