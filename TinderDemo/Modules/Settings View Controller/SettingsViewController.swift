@@ -76,38 +76,58 @@ final class SettingsViewController: UIViewController {
       .collection("users")
       .document(userUid)
       .getDocument { [weak self] (snapshot, error) in
-      guard let strongSelf = self else { return }
-      
-      if let error = error {
-        print(error)
-        return
-      }
-      
-      // Fetch user data
-      guard let dictionary = snapshot?.data() else { return }
-      strongSelf.user = User(dictionary: dictionary)
-      strongSelf.loadUserPhotos()
-      
-      // Reload data before populating the fetch user data on the view
-      strongSelf.tableView.reloadData()
+        guard let strongSelf = self else { return }
+        
+        if let error = error {
+          print(error)
+          return
+        }
+        
+        // Fetch user data
+        guard let dictionary = snapshot?.data() else { return }
+        strongSelf.user = User(dictionary: dictionary)
+        strongSelf.loadUserPhotos()
+        
+        // Reload data before populating the fetch user data on the view
+        strongSelf.tableView.reloadData()
     }
   }
   
   private func loadUserPhotos() {
-    guard let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) else { return }
+    if let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) {
+      // The SDWebImageManager will handle chaching the image for us.
+      /// Chaching the image  saves the image on the phone  after  its been fetched the first time,
+      /// thiis will guarante we dont fetch an imagea again that  we have previously loaded..
+      SDWebImageManager.shared.loadImage(with: url,
+                                         options: .continueInBackground,
+                                         progress: nil) { [weak self] (image, _, _, _, _, _) in
+                                          
+                                          guard let strongSelf = self else { return }
+                                          strongSelf.imageButton1.setImage(image?.withRenderingMode(.alwaysOriginal),
+                                                                           for: .normal)
+      }
+    }
     
-    // The SDWebImageManager will handle chaching the image for us.
-    /// Chaching the image  saves the image on the phone  after  its been fetched the first time,
-    /// thiis will guarante we dont fetch an imagea again that  we have previously loaded..
-    SDWebImageManager.shared.loadImage(with: url,
-                                       options: .continueInBackground,
-                                       progress: nil) { [weak self] (image, _, _, _, _, _) in
-                                        
-                                        guard let strongSelf = self else { return }
-                                        strongSelf.imageButton1.setImage(image?.withRenderingMode(.alwaysOriginal),
-                                                                         for: .normal)
-                                        
-                                        
+    if let imageUrl = user?.imageUrl2, let url = URL(string: imageUrl) {
+      SDWebImageManager.shared.loadImage(with: url,
+                                         options: .continueInBackground,
+                                         progress: nil) { [weak self] (image, _, _, _, _, _) in
+                                          
+                                          guard let strongSelf = self else { return }
+                                          strongSelf.imageButton2.setImage(image?.withRenderingMode(.alwaysOriginal),
+                                                                           for: .normal)
+      }
+    }
+    
+    if let imageUrl = user?.imageUrl3, let url = URL(string: imageUrl) {
+      SDWebImageManager.shared.loadImage(with: url,
+                                         options: .continueInBackground,
+                                         progress: nil) { [weak self] (image, _, _, _, _, _) in
+                                          
+                                          guard let strongSelf = self else { return }
+                                          strongSelf.imageButton3.setImage(image?.withRenderingMode(.alwaysOriginal),
+                                                                           for: .normal)
+      }
     }
   }
   
@@ -166,6 +186,8 @@ final class SettingsViewController: UIViewController {
       "age" : user?.age ?? -1,
       "fullName" : user?.name ?? "",
       "imageUrl1" : user?.imageUrl1 ?? "",
+      "imageUrl2" : user?.imageUrl2 ?? "",
+      "imageUrl3" : user?.imageUrl3 ?? "",
       "profession" : user?.profession ?? ""
     ]
     
@@ -178,9 +200,9 @@ final class SettingsViewController: UIViewController {
       .setData(documentData) { error in
         progressHud.dismiss()
         
-      if let error = error {
-        print("Failed to save user's settings to Firestore:", error)
-      }
+        if let error = error {
+          print("Failed to save user's settings to Firestore:", error)
+        }
         
         print("Saved user info to Firestore")
     }
@@ -302,11 +324,49 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
     // Get selected image
     let selectedImage = info[.originalImage] as? UIImage
     
-    // Pass and set the selected image to the button
+    // Set the selected image to the button
     let imageButton = (picker as? CustomImagePicker)?.imageButton
     imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
     
     // Dismiss UIPicker Controller
     dismiss(animated: true)
+    
+    // Store Image to FireBase Storage
+    let fileName = UUID().uuidString
+    let reference = Storage.storage().reference(withPath: "/images/\(fileName)")
+    guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else { return }
+    
+    let progressHud = JGProgressHUD(style: .dark)
+    progressHud.textLabel.text = "Uploading Image ..."
+    progressHud.show(in: view)
+    
+    reference.putData(uploadData, metadata: nil) { _, error in
+      if let error = error {
+        progressHud.dismiss()
+        print("Failed to upload image to Firebase storage:", error)
+        return
+      }
+      
+      print("Finished uploading user's settings image")
+      
+      // Retrieve the Image download URL
+      reference.downloadURL { [weak self] (url, error) in
+        progressHud.dismiss()
+        
+        if let error = error {
+          print("Failed to retrieve image download url:", error)
+        }
+        
+        // Set the selected image to the selected button
+        guard let strongSelf = self else { return }
+        if imageButton == strongSelf.imageButton1 {
+          strongSelf.user?.imageUrl1 = url?.absoluteString
+        } else if imageButton == strongSelf.imageButton2 {
+          strongSelf.user?.imageUrl2 = url?.absoluteString
+        } else {
+          strongSelf.user?.imageUrl3 = url?.absoluteString
+        }
+      }
+    }
   }
 }
