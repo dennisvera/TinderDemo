@@ -25,10 +25,11 @@ final class HomeViewController: UIViewController {
   
   // MARK: -
   
+  private var user: User?
   private var lastFetchedUser: User?
   private var viewModel = [CardViewViewModel]()
-  private let hud = JGProgressHUD(style: .light)
-    
+  private let progressHud = JGProgressHUD(style: .dark)
+  
   // MARK: - View Life Cycle
   
   override func viewDidLoad() {
@@ -36,7 +37,7 @@ final class HomeViewController: UIViewController {
     
     setupView()
     setupButtonTargets()
-    fetchUsersFromFirebaseStore()
+    fetchCurrentUser()
   }
   
   // MARK: - Helper Methods
@@ -64,21 +65,49 @@ final class HomeViewController: UIViewController {
                                         right: Layout.leadingMarging)
   }
   
-  private func fetchUsersFromFirebaseStore() {
-    showHud()
+  private func fetchCurrentUser() {
+    // Show ProgressHud
+    showProgressHud()
+    
+    cardsDeckView.subviews.forEach { $0.removeFromSuperview() }
+    
+    Firestore.firestore().fetchCurrentUser { [weak self] (user, error) in
+      guard let strongSelf = self else { return }
+      
+      // Dismiss ProgressHud
+      strongSelf.progressHud.dismiss()
+      
+      if let error = error {
+        print("Failed to Fetch User:", error)
+        return
+      }
+      
+      // Fetch current user
+      strongSelf.user = user
+      
+      // Fetch all users
+      strongSelf.fetchUsersFromFirestore()
+    }
+  }
+  
+  private func fetchUsersFromFirestore() {
+    // Show ProgressHud
+    showProgressHud()
+    
+    guard let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge else { return }
     
     let query = Firestore.firestore()
       .collection("users")
-      .order(by: "uid")
-      .start(after: [lastFetchedUser?.uid ?? ""])
-      .limit(to: 2)
+      .whereField("age", isGreaterThan: minAge)
+      .whereField("age", isLessThanOrEqualTo: maxAge)
     
     query.getDocuments { [weak self] (snapshot, error) in
       guard let strongSelf = self else { return }
-      strongSelf.hud.dismiss()
-
+      
+      strongSelf.progressHud.dismiss()
+      
       if let error = error {
-        print("failed to fethc user:", error)
+        print("Failed to Fetch User:", error)
         return
       }
       
@@ -108,9 +137,9 @@ final class HomeViewController: UIViewController {
     }
   }
   
-  private func showHud() {
-    hud.textLabel.text = "Fetching ..."
-    hud.show(in: view)
+  private func showProgressHud() {
+    progressHud.textLabel.text = "Loading ..."
+    progressHud.show(in: view)
   }
   
   // MARK: - Actions
@@ -121,16 +150,33 @@ final class HomeViewController: UIViewController {
   }
   
   @objc private func handleSettings() {
+    // Initialize SettingsViewController
     let settingsViewController = SettingsViewController()
+    
+    // Instantiate the SettingsViewControllerDelegate
+    settingsViewController.deleagate = self
+    
+    // Navigate to the SettingsViewController
     let navigationController = UINavigationController(rootViewController: settingsViewController)
     navigationController.modalPresentationStyle = .fullScreen
     present(navigationController, animated: true)
   }
   
   @objc private func handleResfresh() {
-    fetchUsersFromFirebaseStore()
+    fetchUsersFromFirestore()
   }
 }
+
+// MARK: - SettingsViewControllerDelegate
+
+extension HomeViewController: SettingsViewControllerDelegate {
+  
+  func didSaveSettings() {
+    fetchCurrentUser()
+  }
+}
+
+// MARK: - Layout
 
 extension HomeViewController {
   

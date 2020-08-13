@@ -12,18 +12,27 @@ import Firebase
 import SDWebImage
 import JGProgressHUD
 
+protocol SettingsViewControllerDelegate {
+  func didSaveSettings()
+}
+
 final class SettingsViewController: UIViewController {
   
   // MARK: Properties
   
   let tableView = UITableView(frame: .zero, style: .plain)
   
+  // MARK: -
+  
   lazy var header = createHeader()
   lazy var imageButton1 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
   lazy var imageButton2 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
   lazy var imageButton3 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
   
+  // MARK: -
+  
   var user: User?
+  var deleagate: SettingsViewControllerDelegate?
   
   // MARK: View Life Cycle
   
@@ -72,26 +81,22 @@ final class SettingsViewController: UIViewController {
   }
   
   private func fetchCurrentUser() {
-    guard let userUid = Auth.auth().currentUser?.uid else { return }
-    
-    Firestore.firestore()
-      .collection("users")
-      .document(userUid)
-      .getDocument { [weak self] (snapshot, error) in
-        guard let strongSelf = self else { return }
-        
-        if let error = error {
-          print(error)
-          return
-        }
-        
-        // Fetch user data
-        guard let dictionary = snapshot?.data() else { return }
-        strongSelf.user = User(dictionary: dictionary)
-        strongSelf.loadUserPhotos()
-        
-        // Reload data before populating the fetch user data on the view
-        strongSelf.tableView.reloadData()
+    Firestore.firestore().fetchCurrentUser { [weak self] (user, error) in
+      guard let strongSelf = self else { return }
+
+      if let error = error {
+        print("Failed to Fetch User:", error)
+        return
+      }
+      
+      // Set user
+      strongSelf.user = user
+      
+      // Load user photos
+      strongSelf.loadUserPhotos()
+      
+      // Reload data before populating the fetch user data on the view
+      strongSelf.tableView.reloadData()
     }
   }
   
@@ -217,7 +222,7 @@ final class SettingsViewController: UIViewController {
     Firestore.firestore()
       .collection("users")
       .document(userUid)
-      .setData(documentData) { error in
+      .setData(documentData) { [weak self] error in
         progressHud.dismiss()
         
         if let error = error {
@@ -225,9 +230,13 @@ final class SettingsViewController: UIViewController {
         }
         
         print("Saved user info to Firestore")
+        
+        guard let strongSelf = self else { return }
+        strongSelf.dismiss(animated: true) {
+          // Refresh cards in HomeViewController via delegate
+          strongSelf.deleagate?.didSaveSettings()
+        }
     }
-    
-    dismiss(animated: true)
   }
   
   @objc private func handleSelectedPhoto(button: UIButton) {
@@ -312,15 +321,17 @@ extension SettingsViewController: UITableViewDataSource {
       ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinAgeChange(slider:)), for: .valueChanged)
       ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange(slider:)), for: .valueChanged)
       
-      // Set the AgeRangeCell min and max labels
-      ageRangeCell.minLabel.text = "Min: \(user?.minSeekingAge ?? -1)"
-      ageRangeCell.maxLabel.text = "Max: \(user?.maxSeekingAge ?? -1)"
-      
-      // Set the AgeRangeCell min and max sliders
-      ageRangeCell.minSlider.value = Float(user?.minSeekingAge ?? -1)
-      ageRangeCell.maxSlider.value = Float(user?.maxSeekingAge ?? -1)
-      
-      return ageRangeCell
+      if let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge {
+        // Set the AgeRangeCell min and max labels
+        ageRangeCell.minLabel.text = "Min: \(minAge)"
+        ageRangeCell.maxLabel.text = "Max: \(maxAge)"
+        
+        // Set the AgeRangeCell min and max sliders
+        ageRangeCell.minSlider.value = Float(minAge)
+        ageRangeCell.maxSlider.value = Float(maxAge)
+        
+        return ageRangeCell
+      }
     }
     
     return cell
