@@ -26,12 +26,12 @@ final class RegistrationViewController: UIViewController {
     button.widthAnchor.constraint(equalToConstant: 275).isActive = true
     button.heightAnchor.constraint(equalToConstant: 300).isActive = true
     button.titleLabel?.font = UIFont.systemFont(ofSize: 32, weight: .heavy)
-    button.addTarget(self, action: #selector(handleSelectButtontapped), for: .touchUpInside)
+    button.addTarget(self, action: #selector(handleSelectPhotoButton), for: .touchUpInside)
     return button
   }()
   
   private let fullNameTextField: CustomTextField = {
-    let textField = CustomTextField(padding: 16)
+    let textField = CustomTextField(padding: 16, height: 50)
     textField.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     textField.placeholder = "Enter full name"
     textField.addTarget(self, action: #selector(handleTextChanged(textField:)),
@@ -40,7 +40,7 @@ final class RegistrationViewController: UIViewController {
   }()
   
   private let emailTextField: CustomTextField = {
-    let textField = CustomTextField(padding: 16)
+    let textField = CustomTextField(padding: 16, height: 50)
     textField.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     textField.placeholder = "Enter email"
     textField.keyboardType = .emailAddress
@@ -50,7 +50,7 @@ final class RegistrationViewController: UIViewController {
   }()
   
   private let passwordTextField: CustomTextField = {
-    let textField = CustomTextField(padding: 16)
+    let textField = CustomTextField(padding: 16, height: 50)
     textField.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     textField.isSecureTextEntry = true
     textField.placeholder = "Enter password"
@@ -68,7 +68,16 @@ final class RegistrationViewController: UIViewController {
     button.setTitleColor(.darkGray, for: .disabled)
     button.heightAnchor.constraint(equalToConstant: 44).isActive = true
     button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
-    button.addTarget(self, action: #selector(handleRegisterButtonTapped), for: .touchUpInside)
+    button.addTarget(self, action: #selector(handleRegisterButton), for: .touchUpInside)
+    return button
+  }()
+  
+  private let loginButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.setTitleColor(.white, for: .normal)
+    button.setTitle("Go to Login", for: .normal)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+    button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
     return button
   }()
   
@@ -99,7 +108,7 @@ final class RegistrationViewController: UIViewController {
   
   // MARK: -
   
-  private let resgisterHud = JGProgressHUD()
+  private let progressHud = JGProgressHUD()
   private let gradientLayer = CAGradientLayer()
   private var viewModel = RegistrationViewModel()
   
@@ -109,7 +118,7 @@ final class RegistrationViewController: UIViewController {
     super.viewDidLoad()
     
     setupGradientLayer()
-    setupStackView()
+    setupView()
     setuptapGesture()
     setupNotificationObservers()
     setupRegistrationViewModelObservers()
@@ -124,7 +133,6 @@ final class RegistrationViewController: UIViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    
     NotificationCenter.default.removeObserver(self)
   }
   
@@ -141,6 +149,25 @@ final class RegistrationViewController: UIViewController {
   
   // MARK: - Helper Methods
   
+  private func setupView() {
+    navigationController?.isNavigationBarHidden = true
+    
+    // Add Stack View to Sub View
+    view.addSubview(mainStackView)
+    mainStackView.snp.makeConstraints { make in
+      make.centerY.equalToSuperview()
+      make.leading.equalToSuperview().offset(50)
+      make.trailing.equalToSuperview().offset(-50)
+    }
+    
+    // Add Login Button
+    view.addSubview(loginButton)
+    loginButton.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+    }
+  }
+  
   private func setupGradientLayer() {
     // Configure Gradient Layer
     let topColor = #colorLiteral(red: 0.9827533364, green: 0.3668525219, blue: 0.365799427, alpha: 1)
@@ -153,26 +180,6 @@ final class RegistrationViewController: UIViewController {
     gradientLayer.frame = view.bounds
   }
   
-  private func setupStackView() {
-    // Add Stack View to Sub View
-    view.addSubview(mainStackView)
-    mainStackView.snp.makeConstraints { make in
-      make.centerY.equalToSuperview()
-      make.leading.equalToSuperview().offset(50)
-      make.trailing.equalToSuperview().offset(-50)
-    }
-  }
-  
-  @objc private func handleTextChanged(textField: UITextField) {
-    if textField == fullNameTextField {
-      viewModel.fullName = textField.text
-    } else if textField == emailTextField {
-      viewModel.email = textField.text
-    } else {
-      viewModel.password = textField.text
-    }
-  }
-  
   private func setupRegistrationViewModelObservers() {
     // Configure registration isValid observer
     viewModel.isRegistrationValidObserver = { [weak self] isValid in      
@@ -183,7 +190,7 @@ final class RegistrationViewController: UIViewController {
         strongSelf.registerButton.backgroundColor = #colorLiteral(red: 0.822586894, green: 0.09319851547, blue: 0.3174999356, alpha: 1)
         strongSelf.registerButton.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
       } else {
-        strongSelf.registerButton.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        strongSelf.registerButton.backgroundColor = .lightGray
         strongSelf.registerButton.setTitleColor(.darkGray, for: .disabled)
       }
     }
@@ -199,10 +206,10 @@ final class RegistrationViewController: UIViewController {
       guard let strongSelf = self else { return }
       
       if isRegistering == true {
-        strongSelf.resgisterHud.textLabel.text = "Register"
-        strongSelf.resgisterHud.show(in: strongSelf.view)
+        strongSelf.progressHud.textLabel.text = "Register"
+        strongSelf.progressHud.show(in: strongSelf.view)
       } else {
-        strongSelf.resgisterHud.dismiss()
+        strongSelf.progressHud.dismiss()
       }
     }
   }
@@ -259,7 +266,7 @@ final class RegistrationViewController: UIViewController {
   
   // MARK: - Actions
   
-  @objc private func handleRegisterButtonTapped() {
+  @objc private func handleRegisterButton() {
     // Dismiss keyboard when user attempts to login
     handleTapDismiss()
     
@@ -267,7 +274,7 @@ final class RegistrationViewController: UIViewController {
     viewModel.registerUser { [weak self] error in
       if let error = error {
         guard let strongSelf = self else { return }
-        strongSelf.showHudWithError(with: error)
+        strongSelf.showProgressHudWithError(with: error)
         return
       }
       
@@ -275,17 +282,32 @@ final class RegistrationViewController: UIViewController {
     }
   }
   
-  @objc private func handleSelectButtontapped() {
+  @objc private func handleLogin() {
+    let loginViewController = LoginViewController()
+    navigationController?.pushViewController(loginViewController, animated: true)
+  }
+  
+  @objc private func handleSelectPhotoButton() {
     let imagePickerController = UIImagePickerController()
     imagePickerController.delegate = self
     present(imagePickerController, animated: true)
   }
   
+  @objc private func handleTextChanged(textField: UITextField) {
+    if textField == fullNameTextField {
+      viewModel.fullName = textField.text
+    } else if textField == emailTextField {
+      viewModel.email = textField.text
+    } else {
+      viewModel.password = textField.text
+    }
+  }
+  
   // MARK: - Alerts
   
-  private func showHudWithError(with error: Error) {
+  private func showProgressHudWithError(with error: Error) {
     // Dismiss Register Hud
-    resgisterHud.dismiss()
+    progressHud.dismiss()
     
     // Configure Registration Error Hud
     let hud = JGProgressHUD(style: .dark)
@@ -295,6 +317,8 @@ final class RegistrationViewController: UIViewController {
     hud.dismiss(afterDelay: 4)
   }
 }
+
+// MARK: - UIImagePickerControllerDelegate
 
 extension RegistrationViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate  {
   

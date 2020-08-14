@@ -192,10 +192,14 @@ final class SettingsViewController: UIViewController {
   // MARK: - Actions
   
   @objc private func handleCancel() {
+    // Dismiss View Controller
     dismiss(animated: true)
   }
   
   @objc private func handleLogout() {
+    try? Auth.auth().signOut()
+    
+    // Dismiss View Controller
     dismiss(animated: true)
   }
   

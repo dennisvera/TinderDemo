@@ -20,6 +20,8 @@
 		E1CF828024E5C1E40041838D /* AgeRangeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827F24E5C1E40041838D /* AgeRangeTableViewCell.swift */; };
 		E1CF828224E5CCFC0041838D /* AgeRangeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828124E5CCFC0041838D /* AgeRangeLabel.swift */; };
 		E1CF828524E602A10041838D /* Firebase+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828424E602A10041838D /* Firebase+Helpers.swift */; };
+		E1CF828824E62B6A0041838D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828724E62B6A0041838D /* LoginViewController.swift */; };
+		E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828A24E632920041838D /* LoginViewModel.swift */; };
 		E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF624B7A5710092622B /* AppDelegate.swift */; };
 		E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF824B7A5710092622B /* SceneDelegate.swift */; };
 		E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBFA24B7A5710092622B /* HomeViewController.swift */; };
@@ -48,6 +50,8 @@
 		E1CF827F24E5C1E40041838D /* AgeRangeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeTableViewCell.swift; sourceTree = "<group>"; };
 		E1CF828124E5CCFC0041838D /* AgeRangeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeLabel.swift; sourceTree = "<group>"; };
 		E1CF828424E602A10041838D /* Firebase+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firebase+Helpers.swift"; sourceTree = "<group>"; };
+		E1CF828724E62B6A0041838D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		E1CF828A24E632920041838D /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		E1DFBBF324B7A5710092622B /* TinderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1DFBBF624B7A5710092622B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1DFBBF824B7A5710092622B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -146,6 +150,23 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		E1CF828624E62B3B0041838D /* Login View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E1CF828724E62B6A0041838D /* LoginViewController.swift */,
+				E1CF828924E632760041838D /* View Models */,
+			);
+			path = "Login View Controller";
+			sourceTree = "<group>";
+		};
+		E1CF828924E632760041838D /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				E1CF828A24E632920041838D /* LoginViewModel.swift */,
+			);
+			path = "View Models";
+			sourceTree = "<group>";
+		};
 		E1DFBBEA24B7A5710092622B = {
 			isa = PBXGroup;
 			children = (
@@ -217,6 +238,7 @@
 			children = (
 				E1DFBC1624B9FCA90092622B /* Home View Controller */,
 				E145083624C8C48800DC7727 /* Registration View Controller */,
+				E1CF828624E62B3B0041838D /* Login View Controller */,
 				E14F9ED724D8D2F300D63A96 /* Settings View Controller */,
 			);
 			path = Modules;
@@ -407,7 +429,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1CF828824E62B6A0041838D /* LoginViewController.swift in Sources */,
 				E1CF828524E602A10041838D /* Firebase+Helpers.swift in Sources */,
+				E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */,
 				E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */,
 				E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */,
 				E145088424CE181400DC7727 /* RegistrationViewModel.swift in Sources */,

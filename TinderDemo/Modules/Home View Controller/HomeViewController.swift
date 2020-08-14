@@ -37,7 +37,13 @@ final class HomeViewController: UIViewController {
     
     setupView()
     setupButtonTargets()
-    fetchCurrentUser()
+//    fetchCurrentUser()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    showRegistrationViewController()
   }
   
   // MARK: - Helper Methods
@@ -134,6 +140,17 @@ final class HomeViewController: UIViewController {
     cardsDeckView.sendSubviewToBack(cardView)
     cardView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
+    }
+  }
+  
+  private func showRegistrationViewController() {
+    // Check that the currentUser is logged out
+    // If user is logged out, present the RegistrationViewController
+    if Auth.auth().currentUser == nil {
+      let registrationViewController = RegistrationViewController()
+      let navigationController = UINavigationController(rootViewController: registrationViewController)
+      navigationController.modalPresentationStyle = .fullScreen
+      present(navigationController, animated: true)
     }
   }
   

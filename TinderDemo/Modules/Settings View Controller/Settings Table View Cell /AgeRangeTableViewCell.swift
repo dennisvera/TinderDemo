@@ -57,9 +57,7 @@ class AgeRangeTableViewCell: UITableViewCell {
   
   // MARK: - Helper Methods
   
-  private func setupView() {
-    backgroundColor = UIColor(white: 0.80, alpha: 1)
-    
+  private func setupView() {    
     let mainstackView = UIStackView(arrangedSubviews: [UIStackView(arrangedSubviews: [minLabel, minSlider]),
                                                        UIStackView(arrangedSubviews: [maxLabel, maxSlider])])
     mainstackView.axis = .vertical

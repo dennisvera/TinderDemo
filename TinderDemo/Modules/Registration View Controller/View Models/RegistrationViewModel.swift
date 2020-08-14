@@ -9,7 +9,7 @@
 import Foundation
 import Firebase
 
-class RegistrationViewModel {
+final class RegistrationViewModel {
   
   // MARK: - TypeAlias
   
