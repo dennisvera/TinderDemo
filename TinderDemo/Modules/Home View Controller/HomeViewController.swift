@@ -80,10 +80,10 @@ final class HomeViewController: UIViewController {
     Firestore.firestore().fetchCurrentUser { [weak self] (user, error) in
       guard let strongSelf = self else { return }
       
-      // Dismiss ProgressHud
-      strongSelf.progressHud.dismiss()
-      
       if let error = error {
+        // Dismiss ProgressHud
+        strongSelf.progressHud.dismiss()
+        
         print("Failed to Fetch User:", error)
         return
       }
@@ -107,6 +107,7 @@ final class HomeViewController: UIViewController {
     query.getDocuments { [weak self] (snapshot, error) in
       guard let strongSelf = self else { return }
       
+      // Dismiss ProgressHud
       strongSelf.progressHud.dismiss()
       
       if let error = error {
@@ -133,6 +134,8 @@ final class HomeViewController: UIViewController {
     cardView.viewModel = user.toCardViewModel()
     cardView.delegate = self
     
+    cardView.viewModel = user.toCardViewModel()
+
     cardsDeckView.addSubview(cardView)
     cardsDeckView.sendSubviewToBack(cardView)
     cardView.snp.makeConstraints { make in
