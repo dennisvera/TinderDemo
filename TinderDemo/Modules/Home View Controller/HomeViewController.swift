@@ -37,13 +37,13 @@ final class HomeViewController: UIViewController {
     
     setupView()
     setupButtonTargets()
-//    fetchCurrentUser()
+    fetchCurrentUser()
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    showRegistrationViewController()
+    showLoginViewController()
   }
   
   // MARK: - Helper Methods
@@ -143,12 +143,15 @@ final class HomeViewController: UIViewController {
     }
   }
   
-  private func showRegistrationViewController() {
+  private func showLoginViewController() {
     // Check that the currentUser is logged out
-    // If user is logged out, present the RegistrationViewController
+    // If user is logged out, present the LoginViewController
     if Auth.auth().currentUser == nil {
-      let registrationViewController = RegistrationViewController()
-      let navigationController = UINavigationController(rootViewController: registrationViewController)
+      let loginViewController = LoginViewController()
+      loginViewController.delegate = self
+      
+      // Navigate to the LoginViewController
+      let navigationController = UINavigationController(rootViewController: loginViewController)
       navigationController.modalPresentationStyle = .fullScreen
       present(navigationController, animated: true)
     }
@@ -181,6 +184,15 @@ final class HomeViewController: UIViewController {
   
   @objc private func handleResfresh() {
     fetchUsersFromFirestore()
+  }
+}
+
+// MARK: - LoginViewControllerDelegate
+
+extension HomeViewController: LoginViewControllerDelegate {
+  
+  func didFinishLoggingIn() {
+    fetchCurrentUser()
   }
 }
 

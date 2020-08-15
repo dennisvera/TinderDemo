@@ -9,6 +9,10 @@
 import UIKit
 import JGProgressHUD
 
+protocol LoginViewControllerDelegate {
+  func didFinishLoggingIn()
+}
+
 class LoginViewController: UIViewController {
   
   // MARK: - Properties
@@ -69,7 +73,11 @@ class LoginViewController: UIViewController {
   
   // MARK: -
   
+  var delegate: LoginViewControllerDelegate?
   private var viewModel = LoginViewModel()
+  
+  // MARK: -
+  
   private let gradientLayer = CAGradientLayer()
   private let progressHud = JGProgressHUD(style: .dark)
   
@@ -150,17 +158,19 @@ class LoginViewController: UIViewController {
   
   @objc private func handleLogin() {
     dismiss(animated: true)
-
+    
     viewModel.performLogin { [weak self] error in
       guard let strongSelf = self else { return }
       if let error = error {
         print("Failed to Login:", error)
         return
       }
-
-      strongSelf.dismiss(animated: true) {
-        // TO Do
-      }
+      
+      print("Login Successful!")
+      
+      strongSelf.dismiss(animated: true, completion: {
+        strongSelf.delegate?.didFinishLoggingIn()
+      })
     }
   }
   
