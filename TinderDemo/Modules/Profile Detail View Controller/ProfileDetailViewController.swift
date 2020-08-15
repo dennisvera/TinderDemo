@@ -95,7 +95,7 @@ extension ProfileDetailViewController: UIScrollViewDelegate {
     // We change it back to positive in order to make it easier to update the profileImage frame
     let changeY = -scrollView.contentOffset.y
     
-    // Update profileImageView only if the scroll is pulling down 
+    // Update profileImageView only if the scroll is pulling down
     if changeY > 0 {
       // Update the profileImageView frame
       // Set the x/y coordinates to -changeY to have the images shift to the left
@@ -108,5 +108,11 @@ extension ProfileDetailViewController: UIScrollViewDelegate {
                                       height: width)
     }
     
+    // This solution below works too. But it does not scroll up at all:
+    
+    //    let coordinateY = scrollView.contentOffset.y
+    //    let width = max(view.frame.width - coordinateY , view.frame.width)
+    //    profileImageView.frame = CGRect(x: 0 , y: coordinateY , width: width, height: width)
+    //    profileImageView.center.x = scrollView.center.x
   }
 }
