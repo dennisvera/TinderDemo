@@ -97,14 +97,11 @@ final class HomeViewController: UIViewController {
   }
   
   private func fetchUsersFromFirestore() {
-    // Show ProgressHud
-    showProgressHud()
-    
     guard let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge else { return }
     
     let query = Firestore.firestore()
       .collection("users")
-      .whereField("age", isGreaterThan: minAge)
+      .whereField("age", isGreaterThanOrEqualTo: minAge)
       .whereField("age", isLessThanOrEqualTo: maxAge)
     
     query.getDocuments { [weak self] (snapshot, error) in
@@ -122,12 +119,11 @@ final class HomeViewController: UIViewController {
         let userDictionary = documentSnapshot.data()
         let user = User(dictionary: userDictionary)
         
-        strongSelf.viewModel.append(user.toCardViewModel())
-        
-        // Hold on to the last fetched user
-        strongSelf.lastFetchedUser = user
-        
-        strongSelf.setupCard(with: user)
+        // Do not display the current user
+        // *Current user does not need to see its own profile
+        if user.uid != Auth.auth().currentUser?.uid {
+          strongSelf.setupCard(with: user)
+        }
       })
     }
   }
@@ -135,6 +131,7 @@ final class HomeViewController: UIViewController {
   private func setupCard(with user: User) {
     let cardView = CardView(frame: .zero)
     cardView.viewModel = user.toCardViewModel()
+    cardView.delegate = self
     
     cardsDeckView.addSubview(cardView)
     cardsDeckView.sendSubviewToBack(cardView)
@@ -202,6 +199,18 @@ extension HomeViewController: SettingsViewControllerDelegate {
   
   func didSaveSettings() {
     fetchCurrentUser()
+  }
+}
+
+// MARK: - CardViewDelegate
+
+extension HomeViewController: CardViewDelegate {
+  
+  func didTapMoreInfoButton() {
+    let profileDetailViewController = ProfileDetailViewController()
+    profileDetailViewController.modalPresentationStyle = .fullScreen
+    
+    present(profileDetailViewController, animated: true)
   }
 }
 

@@ -10,6 +10,11 @@ import UIKit
 import SnapKit
 import SDWebImage
 
+protocol CardViewDelegate {
+  
+  func didTapMoreInfoButton()
+}
+
 class CardView: UIView {
   
   // MARK: - Private Properties
@@ -28,9 +33,20 @@ class CardView: UIView {
     return imageView
   }()
   
+  private let moreInfoButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.setImage(#imageLiteral(resourceName: "info_icon").withRenderingMode(.alwaysOriginal), for: .normal)
+    button.addTarget(self, action: #selector(handleMoreInfoButton), for: .touchUpInside)
+    return button
+  }()
+  
   private let topBarStackView = UIStackView()
   private let gradientLayer = CAGradientLayer()
   private let topBarDeselectedColor = UIColor(white: 0, alpha: 0.1)
+  
+  // MARK: -
+  
+  var delegate: CardViewDelegate?
   
   // MARK: - Public Properties
   
@@ -100,6 +116,13 @@ class CardView: UIView {
       make.leading.equalToSuperview().offset(Layout.User.leading)
       make.bottom.trailing.equalToSuperview().offset(Layout.User.trailing)
     }
+    
+    addSubview(moreInfoButton)
+    moreInfoButton.snp.makeConstraints { make in
+      make.width.height.equalTo(44)
+      make.top.equalTo(userInformationLabel.snp.top).offset(8)
+      make.trailing.equalTo(self.snp.trailingMargin).offset(-16)
+    }
   }
   
   private func setupGestureRecognizers() {
@@ -162,7 +185,7 @@ class CardView: UIView {
     case .began:
       superview?.subviews.last?.layer.removeAllAnimations()
     case .changed:
-      handleChaged(gesture)
+      handleChanged(gesture)
     case .ended:
       handleEndedAnimation(gesture)
     default:
@@ -170,7 +193,16 @@ class CardView: UIView {
     }
   }
   
-  private func handleChaged(_ gesture: UIPanGestureRecognizer) {
+  @objc private func handleMoreInfoButton() {
+     // Views do not have access to the present function like ViewControllers do.
+    // We use a delegate to hook up
+    
+    delegate?.didTapMoreInfoButton()
+   }
+  
+  // MARK: -
+  
+  private func handleChanged(_ gesture: UIPanGestureRecognizer) {
     let translation = gesture.translation(in: nil)
     
     // Convert radian to Degrees
@@ -211,6 +243,8 @@ class CardView: UIView {
     }
   }
 }
+
+// MARK: - Layout
 
 extension CardView {
   

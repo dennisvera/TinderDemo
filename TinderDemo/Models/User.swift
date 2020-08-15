@@ -42,16 +42,16 @@ struct User: CardViewViewModelProtocol {
   
   func toCardViewModel() -> CardViewViewModel {
     let attributedText = NSMutableAttributedString(string: name ?? "",
-                                                   attributes: [.font: UIFont.systemFont(ofSize: 34,
+                                                   attributes: [.font: UIFont.systemFont(ofSize: 28,
                                                                                          weight: .heavy)])
     
     let ageString = age != nil ? "\(age!)" : "N\\A"
     attributedText.append(NSAttributedString(string: "  \(ageString)",
-      attributes: [.font : UIFont.systemFont(ofSize: 24, weight: .regular)]))
+      attributes: [.font : UIFont.systemFont(ofSize: 18, weight: .regular)]))
     
     let professionString = profession != nil ? "\(profession!)" : "Not Available"
     attributedText.append(NSAttributedString(string: "\n\(professionString)",
-      attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)]))
+      attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .regular)]))
     
     var imageUrls = [String]()
     if let url = imageUrl1 { imageUrls.append( url) }
