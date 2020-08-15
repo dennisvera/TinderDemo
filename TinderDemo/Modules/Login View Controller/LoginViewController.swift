@@ -50,8 +50,8 @@ class LoginViewController: UIViewController {
   private let backToRegisterButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitleColor(.white, for: .normal)
-    button.setTitle("Back to register", for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+    button.setTitle("Back to Register", for: .normal)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
     button.addTarget(self, action: #selector(handleBackToRegister), for: .touchUpInside)
     return button
   }()

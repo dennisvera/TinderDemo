@@ -43,7 +43,7 @@ final class HomeViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    showLoginViewController()
+    showRegistrationViewController()
   }
   
   // MARK: - Helper Methods
@@ -143,15 +143,15 @@ final class HomeViewController: UIViewController {
     }
   }
   
-  private func showLoginViewController() {
-    // Check that the currentUser is logged out
-    // If user is logged out, present the LoginViewController
+  private func showRegistrationViewController() {
+    // Check if the currentUser is logged out.
+    // If user is logged out, present the RegistrationViewController
     if Auth.auth().currentUser == nil {
-      let loginViewController = LoginViewController()
-      loginViewController.delegate = self
+      let registrationViewController = RegistrationViewController()
+      registrationViewController.delegate = self
       
-      // Navigate to the LoginViewController
-      let navigationController = UINavigationController(rootViewController: loginViewController)
+      // Navigate to the RegistrationViewController
+      let navigationController = UINavigationController(rootViewController: registrationViewController)
       navigationController.modalPresentationStyle = .fullScreen
       present(navigationController, animated: true)
     }

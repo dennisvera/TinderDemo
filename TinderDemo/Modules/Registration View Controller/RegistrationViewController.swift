@@ -107,7 +107,7 @@ final class RegistrationViewController: UIViewController {
   }()
   
   // MARK: -
-  
+  var delegate: LoginViewControllerDelegate?
   private let progressHud = JGProgressHUD()
   private let gradientLayer = CAGradientLayer()
   private var viewModel = RegistrationViewModel()
@@ -272,13 +272,18 @@ final class RegistrationViewController: UIViewController {
     
     // Create user registration
     viewModel.registerUser { [weak self] error in
+      guard let strongSelf = self else { return }
+
       if let error = error {
-        guard let strongSelf = self else { return }
         strongSelf.showProgressHudWithError(with: error)
         return
       }
       
-      print("\nUser Registered Successfully!")
+      print("User Registered Successfully!")
+      
+      strongSelf.dismiss(animated: true, completion: {
+        strongSelf.delegate?.didFinishLoggingIn()
+      })
     }
   }
   
