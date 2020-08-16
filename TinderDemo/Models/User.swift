@@ -58,7 +58,7 @@ struct User: CardViewViewModelProtocol {
     if let url = imageUrl2 { imageUrls.append( url) }
     if let url = imageUrl3 { imageUrls.append( url) }
     
-    return CardViewViewModel(imageNames: imageUrls,
+    return CardViewViewModel(imageUrls: imageUrls,
                              attributedString: attributedText,
                              textAlignment: .left)
   }

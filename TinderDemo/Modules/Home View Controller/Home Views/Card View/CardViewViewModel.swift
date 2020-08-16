@@ -34,8 +34,8 @@ final class CardViewViewModel {
   
   // MARK: - Intilaization
   
-  init(imageNames: [String], attributedString: NSAttributedString, textAlignment: NSTextAlignment) {
-    self.imageUrls = imageNames
+  init(imageUrls: [String], attributedString: NSAttributedString, textAlignment: NSTextAlignment) {
+    self.imageUrls = imageUrls
     self.attributedString = attributedString
     self.textAlignment = textAlignment
   }
