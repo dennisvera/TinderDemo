@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import SDWebImage
 
 final class ProfileDetailViewController: UIViewController {
   
@@ -17,27 +18,50 @@ final class ProfileDetailViewController: UIViewController {
     let scrollView = UIScrollView()
     scrollView.delegate = self
     scrollView.alwaysBounceVertical = true
-    scrollView.backgroundColor = .systemTeal
     scrollView.contentInsetAdjustmentBehavior = .never
     return scrollView
   }()
   
   private let profileImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = #imageLiteral(resourceName: "alyssa1")
     imageView.clipsToBounds = true
-    imageView.contentMode = .scaleToFill
+    imageView.contentMode = .scaleAspectFill
     return imageView
   }()
   
   private let infoLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 0
-    label.textColor = .white
+    label.textColor = .black
     label.text = "User Name 30\nDoctor\nBio text ..."
     label.font = UIFont.boldSystemFont(ofSize: 20)
     return label
   }()
+  
+  private let dissmissButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.setImage(#imageLiteral(resourceName: "dismiss_down_arrow_icon").withRenderingMode(.alwaysOriginal), for: .normal)
+    button.addTarget(self, action: #selector(handleDismissButton), for: .touchUpInside)
+    return button
+  }()
+  
+  // MARK: -
+  
+  private let cancelButton = UIButton().createButton(with: #imageLiteral(resourceName: "dismiss_circle_icon"), selector: #selector(handleCancelButton))
+  private let starButton = UIButton().createButton(with: #imageLiteral(resourceName: "super_like_circle_icon"), selector: #selector(handleStarButton))
+  private let heartButton = UIButton().createButton(with: #imageLiteral(resourceName: "like_circle_icon"), selector: #selector(handleHeartButton))
+  
+  // MARK: -
+  
+  var cardViewModel: CardViewViewModel? {
+    didSet {
+      infoLabel.attributedText = cardViewModel?.attributedString
+      
+      guard let firstImage = cardViewModel?.imageUrls.first,
+      let imageUrl = URL(string: firstImage) else { return }
+      profileImageView.sd_setImage(with: imageUrl)
+    }
+  }
   
   // MARK: - View Life Cycle
   
@@ -45,14 +69,13 @@ final class ProfileDetailViewController: UIViewController {
     super.viewDidLoad()
     
     setupView()
+    setupVisualEffectBlurView()
   }
   
   // MARK: - Helper Methods
   
   private func setupView() {
     view.backgroundColor = .white
-    
-    view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
     
     // Configure scrollView
     view.addSubview(scrollView)
@@ -73,13 +96,60 @@ final class ProfileDetailViewController: UIViewController {
       make.trailing.equalToSuperview().offset(-16)
       make.top.equalTo(profileImageView.snp.bottom).offset(16)
     }
+    
+    // Configure dissmissButton
+    scrollView.addSubview(dissmissButton)
+    dissmissButton.snp.makeConstraints { make in
+      make.width.height.equalTo(50)
+      make.trailing.equalTo(view.snp.trailing).offset(-25)
+      make.top.equalTo(profileImageView.snp.bottom).offset(-25)
+    }
+    
+    // Initialize bottonStackView
+    let bottonStackView = UIStackView(arrangedSubviews: [cancelButton, starButton, heartButton])
+    bottonStackView.spacing = -32
+    bottonStackView.axis = .horizontal
+    bottonStackView.distribution = .fillEqually
+    
+    // Configure bottonStackView
+    scrollView.addSubview(bottonStackView)
+    bottonStackView.snp.makeConstraints { make in
+      make.height.equalTo(80)
+      make.width.equalTo(300)
+      make.centerX.equalToSuperview()
+      make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin)
+    }
   }
   
+  private func setupVisualEffectBlurView() {
+    let blurEffect = UIBlurEffect(style: .regular)
+    let visualEffectView = UIVisualEffectView(effect: blurEffect)
+    
+    
+    view.addSubview(visualEffectView)
+    visualEffectView.snp.makeConstraints { make in
+      make.top.leading.trailing.equalToSuperview()
+      make.bottom.equalTo(view.safeAreaLayoutGuide.snp.topMargin)
+    }
+  }
   
   // MARK: - Actions
   
-  @objc private func handleTapDismiss() {
+  @objc private func handleDismissButton() {
+    // Dismiss View Controller
     dismiss(animated: true)
+  }
+  
+  @objc private func handleCancelButton() {
+    print("Cancel button tapped")
+  }
+  
+  @objc private func handleStarButton() {
+    print("Star button tapped")
+  }
+  
+  @objc private func handleHeartButton() {
+    print("Heart button tapped")
   }
 }
 

@@ -8,15 +8,15 @@
 
 import UIKit
 
-class HomeBottomControlStackView: UIStackView {
+final class HomeBottomControlStackView: UIStackView {
   
   // MARK: - Properties
   
-  let refreshButton = createButton(with: #imageLiteral(resourceName: "refresh_circle_icon"))
-  let cancelButton = createButton(with: #imageLiteral(resourceName: "dismiss_circle_icon"))
-  let starButton = createButton(with: #imageLiteral(resourceName: "super_like_circle_icon"))
-  let heartButton = createButton(with: #imageLiteral(resourceName: "like_circle_icon"))
-  let lightningButton = createButton(with: #imageLiteral(resourceName: "boost_circle_icon"))
+  let refreshButton = UIButton().createButton(with: #imageLiteral(resourceName: "refresh_circle_icon"), selector: #selector(handleRefreshButton))
+  let cancelButton = UIButton().createButton(with: #imageLiteral(resourceName: "dismiss_circle_icon"), selector: #selector(handleCancelButton))
+  let starButton = UIButton().createButton(with: #imageLiteral(resourceName: "super_like_circle_icon"), selector: #selector(handleStarButton))
+  let heartButton = UIButton().createButton(with: #imageLiteral(resourceName: "like_circle_icon"), selector: #selector(handleHeartButton))
+  let lightningButton = UIButton().createButton(with: #imageLiteral(resourceName: "boost_circle_icon"), selector: #selector(handleLightningButton))
   
   // MARK: -
   
@@ -45,11 +45,25 @@ class HomeBottomControlStackView: UIStackView {
     heightAnchor.constraint(equalToConstant: heightAnchorConstraint).isActive = true
   }
   
-  private static func createButton(with image: UIImage) -> UIButton {
-    let button = UIButton(type: .system)
-    let image = image.withRenderingMode(.alwaysOriginal)
-    button.setImage(image, for: .normal)
-    button.contentMode = .scaleAspectFill
-    return button
+  // MARK: - Actions
+  
+  @objc private func handleRefreshButton() {
+    print("Refresh button tapped")
+  }
+  
+  @objc private func handleCancelButton() {
+    print("Cancel button tapped")
+  }
+  
+  @objc private func handleStarButton() {
+    print("Star button tapped")
+  }
+  
+  @objc private func handleHeartButton() {
+    print("Heart button tapped")
+  }
+  
+  @objc private func handleLightningButton() {
+    print("Lightning button tapped")
   }
 }

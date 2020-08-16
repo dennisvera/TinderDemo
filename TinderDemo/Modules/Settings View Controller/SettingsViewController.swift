@@ -168,7 +168,7 @@ final class SettingsViewController: UIViewController {
     button.clipsToBounds = true
     button.layer.cornerRadius = 8
     button.backgroundColor = .white
-    button.imageView?.contentMode = .scaleToFill
+    button.imageView?.contentMode = .scaleAspectFill
     button.setTitle("Select Photo", for: .normal)
     button.addTarget(self, action: selector, for: .touchUpInside)
     return button

@@ -209,8 +209,9 @@ extension HomeViewController: SettingsViewControllerDelegate {
 
 extension HomeViewController: CardViewDelegate {
   
-  func didTapMoreInfoButton() {
+  func didTapMoreInfoButton(with cardViewmodel: CardViewViewModel) {
     let profileDetailViewController = ProfileDetailViewController()
+    profileDetailViewController.cardViewModel = cardViewmodel
     profileDetailViewController.modalPresentationStyle = .fullScreen
     
     present(profileDetailViewController, animated: true)

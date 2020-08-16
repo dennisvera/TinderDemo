@@ -13,20 +13,20 @@ protocol CardViewViewModelProtocol {
   func toCardViewModel() -> CardViewViewModel
 }
 
-class CardViewViewModel {
+final class CardViewViewModel {
   
   // MARK: - Private Properties
 
   private var imageIndex = 0 {
     didSet {
-      let imageUrl = imageNames[imageIndex]
+      let imageUrl = imageUrls[imageIndex]
       imageIndexObserver?(imageIndex, imageUrl)
     }
   }
   
   // MARK: - Public Properties
   
-  let imageNames: [String]
+  let imageUrls: [String]
   let attributedString: NSAttributedString
   let textAlignment: NSTextAlignment
   
@@ -35,7 +35,7 @@ class CardViewViewModel {
   // MARK: - Intilaization
   
   init(imageNames: [String], attributedString: NSAttributedString, textAlignment: NSTextAlignment) {
-    self.imageNames = imageNames
+    self.imageUrls = imageNames
     self.attributedString = attributedString
     self.textAlignment = textAlignment
   }
@@ -43,7 +43,7 @@ class CardViewViewModel {
   // MARK: - Helper Methods
   
   func moveToNextImage() {
-    imageIndex = min(imageIndex + 1, imageNames.count - 1)
+    imageIndex = min(imageIndex + 1, imageUrls.count - 1)
   }
   
   func moveToPreviousImage() {

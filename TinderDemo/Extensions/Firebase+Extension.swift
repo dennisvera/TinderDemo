@@ -1,5 +1,5 @@
 //
-//  Firebase+Helpers.swift
+//  Firebase+Extension.swift
 //  TinderDemo
 //
 //  Created by Dennis Vera on 8/13/20.

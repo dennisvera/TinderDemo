@@ -12,7 +12,7 @@ import SDWebImage
 
 protocol CardViewDelegate {
   
-  func didTapMoreInfoButton()
+  func didTapMoreInfoButton(with cardViewModel: CardViewViewModel)
 }
 
 class CardView: UIView {
@@ -50,18 +50,18 @@ class CardView: UIView {
   
   // MARK: - Public Properties
   
-  var viewModel: CardViewViewModel? {
+  var viewModel: CardViewViewModel! {
     didSet {
       // Get the first image if it exist.
       // Accessing index 0 this way: (imageNames.count == 0) - will crash the app
-      let image = viewModel?.imageNames.first ?? ""
+      let image = viewModel.imageUrls.first ?? ""
       guard let imageUrl = URL(string: image) else { return }
       cardImageView.sd_setImage(with: imageUrl)
       
       userInformationLabel.textAlignment = viewModel!.textAlignment
       userInformationLabel.attributedText = viewModel?.attributedString
       
-      (0..<(viewModel?.imageNames.count ?? 0)).forEach { (_) in
+      (0..<(viewModel.imageUrls.count)).forEach { (_) in
         let barview = UIView()
         barview.backgroundColor = topBarDeselectedColor
         topBarStackView.addArrangedSubview(barview)
@@ -197,7 +197,8 @@ class CardView: UIView {
      // Views do not have access to the present function like ViewControllers do.
     // We use a delegate to hook up
     
-    delegate?.didTapMoreInfoButton()
+    guard let viewModel = viewModel else { return }
+    delegate?.didTapMoreInfoButton(with: viewModel)
    }
   
   // MARK: -

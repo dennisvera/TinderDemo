@@ -19,10 +19,11 @@
 		E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827D24E45F6F0041838D /* SettingsTextField.swift */; };
 		E1CF828024E5C1E40041838D /* AgeRangeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827F24E5C1E40041838D /* AgeRangeTableViewCell.swift */; };
 		E1CF828224E5CCFC0041838D /* AgeRangeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828124E5CCFC0041838D /* AgeRangeLabel.swift */; };
-		E1CF828524E602A10041838D /* Firebase+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828424E602A10041838D /* Firebase+Helpers.swift */; };
+		E1CF828524E602A10041838D /* Firebase+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828424E602A10041838D /* Firebase+Extension.swift */; };
 		E1CF828824E62B6A0041838D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828724E62B6A0041838D /* LoginViewController.swift */; };
 		E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828A24E632920041838D /* LoginViewModel.swift */; };
 		E1D427E924E847D800AFACBC /* ProfileDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D427E824E847D800AFACBC /* ProfileDetailViewController.swift */; };
+		E1D427EB24E97FDA00AFACBC /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D427EA24E97FDA00AFACBC /* UIButton+Extension.swift */; };
 		E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF624B7A5710092622B /* AppDelegate.swift */; };
 		E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF824B7A5710092622B /* SceneDelegate.swift */; };
 		E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBFA24B7A5710092622B /* HomeViewController.swift */; };
@@ -50,10 +51,11 @@
 		E1CF827D24E45F6F0041838D /* SettingsTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextField.swift; sourceTree = "<group>"; };
 		E1CF827F24E5C1E40041838D /* AgeRangeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeTableViewCell.swift; sourceTree = "<group>"; };
 		E1CF828124E5CCFC0041838D /* AgeRangeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeLabel.swift; sourceTree = "<group>"; };
-		E1CF828424E602A10041838D /* Firebase+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firebase+Helpers.swift"; sourceTree = "<group>"; };
+		E1CF828424E602A10041838D /* Firebase+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firebase+Extension.swift"; sourceTree = "<group>"; };
 		E1CF828724E62B6A0041838D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E1CF828A24E632920041838D /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		E1D427E824E847D800AFACBC /* ProfileDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetailViewController.swift; sourceTree = "<group>"; };
+		E1D427EA24E97FDA00AFACBC /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		E1DFBBF324B7A5710092622B /* TinderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1DFBBF624B7A5710092622B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1DFBBF824B7A5710092622B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -147,7 +149,8 @@
 		E1CF828324E6027B0041838D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				E1CF828424E602A10041838D /* Firebase+Helpers.swift */,
+				E1CF828424E602A10041838D /* Firebase+Extension.swift */,
+				E1D427EA24E97FDA00AFACBC /* UIButton+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -441,10 +444,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1CF828824E62B6A0041838D /* LoginViewController.swift in Sources */,
-				E1CF828524E602A10041838D /* Firebase+Helpers.swift in Sources */,
+				E1CF828524E602A10041838D /* Firebase+Extension.swift in Sources */,
 				E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */,
 				E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */,
 				E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */,
+				E1D427EB24E97FDA00AFACBC /* UIButton+Extension.swift in Sources */,
 				E1D427E924E847D800AFACBC /* ProfileDetailViewController.swift in Sources */,
 				E145088424CE181400DC7727 /* RegistrationViewModel.swift in Sources */,
 				E145083B24C8D00F00DC7727 /* CustomTextField.swift in Sources */,
