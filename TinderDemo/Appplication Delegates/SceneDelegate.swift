@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // Initialize and Configure Main Window
     guard let windowScene = scene as? UIWindowScene else { return }
     window = UIWindow(windowScene: windowScene)
-    window?.rootViewController = HomeViewController()
+    window?.rootViewController = PagingPhotosViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
     window?.makeKeyAndVisible()
   }
   

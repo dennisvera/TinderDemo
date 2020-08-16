@@ -85,7 +85,7 @@ final class ProfileDetailViewController: UIViewController {
     
     // Configure profileImageView
     scrollView.addSubview(profileImageView)
-    // Setting the imageview frame in ordero avoid using auto-layout
+    // Setting the imageview frame in order to avoid using auto-layout
     // Auto-layout inside a scrollview does not always behave as expected
     profileImageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width)
     

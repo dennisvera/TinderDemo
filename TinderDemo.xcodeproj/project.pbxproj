@@ -24,6 +24,8 @@
 		E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828A24E632920041838D /* LoginViewModel.swift */; };
 		E1D427E924E847D800AFACBC /* ProfileDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D427E824E847D800AFACBC /* ProfileDetailViewController.swift */; };
 		E1D427EB24E97FDA00AFACBC /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D427EA24E97FDA00AFACBC /* UIButton+Extension.swift */; };
+		E1D427ED24E9A74300AFACBC /* PagingPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D427EC24E9A74300AFACBC /* PagingPhotosViewController.swift */; };
+		E1D427F024E9AE7800AFACBC /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D427EF24E9AE7800AFACBC /* PhotoViewController.swift */; };
 		E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF624B7A5710092622B /* AppDelegate.swift */; };
 		E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBF824B7A5710092622B /* SceneDelegate.swift */; };
 		E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBBFA24B7A5710092622B /* HomeViewController.swift */; };
@@ -56,6 +58,8 @@
 		E1CF828A24E632920041838D /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		E1D427E824E847D800AFACBC /* ProfileDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetailViewController.swift; sourceTree = "<group>"; };
 		E1D427EA24E97FDA00AFACBC /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
+		E1D427EC24E9A74300AFACBC /* PagingPhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingPhotosViewController.swift; sourceTree = "<group>"; };
+		E1D427EF24E9AE7800AFACBC /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		E1DFBBF324B7A5710092622B /* TinderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1DFBBF624B7A5710092622B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1DFBBF824B7A5710092622B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -176,8 +180,18 @@
 			isa = PBXGroup;
 			children = (
 				E1D427E824E847D800AFACBC /* ProfileDetailViewController.swift */,
+				E1D427EE24E9AE3900AFACBC /* Paging Photos View Controller */,
 			);
 			path = "Profile Detail View Controller";
+			sourceTree = "<group>";
+		};
+		E1D427EE24E9AE3900AFACBC /* Paging Photos View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E1D427EC24E9A74300AFACBC /* PagingPhotosViewController.swift */,
+				E1D427EF24E9AE7800AFACBC /* PhotoViewController.swift */,
+			);
+			path = "Paging Photos View Controller";
 			sourceTree = "<group>";
 		};
 		E1DFBBEA24B7A5710092622B = {
@@ -447,6 +461,7 @@
 				E1CF828524E602A10041838D /* Firebase+Extension.swift in Sources */,
 				E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */,
 				E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */,
+				E1D427ED24E9A74300AFACBC /* PagingPhotosViewController.swift in Sources */,
 				E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */,
 				E1D427EB24E97FDA00AFACBC /* UIButton+Extension.swift in Sources */,
 				E1D427E924E847D800AFACBC /* ProfileDetailViewController.swift in Sources */,
@@ -467,6 +482,7 @@
 				E1DFBC1B24BA617B0092622B /* User.swift in Sources */,
 				E1CF827C24E45ABC0041838D /* SettingsHeaderLabel.swift in Sources */,
 				E1CF827A24E4518C0041838D /* CustomImagePicker.swift in Sources */,
+				E1D427F024E9AE7800AFACBC /* PhotoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
