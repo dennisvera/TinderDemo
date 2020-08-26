@@ -188,7 +188,7 @@ extension ProfileDetailViewController: UIScrollViewDelegate {
       pagingPhotosView.frame = CGRect(x: -changeY,
                                       y: -changeY,
                                       width: width,
-                                      height: width)
+                                      height: width + pagingPhotosHeightPadding)
     }
     
     // This solution below works too. But it does not scroll up at all:

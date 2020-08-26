@@ -23,13 +23,17 @@ class PagingPhotosViewController: UIPageViewController {
       // Set View Controllers paging starting at the first index of the photoControllers array
       guard let firstController = photoControllers.first else { return }
       setViewControllers([firstController], direction: .forward, animated: false)
+      
+      setupPhotoBarsView()
     }
   }
   
   // MARK: -
   
   private var photoControllers = [UIViewController]()
-  
+  private var photoBarsStackView = UIStackView(arrangedSubviews: [])
+  private let deselectedPhotoBarColor = UIColor(white: 0.0, alpha: 0.1)
+    
   // MARK: - View Life Cycle
   
   override func viewDidLoad() {
@@ -44,8 +48,37 @@ class PagingPhotosViewController: UIPageViewController {
     // Set Background Color
     view.backgroundColor = .white
     
-    // Set Paging DataSource to self
+    // Set Paging DataSource & Delegate to self
     dataSource = self
+    delegate = self
+  }
+  
+  private func setupPhotoBarsView() {
+    cardViewModel.imageUrls.forEach { _ in
+      let barView = UIView()
+      barView.layer.cornerRadius = 2
+      barView.backgroundColor = deselectedPhotoBarColor
+      
+      photoBarsStackView.addArrangedSubview(barView)
+    }
+    
+    photoBarsStackView.spacing = 4
+    photoBarsStackView.axis = .horizontal
+    photoBarsStackView.distribution = .fillEqually
+    photoBarsStackView.arrangedSubviews.first?.backgroundColor = .white
+    
+    // Using the SafeAreaLayoutGuide caused flickering when pulling the image down,
+    // instead we are grabbing the statusBarFrame height to anchor the top of the photoBarsStackView
+    let statusBarFrameHeight = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+    let photoBarTopPadding = Int(statusBarFrameHeight) + 8
+    
+    view.addSubview(photoBarsStackView)
+    photoBarsStackView.snp.makeConstraints { make in
+      make.height.equalTo(4)
+      make.leading.equalToSuperview().offset(8)
+      make.trailing.equalToSuperview().offset(-8)
+      make.top.equalTo(view.snp.topMargin).offset(photoBarTopPadding)
+    }
   }
 }
 
@@ -75,5 +108,22 @@ extension PagingPhotosViewController: UIPageViewControllerDataSource {
     
     // Decrease the controller by one as you swipe left
     return photoControllers[index - 1]
+  }
+}
+
+// MARK: - UIPageViewControllerDelegate
+
+extension PagingPhotosViewController: UIPageViewControllerDelegate {
+ 
+  func pageViewController(_ pageViewController: UIPageViewController,
+                          didFinishAnimating finished: Bool,
+                          previousViewControllers: [UIViewController],
+                          transitionCompleted completed: Bool) {
+    
+    let currentPhotoController = viewControllers?.first
+    guard let index = photoControllers.firstIndex(where: { $0 == currentPhotoController }) else { return }
+    
+    photoBarsStackView.arrangedSubviews.forEach { $0.backgroundColor = deselectedPhotoBarColor }
+    photoBarsStackView.arrangedSubviews[index].backgroundColor = .white
   }
 }
