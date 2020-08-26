@@ -106,11 +106,8 @@ class CardView: UIView {
   }
   
   private func setupGestureRecognizers() {
-    let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+    let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
     addGestureRecognizer(panGesture)
-    
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-    addGestureRecognizer(tapGesture)
   }
   
   private func setupGradientLayer() {
@@ -121,17 +118,6 @@ class CardView: UIView {
   }
   
   // MARK: - Actions
-  
-  @objc private func handleTap(gesture: UITapGestureRecognizer) {
-    let tapLocation = gesture.location(in: nil)
-    let shouldAdvanceToNextPhoto = tapLocation.x > frame.width / 2 ? true : false
-    
-    if shouldAdvanceToNextPhoto {
-      viewModel?.moveToNextImage()
-    } else {
-      viewModel?.moveToPreviousImage()
-    }
-  }
   
   @objc private func handlePan(gesture: UIPanGestureRecognizer) {
     switch gesture.state {

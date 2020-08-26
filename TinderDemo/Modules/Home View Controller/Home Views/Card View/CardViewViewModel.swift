@@ -15,38 +15,17 @@ protocol CardViewViewModelProtocol {
 
 final class CardViewViewModel {
   
-  // MARK: - Private Properties
-
-  private var imageIndex = 0 {
-    didSet {
-      let imageUrl = imageUrls[imageIndex]
-      imageIndexObserver?(imageIndex, imageUrl)
-    }
-  }
-  
   // MARK: - Public Properties
   
   let imageUrls: [String]
   let attributedString: NSAttributedString
   let textAlignment: NSTextAlignment
-  
-  var imageIndexObserver: ((Int, String?) -> ())?
-  
+    
   // MARK: - Intilaization
   
   init(imageUrls: [String], attributedString: NSAttributedString, textAlignment: NSTextAlignment) {
     self.imageUrls = imageUrls
     self.attributedString = attributedString
     self.textAlignment = textAlignment
-  }
-  
-  // MARK: - Helper Methods
-  
-  func moveToNextImage() {
-    imageIndex = min(imageIndex + 1, imageUrls.count - 1)
-  }
-  
-  func moveToPreviousImage() {
-    imageIndex = max(0, imageIndex - 1)
   }
 }

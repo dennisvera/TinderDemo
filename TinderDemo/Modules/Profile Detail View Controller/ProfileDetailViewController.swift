@@ -26,8 +26,15 @@ final class ProfileDetailViewController: UIViewController {
     let label = UILabel()
     label.numberOfLines = 0
     label.textColor = .black
-    label.text = "User Name 30\nDoctor\nBio text ..."
     label.font = UIFont.boldSystemFont(ofSize: 20)
+    return label
+  }()
+  
+  private let bioLabel: UILabel = {
+    let label = UILabel()
+    label.numberOfLines = 0
+    label.textColor = .black
+    label.font = UIFont.boldSystemFont(ofSize: 18)
     return label
   }()
   
@@ -98,9 +105,14 @@ final class ProfileDetailViewController: UIViewController {
     guard let pagingPhotosView = pagingPhotosViewController.view else { return }
     scrollView.addSubview(pagingPhotosView)
     
+    
+    let stackView = UIStackView(arrangedSubviews: [infoLabel, bioLabel])
+    stackView.axis = .vertical
+    stackView.spacing = 14
+    
     // Configure infoLabel
-    scrollView.addSubview(infoLabel)
-    infoLabel.snp.makeConstraints { make in
+    scrollView.addSubview(stackView)
+    stackView.snp.makeConstraints { make in
       make.leading.equalToSuperview().offset(16)
       make.trailing.equalToSuperview().offset(-16)
       make.top.equalTo(pagingPhotosView.snp.bottom).offset(16)
