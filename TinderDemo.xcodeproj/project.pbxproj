@@ -263,10 +263,10 @@
 		E1DFBC0F24B7A5EF0092622B /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				E1D427E524E8475C00AFACBC /* Profile Detail View Controller */,
-				E1DFBC1624B9FCA90092622B /* Home View Controller */,
 				E145083624C8C48800DC7727 /* Registration View Controller */,
 				E1CF828624E62B3B0041838D /* Login View Controller */,
+				E1DFBC1624B9FCA90092622B /* Home View Controller */,
+				E1D427E524E8475C00AFACBC /* Profile Detail View Controller */,
 				E14F9ED724D8D2F300D63A96 /* Settings View Controller */,
 			);
 			path = Modules;

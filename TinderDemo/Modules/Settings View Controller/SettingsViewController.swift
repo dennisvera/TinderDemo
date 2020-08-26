@@ -34,6 +34,11 @@ final class SettingsViewController: UIViewController {
   var user: User?
   var deleagate: SettingsViewControllerDelegate?
   
+  // MARK: -
+  
+  static let defaultMinSeekingAge = 18
+  static let defaultMaxSeekingAge = 50
+  
   // MARK: View Life Cycle
   
   override func viewDidLoad() {
@@ -325,17 +330,18 @@ extension SettingsViewController: UITableViewDataSource {
       ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinAgeChange(slider:)), for: .valueChanged)
       ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange(slider:)), for: .valueChanged)
       
-      if let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge {
-        // Set the AgeRangeCell min and max labels
-        ageRangeCell.minLabel.text = "Min: \(minAge)"
-        ageRangeCell.maxLabel.text = "Max: \(maxAge)"
-        
-        // Set the AgeRangeCell min and max sliders
-        ageRangeCell.minSlider.value = Float(minAge)
-        ageRangeCell.maxSlider.value = Float(maxAge)
-        
-        return ageRangeCell
-      }
+      let minSeekingAge = user?.minSeekingAge ?? SettingsViewController.defaultMinSeekingAge
+      let maxSeekingAge = user?.maxSeekingAge ?? SettingsViewController.defaultMaxSeekingAge
+      
+      // Set the AgeRangeCell min and max labels
+      ageRangeCell.minLabel.text = "Min: \(minSeekingAge)"
+      ageRangeCell.maxLabel.text = "Max: \(maxSeekingAge)"
+      
+      // Set the AgeRangeCell min and max sliders
+      ageRangeCell.minSlider.value = Float(minSeekingAge)
+      ageRangeCell.maxSlider.value = Float(maxSeekingAge)
+      
+      return ageRangeCell
     }
     
     return cell

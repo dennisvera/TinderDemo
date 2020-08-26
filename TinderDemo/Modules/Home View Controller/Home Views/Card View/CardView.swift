@@ -57,6 +57,7 @@ class CardView: UIView {
       let image = viewModel.imageUrls.first ?? ""
       guard let imageUrl = URL(string: image) else { return }
       cardImageView.sd_setImage(with: imageUrl)
+      cardImageView.sd_setImage(with: imageUrl, placeholderImage: #imageLiteral(resourceName: "no_image_icon"), options: .continueInBackground)
       
       userInformationLabel.textAlignment = viewModel!.textAlignment
       userInformationLabel.attributedText = viewModel?.attributedString
@@ -155,7 +156,8 @@ class CardView: UIView {
   private func setupImageIndexObserver() {
     viewModel?.imageIndexObserver = { [weak self] (imageIndex, imageUrl) in
       guard let imageUrl = URL(string: imageUrl ?? "") else { return }
-      self?.cardImageView.sd_setImage(with: imageUrl)
+      self?.cardImageView.sd_setImage(with: imageUrl, placeholderImage: #imageLiteral(resourceName: "no_image_icon"), options: .continueInBackground)
+
       
       // Set top bar color to dark for non selected images
       self?.topBarStackView.arrangedSubviews.forEach { subview in

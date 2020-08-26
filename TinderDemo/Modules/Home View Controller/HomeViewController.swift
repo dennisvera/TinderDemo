@@ -97,12 +97,13 @@ final class HomeViewController: UIViewController {
   }
   
   private func fetchUsersFromFirestore() {
-    guard let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge else { return }
+    let minSeekingAge = user?.minSeekingAge ?? SettingsViewController.defaultMinSeekingAge
+    let maxSeekingAge = user?.maxSeekingAge ?? SettingsViewController.defaultMinSeekingAge
     
     let query = Firestore.firestore()
       .collection("users")
-      .whereField("age", isGreaterThanOrEqualTo: minAge)
-      .whereField("age", isLessThanOrEqualTo: maxAge)
+      .whereField("age", isGreaterThanOrEqualTo: minSeekingAge)
+      .whereField("age", isLessThanOrEqualTo: maxSeekingAge)
     
     query.getDocuments { [weak self] (snapshot, error) in
       guard let strongSelf = self else { return }

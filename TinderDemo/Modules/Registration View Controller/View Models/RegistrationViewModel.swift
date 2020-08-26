@@ -69,17 +69,19 @@ final class RegistrationViewModel {
     }
   }
   
-  // MARK: Private Methods
-  
-  private func checkRegistrationIsValid() {
+  func checkRegistrationIsValid() {
     let emailIsValid = email?.isEmpty == false
     let fullNameIsValid = fullName?.isEmpty == false
     let passwordIsValid = password?.isEmpty == false
+    let imageIsValid = image != nil
     
-    let isFormValid = fullNameIsValid && emailIsValid && passwordIsValid
+    let isFormValid = fullNameIsValid && emailIsValid && passwordIsValid && imageIsValid
     
     isRegistrationValidObserver?(isFormValid)
   }
+  
+  // MARK: Private Methods
+  
   
   private func uploadImageToFirebase(completion: @escaping Completion) {
     // Upload user profile image after the user has successfully created an account
@@ -114,10 +116,13 @@ final class RegistrationViewModel {
   
   private func saveUserInfoToFireStore(with imageUrl: String, completion: @escaping Completion) {
     let uid = Auth.auth().currentUser?.uid ?? ""
-    let documentData = [
+    let documentData: [String: Any] = [
+      "age": 18,
       "uid": uid,
       "imageUrl1": imageUrl,
-      "fullName": fullName ?? ""
+      "fullName": fullName ?? "",
+      "minSeekingAge": SettingsViewController.defaultMinSeekingAge,
+      "maxSeekingAge": SettingsViewController.defaultMaxSeekingAge
     ]
     
     Firestore.firestore()

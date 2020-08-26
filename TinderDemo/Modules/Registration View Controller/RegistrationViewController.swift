@@ -332,6 +332,7 @@ extension RegistrationViewController: UIImagePickerControllerDelegate & UINaviga
     let selectedImage = info[.originalImage] as? UIImage
     
     viewModel.image = selectedImage
+    viewModel.checkRegistrationIsValid()
     
     // Dismiss UIPicker Controller
     dismiss(animated: true)
