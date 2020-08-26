@@ -26,13 +26,6 @@ class CardView: UIView {
     return label
   }()
   
-  private let cardImageView: UIImageView = {
-    let imageView = UIImageView()
-    imageView.clipsToBounds = true
-    imageView.contentMode = .scaleAspectFill
-    return imageView
-  }()
-  
   private let moreInfoButton: UIButton = {
     let button = UIButton(type: .system)
     button.setImage(#imageLiteral(resourceName: "info_icon").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -40,9 +33,8 @@ class CardView: UIView {
     return button
   }()
   
-  private let topBarStackView = UIStackView()
   private let gradientLayer = CAGradientLayer()
-  private let topBarDeselectedColor = UIColor(white: 0, alpha: 0.1)
+  private let pagingPhotosController = PagingPhotosViewController(isCardViewMode: true)
   
   // MARK: -
   
@@ -52,25 +44,12 @@ class CardView: UIView {
   
   var viewModel: CardViewViewModel! {
     didSet {
-      // Get the first image if it exist.
-      // Accessing index 0 this way: (imageNames.count == 0) - will crash the app
-      let image = viewModel.imageUrls.first ?? ""
-      guard let imageUrl = URL(string: image) else { return }
-      cardImageView.sd_setImage(with: imageUrl)
-      cardImageView.sd_setImage(with: imageUrl, placeholderImage: #imageLiteral(resourceName: "no_image_icon"), options: .continueInBackground)
+      // Using the Paging Photos Controller to fix a bug with the initial ImageView setup.
+      // The Photos controller handles caching a lot better than an ImageView.
+      pagingPhotosController.cardViewModel = viewModel
       
       userInformationLabel.textAlignment = viewModel!.textAlignment
       userInformationLabel.attributedText = viewModel?.attributedString
-      
-      (0..<(viewModel.imageUrls.count)).forEach { (_) in
-        let barview = UIView()
-        barview.backgroundColor = topBarDeselectedColor
-        topBarStackView.addArrangedSubview(barview)
-      }
-      
-      topBarStackView.arrangedSubviews.first?.backgroundColor = .white
-      
-      setupImageIndexObserver()
     }
   }
   
@@ -101,13 +80,13 @@ class CardView: UIView {
     clipsToBounds = true
     layer.cornerRadius = Layout.cornerRadius
     
-    addSubview(cardImageView)
-    cardImageView.snp.makeConstraints { make in
+    // COnfigure pagingPhotosView
+    guard let pagingPhotosView = pagingPhotosController.view else { return }
+    addSubview(pagingPhotosView)
+    pagingPhotosView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
     }
-    
-    setupTopBarStackView()
-    
+      
     // The gradient layer needs to be called before the userInfoLabel,
     // in order to get the gradient to appear underneath the label.
     setupGradientLayer()
@@ -139,34 +118,6 @@ class CardView: UIView {
     gradientLayer.locations = [Layout.Gradient.topOfTheViewPoint, Layout.Gradient.bottomOfTheViewPoint]
     
     layer.addSublayer(gradientLayer)
-  }
-  
-  private func setupTopBarStackView() {
-    addSubview(topBarStackView)
-    topBarStackView.snp.makeConstraints { make in
-      make.height.equalTo(Layout.TopBarStackview.height)
-      make.trailing.equalToSuperview().offset(Layout.TopBarStackview.trailing)
-      make.top.leading.equalToSuperview().offset(Layout.TopBarStackview.leading)
-    }
-    
-    topBarStackView.distribution = .fillEqually
-    topBarStackView.spacing = Layout.TopBarStackview.spacing
-  }
-  
-  private func setupImageIndexObserver() {
-    viewModel?.imageIndexObserver = { [weak self] (imageIndex, imageUrl) in
-      guard let imageUrl = URL(string: imageUrl ?? "") else { return }
-      self?.cardImageView.sd_setImage(with: imageUrl, placeholderImage: #imageLiteral(resourceName: "no_image_icon"), options: .continueInBackground)
-
-      
-      // Set top bar color to dark for non selected images
-      self?.topBarStackView.arrangedSubviews.forEach { subview in
-        subview.backgroundColor = self?.topBarDeselectedColor
-      }
-      
-      // Set top bar to white for selcted image
-      self?.topBarStackView.arrangedSubviews[imageIndex].backgroundColor = .white
-    }
   }
   
   // MARK: - Actions
@@ -282,13 +233,6 @@ extension CardView {
     enum Gradient {
       static let topOfTheViewPoint: NSNumber = 0.5
       static let bottomOfTheViewPoint: NSNumber = 1.1
-    }
-    
-    enum TopBarStackview {
-      static let height: CGFloat = 5
-      static let spacing: CGFloat = 4
-      static let leading: CGFloat = 8
-      static let trailing: CGFloat = -8
     }
   }
 }

@@ -31,9 +31,25 @@ class PagingPhotosViewController: UIPageViewController {
   // MARK: -
   
   private var photoControllers = [UIViewController]()
-  private var photoBarsStackView = UIStackView(arrangedSubviews: [])
+  private var photoTopBarStackView = UIStackView(arrangedSubviews: [])
   private let deselectedPhotoBarColor = UIColor(white: 0.0, alpha: 0.1)
+  
+  // MARK: -
+  
+  private let isCardViewMode: Bool
+  
+  // MARK: - Initialization
+  
+  init(isCardViewMode: Bool = false) {
+    self.isCardViewMode = isCardViewMode
     
+    super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   // MARK: - View Life Cycle
   
   override func viewDidLoad() {
@@ -51,6 +67,14 @@ class PagingPhotosViewController: UIPageViewController {
     // Set Paging DataSource & Delegate to self
     dataSource = self
     delegate = self
+    
+    // Disable Paging if isCardViewMode
+    if isCardViewMode {
+      disablePhotoPaging()
+    }
+    
+    // Set tap Gesture
+    view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(gesture:))))
   }
   
   private func setupPhotoBarsView() {
@@ -59,25 +83,69 @@ class PagingPhotosViewController: UIPageViewController {
       barView.layer.cornerRadius = 2
       barView.backgroundColor = deselectedPhotoBarColor
       
-      photoBarsStackView.addArrangedSubview(barView)
+      photoTopBarStackView.addArrangedSubview(barView)
     }
     
-    photoBarsStackView.spacing = 4
-    photoBarsStackView.axis = .horizontal
-    photoBarsStackView.distribution = .fillEqually
-    photoBarsStackView.arrangedSubviews.first?.backgroundColor = .white
+    photoTopBarStackView.spacing = 4
+    photoTopBarStackView.axis = .horizontal
+    photoTopBarStackView.distribution = .fillEqually
+    photoTopBarStackView.arrangedSubviews.first?.backgroundColor = .white
     
     // Using the SafeAreaLayoutGuide caused flickering when pulling the image down,
     // instead we are grabbing the statusBarFrame height to anchor the top of the photoBarsStackView
     let statusBarFrameHeight = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-    let photoBarTopPadding = Int(statusBarFrameHeight) + 8
+    var photoBarTopPadding = 8
     
-    view.addSubview(photoBarsStackView)
-    photoBarsStackView.snp.makeConstraints { make in
+    if !isCardViewMode {
+      photoBarTopPadding += Int(statusBarFrameHeight)
+    }
+    
+    view.addSubview(photoTopBarStackView)
+    photoTopBarStackView.snp.makeConstraints { make in
       make.height.equalTo(4)
       make.leading.equalToSuperview().offset(8)
       make.trailing.equalToSuperview().offset(-8)
       make.top.equalTo(view.snp.topMargin).offset(photoBarTopPadding)
+    }
+  }
+  
+  // Helper method to disable the scrolling when
+  // the PagingPhotosViewController is used in the CardView
+  private func disablePhotoPaging() {
+    view.subviews.forEach { view in
+      if let view = view as? UIScrollView {
+        view.isScrollEnabled = false
+      }
+    }
+  }
+  
+  // MARK: - Actions
+  
+  @objc private func handleTap(gesture: UITapGestureRecognizer) {
+    // Grab the first controller
+    guard let currenController = viewControllers?.first else { return }
+    guard let index = photoControllers.firstIndex(of: currenController) else { return }
+    
+    // Set Photo Top Bar color to dark for non selected images
+    photoTopBarStackView.arrangedSubviews.forEach { $0.backgroundColor = deselectedPhotoBarColor }
+    
+    // Move to the next controller when tapped on the right side of the screen
+    if gesture.location(in: self.view).x > view.frame.width / 2 {
+      let nextIndex = min(index + 1, photoControllers.count - 1)
+      let nextController = photoControllers[nextIndex]
+      setViewControllers([nextController], direction: .forward, animated: false)
+      
+      // Set Photo Top Bar color to white for selected images
+      photoTopBarStackView.arrangedSubviews[nextIndex].backgroundColor = .white
+      
+      // Move to the previous controller when tapped on the left side of the screen
+    } else {
+      let previousIndex = max(0, index - 1)
+      let previousController = photoControllers[previousIndex]
+      setViewControllers([previousController], direction: .reverse, animated: false)
+      
+      // Set Photo Top Bar color to white for selected images
+      photoTopBarStackView.arrangedSubviews[previousIndex].backgroundColor = .white
     }
   }
 }
@@ -123,7 +191,7 @@ extension PagingPhotosViewController: UIPageViewControllerDelegate {
     let currentPhotoController = viewControllers?.first
     guard let index = photoControllers.firstIndex(where: { $0 == currentPhotoController }) else { return }
     
-    photoBarsStackView.arrangedSubviews.forEach { $0.backgroundColor = deselectedPhotoBarColor }
-    photoBarsStackView.arrangedSubviews[index].backgroundColor = .white
+    photoTopBarStackView.arrangedSubviews.forEach { $0.backgroundColor = deselectedPhotoBarColor }
+    photoTopBarStackView.arrangedSubviews[index].backgroundColor = .white
   }
 }

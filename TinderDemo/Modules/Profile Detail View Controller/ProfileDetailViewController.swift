@@ -40,8 +40,7 @@ final class ProfileDetailViewController: UIViewController {
   
   // MARK: -
   
-  private let pagingPhotosViewController = PagingPhotosViewController(transitionStyle: .scroll,
-                                                                      navigationOrientation: .horizontal)
+  private let pagingPhotosViewController = PagingPhotosViewController()
   
   // MARK: -
   
