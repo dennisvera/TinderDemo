@@ -30,6 +30,11 @@ final class HomeViewController: UIViewController {
   private var viewModel = [CardViewViewModel]()
   private let progressHud = JGProgressHUD(style: .dark)
   
+  // MARK: -
+
+  private var topCardView: CardView?
+  private var previousCardView: CardView?
+
   // MARK: - View Life Cycle
   
   override func viewDidLoad() {
@@ -115,22 +120,30 @@ final class HomeViewController: UIViewController {
         print("Failed to Fetch User:", error)
         return
       }
-      
+            
       // Fecth user documents
       snapshot?.documents.forEach({ documentSnapshot in
         let userDictionary = documentSnapshot.data()
         let user = User(dictionary: userDictionary)
         
-        // Do not display the current user
-        // *Current user does not need to see its own profile
+        // Check that the user.uid is not the current user.
+        // Current user does not need to see it's own profile.
         if user.uid != Auth.auth().currentUser?.uid {
-          strongSelf.setupCard(with: user)
+         let cardView = strongSelf.setupCardView(with: user)
+          
+          // Set up the next Card
+          strongSelf.previousCardView?.nextCardView = cardView
+          strongSelf.previousCardView = cardView
+          
+          if strongSelf.topCardView == nil {
+            strongSelf.topCardView = cardView
+          }
         }
       })
     }
   }
   
-  private func setupCard(with user: User) {
+  private func setupCardView(with user: User) -> CardView {
     let cardView = CardView(frame: .zero)
     cardView.viewModel = user.toCardViewModel()
     cardView.delegate = self
@@ -143,6 +156,8 @@ final class HomeViewController: UIViewController {
     cardView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
     }
+    
+    return cardView
   }
   
   private func showRegistrationViewController() {
@@ -169,6 +184,7 @@ final class HomeViewController: UIViewController {
   private func setupButtonTargets() {
     topNavigationStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
     bottomControlsStackView.refreshButton.addTarget(self, action: #selector(handleResfresh), for: .touchUpInside)
+    bottomControlsStackView.likeButton.addTarget(self, action: #selector(handleLikeButton), for: .touchUpInside)
   }
   
   @objc private func handleSettings() {
@@ -186,6 +202,31 @@ final class HomeViewController: UIViewController {
   
   @objc private func handleResfresh() {
     fetchUsersFromFirestore()
+  }
+  
+  @objc private func handleLikeButton() {
+    UIView.animate(withDuration: 1.0,
+                   delay: 0,
+                   usingSpringWithDamping: 0.6,
+                   initialSpringVelocity: 0.1,
+                   options: .curveEaseOut,
+                   animations: {
+                    guard let topCardView = self.topCardView else { return }
+                    
+                    topCardView.frame = CGRect(x: 600,
+                                               y: 0,
+                                               width: topCardView.frame.width,
+                                               height: topCardView.frame.height)
+                    
+                    // Rotate card slightly up when dismissing card
+                    let angle: CGFloat = 15 * CGFloat.pi / 180
+                    topCardView.transform = CGAffineTransform(rotationAngle: angle)
+    }) { _ in
+      self.topCardView?.removeFromSuperview()
+      
+      // Set the next card view to be the top card
+      self.topCardView = self.topCardView?.nextCardView
+    }
   }
 }
 
@@ -210,6 +251,13 @@ extension HomeViewController: SettingsViewControllerDelegate {
 // MARK: - CardViewDelegate
 
 extension HomeViewController: CardViewDelegate {
+  
+  func didRemoveCard(cardView: CardView) {
+    topCardView?.removeFromSuperview()
+    
+    // Set the next card view to be the top card
+    topCardView = self.topCardView?.nextCardView
+  }
   
   func didTapMoreInfoButton(with cardViewmodel: CardViewViewModel) {
     let profileDetailViewController = ProfileDetailViewController()

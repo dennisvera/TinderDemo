@@ -13,9 +13,9 @@ final class HomeBottomControlStackView: UIStackView {
   // MARK: - Properties
   
   let refreshButton = UIButton().createButton(with: #imageLiteral(resourceName: "refresh_circle_icon"), selector: #selector(handleRefreshButton))
-  let cancelButton = UIButton().createButton(with: #imageLiteral(resourceName: "dismiss_circle_icon"), selector: #selector(handleCancelButton))
+  let dislikeButton = UIButton().createButton(with: #imageLiteral(resourceName: "dismiss_circle_icon"), selector: #selector(handleDislikeButton))
   let starButton = UIButton().createButton(with: #imageLiteral(resourceName: "super_like_circle_icon"), selector: #selector(handleStarButton))
-  let heartButton = UIButton().createButton(with: #imageLiteral(resourceName: "like_circle_icon"), selector: #selector(handleHeartButton))
+  let likeButton = UIButton().createButton(with: #imageLiteral(resourceName: "like_circle_icon"), selector: #selector(handleLikeButton))
   let lightningButton = UIButton().createButton(with: #imageLiteral(resourceName: "boost_circle_icon"), selector: #selector(handleLightningButton))
   
   // MARK: -
@@ -37,7 +37,7 @@ final class HomeBottomControlStackView: UIStackView {
   // MARK: - Helper methods
   
   private func setupStackView() {
-    [refreshButton, cancelButton, starButton, heartButton, lightningButton].forEach { button in
+    [refreshButton, dislikeButton, starButton, likeButton, lightningButton].forEach { button in
       addArrangedSubview(button)
     }
     
@@ -51,7 +51,7 @@ final class HomeBottomControlStackView: UIStackView {
     print("Refresh button tapped")
   }
   
-  @objc private func handleCancelButton() {
+  @objc private func handleDislikeButton() {
     print("Cancel button tapped")
   }
   
@@ -59,7 +59,7 @@ final class HomeBottomControlStackView: UIStackView {
     print("Star button tapped")
   }
   
-  @objc private func handleHeartButton() {
+  @objc private func handleLikeButton() {
     print("Heart button tapped")
   }
   
