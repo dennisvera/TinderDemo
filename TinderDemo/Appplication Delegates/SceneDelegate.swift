@@ -18,8 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   // MARK: - Application Life Cycle
   
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-    // The Firebase configure needs to be called before main window is initialized
     // Configure Firebase
+    // The Firebase configure needs to be called before main window is initialized
     FirebaseApp.configure()
     let db = Firestore.firestore()
     let settings = db.settings
@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // Initialize and Configure Main Window
     guard let windowScene = scene as? UIWindowScene else { return }
     window = UIWindow(windowScene: windowScene)
-    window?.rootViewController = PagingPhotosViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+    window?.rootViewController = HomeViewController()
     window?.makeKeyAndVisible()
   }
   

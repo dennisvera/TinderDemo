@@ -13,9 +13,22 @@ class PagingPhotosViewController: UIPageViewController {
   
   // MARK: - Properties
   
-  private let photoControllers = [ PhotoViewController(image: #imageLiteral(resourceName: "kelly1")),
-                                  PhotoViewController(image: #imageLiteral(resourceName: "jane1")),
-                                  PhotoViewController(image: #imageLiteral(resourceName: "alyssa1")) ]
+  var cardViewModel: CardViewViewModel! {
+    didSet {
+      photoControllers = cardViewModel.imageUrls.map({ imageUrl -> UIViewController in
+        let photoController = PhotoViewController(imageUrl: imageUrl)
+        return photoController
+      })
+      
+      // Set View Controllers paging starting at the first index of the photoControllers array
+      guard let firstController = photoControllers.first else { return }
+      setViewControllers([firstController], direction: .forward, animated: false)
+    }
+  }
+  
+  // MARK: -
+  
+  private var photoControllers = [UIViewController]()
   
   // MARK: - View Life Cycle
   
@@ -33,10 +46,6 @@ class PagingPhotosViewController: UIPageViewController {
     
     // Set Paging DataSource to self
     dataSource = self
-    
-    // Set View Controllers paging starting at the first index of the photoControllers array
-    guard let firstController = photoControllers.first else { return }
-    setViewControllers([firstController], direction: .forward, animated: false)
   }
 }
 

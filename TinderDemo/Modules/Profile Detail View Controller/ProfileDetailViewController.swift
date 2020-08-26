@@ -22,13 +22,6 @@ final class ProfileDetailViewController: UIViewController {
     return scrollView
   }()
   
-  private let profileImageView: UIImageView = {
-    let imageView = UIImageView()
-    imageView.clipsToBounds = true
-    imageView.contentMode = .scaleAspectFill
-    return imageView
-  }()
-  
   private let infoLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 0
@@ -47,6 +40,11 @@ final class ProfileDetailViewController: UIViewController {
   
   // MARK: -
   
+  private let pagingPhotosViewController = PagingPhotosViewController(transitionStyle: .scroll,
+                                                                      navigationOrientation: .horizontal)
+  
+  // MARK: -
+  
   private let cancelButton = UIButton().createButton(with: #imageLiteral(resourceName: "dismiss_circle_icon"), selector: #selector(handleCancelButton))
   private let starButton = UIButton().createButton(with: #imageLiteral(resourceName: "super_like_circle_icon"), selector: #selector(handleStarButton))
   private let heartButton = UIButton().createButton(with: #imageLiteral(resourceName: "like_circle_icon"), selector: #selector(handleHeartButton))
@@ -56,12 +54,13 @@ final class ProfileDetailViewController: UIViewController {
   var cardViewModel: CardViewViewModel? {
     didSet {
       infoLabel.attributedText = cardViewModel?.attributedString
-      
-      guard let firstImage = cardViewModel?.imageUrls.first,
-      let imageUrl = URL(string: firstImage) else { return }
-      profileImageView.sd_setImage(with: imageUrl)
+      pagingPhotosViewController.cardViewModel = cardViewModel
     }
   }
+  
+  // MARK: -
+  
+  private let pagingPhotosHeightPadding: CGFloat = 80
   
   // MARK: - View Life Cycle
   
@@ -70,6 +69,19 @@ final class ProfileDetailViewController: UIViewController {
     
     setupView()
     setupVisualEffectBlurView()
+  }
+  
+  override func viewWillLayoutSubviews() {
+    super.viewWillLayoutSubviews()
+    
+    guard let pagingPhotosView = pagingPhotosViewController.view else { return }
+    
+    // Setting the imageview frame in order to avoid using auto-layout
+    // Auto-layout inside a scrollview does not always behave as expected
+    pagingPhotosView.frame = CGRect(x: 0,
+                                    y: 0,
+                                    width: view.frame.width,
+                                    height: view.frame.width + pagingPhotosHeightPadding)
   }
   
   // MARK: - Helper Methods
@@ -83,18 +95,16 @@ final class ProfileDetailViewController: UIViewController {
       make.edges.equalToSuperview()
     }
     
-    // Configure profileImageView
-    scrollView.addSubview(profileImageView)
-    // Setting the imageview frame in order to avoid using auto-layout
-    // Auto-layout inside a scrollview does not always behave as expected
-    profileImageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width)
+    // Configure pagingPhotosView
+    guard let pagingPhotosView = pagingPhotosViewController.view else { return }
+    scrollView.addSubview(pagingPhotosView)
     
     // Configure infoLabel
     scrollView.addSubview(infoLabel)
     infoLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().offset(16)
       make.trailing.equalToSuperview().offset(-16)
-      make.top.equalTo(profileImageView.snp.bottom).offset(16)
+      make.top.equalTo(pagingPhotosView.snp.bottom).offset(16)
     }
     
     // Configure dissmissButton
@@ -102,7 +112,7 @@ final class ProfileDetailViewController: UIViewController {
     dissmissButton.snp.makeConstraints { make in
       make.width.height.equalTo(50)
       make.trailing.equalTo(view.snp.trailing).offset(-25)
-      make.top.equalTo(profileImageView.snp.bottom).offset(-25)
+      make.top.equalTo(pagingPhotosView.snp.bottom).offset(-25)
     }
     
     // Initialize bottonStackView
@@ -172,7 +182,10 @@ extension ProfileDetailViewController: UIScrollViewDelegate {
       // The width/ height both add the frame width + changeY * 2 to make the image bigger as it is growing,
       // balancing out the shift to the left by the x/y
       let width = view.frame.width + changeY * 2
-      profileImageView.frame = CGRect(x: -changeY,
+      
+      guard let pagingPhotosView = pagingPhotosViewController.view else { return }
+
+      pagingPhotosView.frame = CGRect(x: -changeY,
                                       y: -changeY,
                                       width: width,
                                       height: width)

@@ -13,12 +13,19 @@ final class PhotoViewController: UIViewController {
   
   // MARK: - Properties
   
-  private let profileImageView = UIImageView()
+  private let profileImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.clipsToBounds = true
+    imageView.contentMode = .scaleAspectFill
+    return imageView
+  }()
   
   // MARK: - Initialization
   
-  init(image: UIImage) {
-    self.profileImageView.image = image
+  init(imageUrl: String) {
+    if let imageUrl = URL(string: imageUrl) {
+      self.profileImageView.sd_setImage(with: imageUrl)
+    }
     
     super.init(nibName: nil, bundle: nil)
   }
@@ -39,13 +46,9 @@ final class PhotoViewController: UIViewController {
   
   private func setupView() {
     // Copnfigure profileImageView
-    profileImageView.clipsToBounds = true
-    profileImageView.contentMode = .scaleAspectFill
-    
     view.addSubview(profileImageView)
     profileImageView.snp.makeConstraints { make in
-      make.height.equalTo(view.frame.width)
-      make.top.leading.trailing.equalToSuperview()
+      make.edges.equalToSuperview()
     }
   }
 }

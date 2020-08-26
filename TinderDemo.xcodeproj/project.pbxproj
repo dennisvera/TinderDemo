@@ -188,8 +188,8 @@
 		E1D427EE24E9AE3900AFACBC /* Paging Photos View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				E1D427EC24E9A74300AFACBC /* PagingPhotosViewController.swift */,
 				E1D427EF24E9AE7800AFACBC /* PhotoViewController.swift */,
+				E1D427EC24E9A74300AFACBC /* PagingPhotosViewController.swift */,
 			);
 			path = "Paging Photos View Controller";
 			sourceTree = "<group>";
