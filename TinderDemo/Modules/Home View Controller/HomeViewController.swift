@@ -162,6 +162,76 @@ final class HomeViewController: UIViewController {
     return cardView
   }
   
+  private func saveSwipeToFireStore(didLike: Int) {
+    guard let uid = Auth.auth().currentUser?.uid else { return }
+    guard let cardUid = topCardView?.viewModel.uid else { return }
+    
+    let documentData = [cardUid: didLike]
+    
+    Firestore.firestore()
+      .collection(FireStoreConstants.swipes)
+      .document(uid)
+      .getDocument { (snapshot, error) in
+        if let error = error {
+          print("Unable to Fetch Swipe Document:", error)
+          return
+        }
+        
+        if snapshot?.exists == true {
+          
+          Firestore.firestore()
+            .collection(FireStoreConstants.swipes)
+            .document(uid)
+            .updateData(documentData) { error in
+              
+              if let error = error {
+                print("Failed to Update Data:", error)
+                return
+              }
+          }
+        } else {
+          Firestore.firestore()
+            .collection(FireStoreConstants.swipes)
+            .document(uid)
+            .setData(documentData) { error in
+              if let error = error {
+                print("Failed to Save Swipe Data:", error)
+                return
+              }
+          }
+        }
+    }
+  }
+  
+  private func performSwipeAnimatio(transform: CGFloat, angle: CGFloat) {
+    let translationKeyPath = "position.x"
+    let rotationKeyPath = "transform.rotation.z"
+    let duration = 0.5
+    
+    let translationAnimation = CABasicAnimation(keyPath: translationKeyPath)
+    translationAnimation.toValue = transform
+    translationAnimation.duration = duration
+    translationAnimation.fillMode  = .forwards
+    translationAnimation.isRemovedOnCompletion = false
+    translationAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+    
+    let rotationAnimation = CABasicAnimation(keyPath: rotationKeyPath)
+    rotationAnimation.toValue = angle * CGFloat.pi / 180
+    rotationAnimation.duration = duration
+    
+    let cardView = topCardView
+    topCardView = cardView?.nextCardView
+    
+    CATransaction.setCompletionBlock {
+      cardView?.removeFromSuperview()
+    }
+    
+    cardView?.layer.add(translationAnimation, forKey: translationKeyPath)
+    cardView?.layer.add(rotationAnimation, forKey: rotationKeyPath)
+    
+    CATransaction.commit()
+  }
+  
   private func showRegistrationViewController() {
     // Check if the currentUser is logged out.
     // If user is logged out, present the RegistrationViewController
@@ -208,40 +278,13 @@ final class HomeViewController: UIViewController {
   }
   
   @objc private func handleLikeButton() {
+    saveSwipeToFireStore(didLike: 1)
     performSwipeAnimatio(transform: 700, angle: -15)
   }
   
   @objc private func handleDisLikeButton() {
+    saveSwipeToFireStore(didLike: 0)
     performSwipeAnimatio(transform: -700, angle: -15)
-  }
-  
-  private func performSwipeAnimatio(transform: CGFloat, angle: CGFloat) {
-    let translationKeyPath = "position.x"
-    let rotationKeyPath = "transform.rotation.z"
-    let duration = 0.5
-    
-    let translationAnimation = CABasicAnimation(keyPath: translationKeyPath)
-    translationAnimation.toValue = transform
-    translationAnimation.duration = duration
-    translationAnimation.fillMode  = .forwards
-    translationAnimation.isRemovedOnCompletion = false
-    translationAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
-    
-    let rotationAnimation = CABasicAnimation(keyPath: rotationKeyPath)
-    rotationAnimation.toValue = angle * CGFloat.pi / 180
-    rotationAnimation.duration = duration
-    
-    let cardView = topCardView
-    topCardView = cardView?.nextCardView
-    
-    CATransaction.setCompletionBlock {
-      cardView?.removeFromSuperview()
-    }
-    
-    cardView?.layer.add(translationAnimation, forKey: translationKeyPath)
-    cardView?.layer.add(rotationAnimation, forKey: rotationKeyPath)
-    
-    CATransaction.commit()
   }
 }
 
@@ -266,6 +309,14 @@ extension HomeViewController: SettingsViewControllerDelegate {
 // MARK: - CardViewDelegate
 
 extension HomeViewController: CardViewDelegate {
+  
+  func didSwipeRight() {
+    handleLikeButton()
+  }
+  
+  func didSwipeLeft() {
+    handleDisLikeButton()
+  }
   
   func didRemoveCard(cardView: CardView) {
     topCardView?.removeFromSuperview()
@@ -292,5 +343,9 @@ extension HomeViewController {
   enum Layout {
     static let zero: CGFloat = 0
     static let leadingMarging: CGFloat = 8
+  }
+  
+  enum FireStoreConstants {
+    static let swipes = "swipes"
   }
 }

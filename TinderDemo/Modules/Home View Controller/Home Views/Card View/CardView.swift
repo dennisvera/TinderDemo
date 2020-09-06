@@ -12,8 +12,10 @@ import SDWebImage
 
 protocol CardViewDelegate {
   
-  func didTapMoreInfoButton(with cardViewModel: CardViewViewModel)
+  func didSwipeLeft()
+  func didSwipeRight()
   func didRemoveCard(cardView: CardView)
+  func didTapMoreInfoButton(with cardViewModel: CardViewViewModel)
 }
 
 class CardView: UIView {
@@ -161,30 +163,22 @@ class CardView: UIView {
     let translationDirection: CGFloat = gesture.translation(in: nil).x > Layout.zero ? Layout.one : Layout.negativeOne
     let shouldDismissCard = abs(gesture.translation(in: nil).x) > Layout.threshold
     
-    UIView.animate(withDuration: Layout.Animation.duration,
-                   delay: Layout.Animation.delay,
-                   usingSpringWithDamping: Layout.Animation.springDamping,
-                   initialSpringVelocity: Layout.Animation.springVelocity,
-                   options: .curveEaseOut,
-                   animations: {
-                    if shouldDismissCard {
-                      self.layer.frame = CGRect(x: Layout.Animation.frameX * translationDirection,
-                                          y: Layout.zero,
-                                          width: self.frame.width,
-                                          height: self.frame.height)
-                    } else {
-                      // Set transform back to Center
-                      self.transform = .identity
-                    }
-    }) { (_) in
-      self.transform = .identity
-      
-      if shouldDismissCard {
-        self.removeFromSuperview()
-        
-        // Reset TopCardView in HomeController
-        self.delegate?.didRemoveCard(cardView: self)
+    if shouldDismissCard {
+      if translationDirection == Layout.one {
+        delegate?.didSwipeRight()
+      } else {
+        delegate?.didSwipeLeft()
       }
+    } else {
+      UIView.animate(withDuration: Layout.Animation.duration,
+                     delay: Layout.Animation.delay,
+                     usingSpringWithDamping: Layout.Animation.springDamping,
+                     initialSpringVelocity: Layout.Animation.springVelocity,
+                     options: .curveEaseOut,
+                     animations: {
+                      self.transform = .identity
+                      
+      })
     }
   }
 }

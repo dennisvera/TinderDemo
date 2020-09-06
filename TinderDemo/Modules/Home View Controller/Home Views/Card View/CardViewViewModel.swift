@@ -16,16 +16,17 @@ protocol CardViewViewModelProtocol {
 final class CardViewViewModel {
   
   // MARK: - Public Properties
-  
+  let uid: String
   let imageUrls: [String]
   let attributedString: NSAttributedString
   let textAlignment: NSTextAlignment
     
   // MARK: - Intilaization
   
-  init(imageUrls: [String], attributedString: NSAttributedString, textAlignment: NSTextAlignment) {
+  init(uid: String, imageUrls: [String], attributedString: NSAttributedString, textAlignment: NSTextAlignment) {
+    self.uid = uid
     self.imageUrls = imageUrls
-    self.attributedString = attributedString
     self.textAlignment = textAlignment
+    self.attributedString = attributedString
   }
 }

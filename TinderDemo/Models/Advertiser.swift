@@ -26,6 +26,9 @@ struct Advertiser: CardViewViewModelProtocol {
     attributedText.append(NSAttributedString(string: "\n\(brandName)",
       attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .bold)]))
     
-    return CardViewViewModel(imageUrls: [posterImageName], attributedString: attributedText, textAlignment: .center)
+    return CardViewViewModel(uid: "",
+                             imageUrls: [posterImageName],
+                             attributedString: attributedText,
+                             textAlignment: .center)
   }
 }
