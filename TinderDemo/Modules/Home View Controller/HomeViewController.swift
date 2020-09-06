@@ -110,6 +110,8 @@ final class HomeViewController: UIViewController {
       .whereField("age", isGreaterThanOrEqualTo: minSeekingAge)
       .whereField("age", isLessThanOrEqualTo: maxSeekingAge)
     
+    topCardView = nil
+    
     query.getDocuments { [weak self] (snapshot, error) in
       guard let strongSelf = self else { return }
       
@@ -120,7 +122,7 @@ final class HomeViewController: UIViewController {
         print("Failed to Fetch User:", error)
         return
       }
-            
+      
       // Fecth user documents
       snapshot?.documents.forEach({ documentSnapshot in
         let userDictionary = documentSnapshot.data()
@@ -129,7 +131,7 @@ final class HomeViewController: UIViewController {
         // Check that the user.uid is not the current user.
         // Current user does not need to see it's own profile.
         if user.uid != Auth.auth().currentUser?.uid {
-         let cardView = strongSelf.setupCardView(with: user)
+          let cardView = strongSelf.setupCardView(with: user)
           
           // Set up the next Card
           strongSelf.previousCardView?.nextCardView = cardView
@@ -185,6 +187,7 @@ final class HomeViewController: UIViewController {
     topNavigationStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
     bottomControlsStackView.refreshButton.addTarget(self, action: #selector(handleResfresh), for: .touchUpInside)
     bottomControlsStackView.likeButton.addTarget(self, action: #selector(handleLikeButton), for: .touchUpInside)
+    bottomControlsStackView.dislikeButton.addTarget(self, action: #selector(handleDisLikeButton), for: .touchUpInside)
   }
   
   @objc private func handleSettings() {
@@ -205,28 +208,40 @@ final class HomeViewController: UIViewController {
   }
   
   @objc private func handleLikeButton() {
-    UIView.animate(withDuration: 1.0,
-                   delay: 0,
-                   usingSpringWithDamping: 0.6,
-                   initialSpringVelocity: 0.1,
-                   options: .curveEaseOut,
-                   animations: {
-                    guard let topCardView = self.topCardView else { return }
-                    
-                    topCardView.frame = CGRect(x: 600,
-                                               y: 0,
-                                               width: topCardView.frame.width,
-                                               height: topCardView.frame.height)
-                    
-                    // Rotate card slightly up when dismissing card
-                    let angle: CGFloat = 15 * CGFloat.pi / 180
-                    topCardView.transform = CGAffineTransform(rotationAngle: angle)
-    }) { _ in
-      self.topCardView?.removeFromSuperview()
-      
-      // Set the next card view to be the top card
-      self.topCardView = self.topCardView?.nextCardView
+    performSwipeAnimatio(transform: 700, angle: -15)
+  }
+  
+  @objc private func handleDisLikeButton() {
+    performSwipeAnimatio(transform: -700, angle: -15)
+  }
+  
+  private func performSwipeAnimatio(transform: CGFloat, angle: CGFloat) {
+    let translationKeyPath = "position.x"
+    let rotationKeyPath = "transform.rotation.z"
+    let duration = 0.5
+    
+    let translationAnimation = CABasicAnimation(keyPath: translationKeyPath)
+    translationAnimation.toValue = transform
+    translationAnimation.duration = duration
+    translationAnimation.fillMode  = .forwards
+    translationAnimation.isRemovedOnCompletion = false
+    translationAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+    
+    let rotationAnimation = CABasicAnimation(keyPath: rotationKeyPath)
+    rotationAnimation.toValue = angle * CGFloat.pi / 180
+    rotationAnimation.duration = duration
+    
+    let cardView = topCardView
+    topCardView = cardView?.nextCardView
+    
+    CATransaction.setCompletionBlock {
+      cardView?.removeFromSuperview()
     }
+    
+    cardView?.layer.add(translationAnimation, forKey: translationKeyPath)
+    cardView?.layer.add(rotationAnimation, forKey: rotationKeyPath)
+    
+    CATransaction.commit()
   }
 }
 
