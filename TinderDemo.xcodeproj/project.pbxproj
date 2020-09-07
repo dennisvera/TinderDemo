@@ -36,6 +36,7 @@
 		E1DFBC1B24BA617B0092622B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC1A24BA617B0092622B /* User.swift */; };
 		E1DFBC1E24BA7F080092622B /* CardViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC1D24BA7F080092622B /* CardViewViewModel.swift */; };
 		E1DFBC2224BB8B500092622B /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC2124BB8B500092622B /* Advertiser.swift */; };
+		E1FECE522506DC0300167B35 /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FECE512506DC0300167B35 /* MatchView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,7 @@
 		E1DFBC1A24BA617B0092622B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E1DFBC1D24BA7F080092622B /* CardViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewViewModel.swift; sourceTree = "<group>"; };
 		E1DFBC2124BB8B500092622B /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
+		E1FECE512506DC0300167B35 /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,6 +277,7 @@
 		E1DFBC1124B903AE0092622B /* Home Views */ = {
 			isa = PBXGroup;
 			children = (
+				E1FECE4E2506DB8600167B35 /* Match View */,
 				E1DFBC1C24BA7EEC0092622B /* Card View */,
 				E1DFBC1F24BA84250092622B /* Top Navigation View */,
 				E1DFBC2024BA84330092622B /* Home Bottom View */,
@@ -323,6 +326,14 @@
 				E1DFBC1224B903EB0092622B /* HomeBottomControlStackView.swift */,
 			);
 			path = "Home Bottom View";
+			sourceTree = "<group>";
+		};
+		E1FECE4E2506DB8600167B35 /* Match View */ = {
+			isa = PBXGroup;
+			children = (
+				E1FECE512506DC0300167B35 /* MatchView.swift */,
+			);
+			path = "Match View";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -470,6 +481,7 @@
 				E1CF828224E5CCFC0041838D /* AgeRangeLabel.swift in Sources */,
 				E1DFBC1524B912280092622B /* TopNavigationStackView.swift in Sources */,
 				E14F9EDA24D9DC1500D63A96 /* SettingsTableViewCell.swift in Sources */,
+				E1FECE522506DC0300167B35 /* MatchView.swift in Sources */,
 				E1DFBC2224BB8B500092622B /* Advertiser.swift in Sources */,
 				E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */,
 				E145083824C8C4B000DC7727 /* RegistrationViewController.swift in Sources */,

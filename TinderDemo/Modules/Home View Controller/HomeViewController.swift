@@ -158,7 +158,8 @@ final class HomeViewController: UIViewController {
         // Check that the user.uid is not the current user.
         // Current user does not need to see it's own profile.
         let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
-        let hasNotSwipedBefore = strongSelf.swipes[user.uid ?? ""] == nil
+//        let hasNotSwipedBefore = strongSelf.swipes[user.uid ?? ""] == nil
+        let hasNotSwipedBefore = true
         
         if isNotCurrentUser && hasNotSwipedBefore {
           let cardView = strongSelf.setupCardView(with: user)
@@ -220,7 +221,9 @@ final class HomeViewController: UIViewController {
                 return
               }
               
-              strongSelf.checkIfMatchExists(cardUid: cardUid)
+              if didLike == 1 {
+                strongSelf.checkIfMatchExists(cardUid: cardUid)
+              }
           }
         } else {
           Firestore.firestore()
@@ -234,10 +237,12 @@ final class HomeViewController: UIViewController {
                 return
               }
               
-              strongSelf.checkIfMatchExists(cardUid: cardUid)
+              if didLike == 1 {
+                strongSelf.checkIfMatchExists(cardUid: cardUid)
+              }
           }
         }
-    }
+     }
   }
   
   private func checkIfMatchExists(cardUid: String) {
@@ -260,11 +265,17 @@ final class HomeViewController: UIViewController {
         let hasMatched = data[uid] as? Int == 1
         
         if hasMatched {
-          strongSelf.progressHud.textLabel.text = "Found a Match"
-          strongSelf.progressHud.show(in: strongSelf.view)
-          
-          strongSelf.progressHud.dismiss(afterDelay: 3)
+          strongSelf.presentMatchView(with: cardUid)
         }
+    }
+  }
+  
+  private func presentMatchView(with cardUid: String) {
+    let matchView = MatchView()
+    
+    view.addSubview(matchView)
+    matchView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
     }
   }
   
@@ -334,6 +345,7 @@ final class HomeViewController: UIViewController {
   }
   
   @objc private func handleResfresh() {
+    cardsDeckView.subviews.forEach({ $0.removeFromSuperview() })
     fetchUsersFromFirestore()
   }
   
