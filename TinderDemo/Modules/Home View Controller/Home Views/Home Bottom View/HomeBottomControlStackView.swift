@@ -12,11 +12,20 @@ final class HomeBottomControlStackView: UIStackView {
   
   // MARK: - Properties
   
-  let refreshButton = UIButton().createButton(with: #imageLiteral(resourceName: "refresh_circle_icon"), selector: #selector(handleRefreshButton))
-  let dislikeButton = UIButton().createButton(with: #imageLiteral(resourceName: "dismiss_circle_icon"), selector: #selector(handleDislikeButton))
-  let starButton = UIButton().createButton(with: #imageLiteral(resourceName: "super_like_circle_icon"), selector: #selector(handleStarButton))
-  let likeButton = UIButton().createButton(with: #imageLiteral(resourceName: "like_circle_icon"), selector: #selector(handleLikeButton))
-  let lightningButton = UIButton().createButton(with: #imageLiteral(resourceName: "boost_circle_icon"), selector: #selector(handleLightningButton))
+  static func createButton(image: UIImage) -> UIButton {
+    let button = UIButton(type: .system)
+    button.imageView?.contentMode = .scaleAspectFill
+    button.setImage(image.withRenderingMode(.alwaysOriginal), for: .normal)
+    return button
+  }
+  
+  // MARK: -
+  
+  let starButton = createButton(image: #imageLiteral(resourceName: "super_like_circle_icon"))
+  let likeButton = createButton(image: #imageLiteral(resourceName: "like_circle_icon"))
+  let refreshButton = createButton(image: #imageLiteral(resourceName: "refresh_circle_icon"))
+  let dislikeButton = createButton(image: #imageLiteral(resourceName: "dismiss_circle_icon"))
+  let lightningButton = createButton(image: #imageLiteral(resourceName: "boost_circle_icon"))
   
   // MARK: -
   
@@ -43,27 +52,5 @@ final class HomeBottomControlStackView: UIStackView {
     
     distribution = .fillEqually
     heightAnchor.constraint(equalToConstant: heightAnchorConstraint).isActive = true
-  }
-  
-  // MARK: - Actions
-  
-  @objc private func handleRefreshButton() {
-    print("Refresh button tapped")
-  }
-  
-  @objc private func handleDislikeButton() {
-    print("Cancel button tapped")
-  }
-  
-  @objc private func handleStarButton() {
-    print("Star button tapped")
-  }
-  
-  @objc private func handleLikeButton() {
-    print("Heart button tapped")
-  }
-  
-  @objc private func handleLightningButton() {
-    print("Lightning button tapped")
   }
 }
