@@ -33,6 +33,24 @@ final class MatchView: UIView {
     return imageView
   }()
   
+  private let itsAMatchImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = #imageLiteral(resourceName: "itsamatch")
+    imageView.clipsToBounds = true
+    imageView.contentMode = .scaleAspectFill
+    return imageView
+  }()
+  
+  private let descriptionLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .white
+    label.numberOfLines = 2
+    label.textAlignment = .center
+    label.font = UIFont.systemFont(ofSize: 18)
+    label.text = "You and [name] have liked\neach other"
+    return label
+  }()
+  
   private let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
   
   // MARK: - Initialization
@@ -41,7 +59,7 @@ final class MatchView: UIView {
     super.init(frame: frame)
     
     setupBlurView()
-    setupMatchedViews()
+    setupViews()
   }
   
   required init?(coder: NSCoder) {
@@ -71,7 +89,21 @@ final class MatchView: UIView {
     }
   }
   
-  private func setupMatchedViews() {
+  private func setupViews() {
+    // Configure It's a Match Image View
+    addSubview(itsAMatchImageView)
+    itsAMatchImageView.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+    }
+    
+    // Configure Description Label
+    addSubview(descriptionLabel)
+    descriptionLabel.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(itsAMatchImageView.snp.bottom).offset(20)
+    }
+    
     let imageWidth: CGFloat = 140
     currenUserImageView.layer.cornerRadius = imageWidth / 2
     matchedUserImageView.layer.cornerRadius = imageWidth / 2
@@ -82,6 +114,7 @@ final class MatchView: UIView {
       make.height.width.equalTo(imageWidth)
       make.centerY.equalToSuperview()
       make.trailing.equalTo(self.snp.centerX).offset(-16)
+      make.top.equalTo(descriptionLabel.snp.bottom).offset(50)
     }
     
     // Configure Match User Image View
