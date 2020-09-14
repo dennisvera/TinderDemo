@@ -41,14 +41,28 @@ final class MatchView: UIView {
     return imageView
   }()
   
-  private let descriptionLabel: UILabel = {
+  private let itsAMatchLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .white
     label.numberOfLines = 2
+    label.textColor = .white
     label.textAlignment = .center
     label.font = UIFont.systemFont(ofSize: 18)
     label.text = "You and [name] have liked\neach other"
     return label
+  }()
+  
+  private let sendMessageButton: UIButton = {
+    let button = SendMessageButton(type: .system)
+    button.setTitleColor(.white, for: .normal)
+    button.setTitle("SEND MESSAGE", for: .normal)
+    return button
+  }()
+  
+  private let keepSwipingButton: UIButton = {
+    let button = KeepSwippingButton(type: .system)
+    button.setTitleColor(.white, for: .normal)
+    button.setTitle("Keep Swipping", for: .normal)
+    return button
   }()
   
   private let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -92,16 +106,16 @@ final class MatchView: UIView {
   private func setupViews() {
     // Configure It's a Match Image View
     addSubview(itsAMatchImageView)
-    itsAMatchImageView.snp.makeConstraints { make in
-      make.centerX.equalToSuperview()
+    itsAMatchImageView.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
     }
     
     // Configure Description Label
-    addSubview(descriptionLabel)
-    descriptionLabel.snp.makeConstraints { make in
-      make.centerX.equalToSuperview()
-      make.leading.trailing.equalToSuperview()
-      make.top.equalTo(itsAMatchImageView.snp.bottom).offset(20)
+    addSubview(itsAMatchLabel)
+    itsAMatchLabel.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.leading.trailing.equalToSuperview()
+      $0.top.equalTo(itsAMatchImageView.snp.bottom).offset(20)
     }
     
     let imageWidth: CGFloat = 140
@@ -110,19 +124,37 @@ final class MatchView: UIView {
     
     // Configure Current User Image View
     addSubview(currenUserImageView)
-    currenUserImageView.snp.makeConstraints { make in
-      make.height.width.equalTo(imageWidth)
-      make.centerY.equalToSuperview()
-      make.trailing.equalTo(self.snp.centerX).offset(-16)
-      make.top.equalTo(descriptionLabel.snp.bottom).offset(50)
+    currenUserImageView.snp.makeConstraints {
+      $0.centerY.equalToSuperview()
+      $0.height.width.equalTo(imageWidth)
+      $0.trailing.equalTo(self.snp.centerX).offset(-16)
+      $0.top.equalTo(itsAMatchLabel.snp.bottom).offset(50)
     }
     
     // Configure Match User Image View
     addSubview(matchedUserImageView)
-    matchedUserImageView.snp.makeConstraints { make in
-      make.height.width.equalTo(imageWidth)
-      make.centerY.equalToSuperview()
-      make.leading.equalTo(self.snp.centerX).offset(16)
+    matchedUserImageView.snp.makeConstraints {
+      $0.centerY.equalToSuperview()
+      $0.height.width.equalTo(imageWidth)
+      $0.leading.equalTo(self.snp.centerX).offset(16)
+    }
+    
+    // Configure Send Message Button
+    addSubview(sendMessageButton)
+    sendMessageButton.snp.makeConstraints {
+      $0.height.equalTo(60)
+      $0.leading.equalToSuperview().offset(48)
+      $0.trailing.equalToSuperview().offset(-48)
+      $0.top.equalTo(matchedUserImageView.snp.bottom).offset(32)
+    }
+    
+    // Configure Keep Swipping Button
+    addSubview(keepSwipingButton)
+    keepSwipingButton.snp.makeConstraints {
+      $0.height.equalTo(60)
+      $0.leading.equalTo(sendMessageButton.snp.leading)
+      $0.trailing.equalTo(sendMessageButton.snp.trailing)
+      $0.top.equalTo(sendMessageButton.snp.bottom).offset(16)
     }
   }
   

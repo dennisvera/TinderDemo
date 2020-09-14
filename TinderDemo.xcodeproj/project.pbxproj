@@ -14,6 +14,8 @@
 		E145088624CF478300DC7727 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E145088524CF478300DC7727 /* GoogleService-Info.plist */; };
 		E14F9ED624D8D2ED00D63A96 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14F9ED524D8D2ED00D63A96 /* SettingsViewController.swift */; };
 		E14F9EDA24D9DC1500D63A96 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14F9ED924D9DC1500D63A96 /* SettingsTableViewCell.swift */; };
+		E1B55450250FD7CF00208E56 /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B5544F250FD7CF00208E56 /* SendMessageButton.swift */; };
+		E1B55452250FE10B00208E56 /* KeepSwippingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */; };
 		E1CF827A24E4518C0041838D /* CustomImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827924E4518C0041838D /* CustomImagePicker.swift */; };
 		E1CF827C24E45ABC0041838D /* SettingsHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */; };
 		E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827D24E45F6F0041838D /* SettingsTextField.swift */; };
@@ -49,6 +51,8 @@
 		E145088524CF478300DC7727 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E14F9ED524D8D2ED00D63A96 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		E14F9ED924D9DC1500D63A96 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
+		E1B5544F250FD7CF00208E56 /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
+		E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwippingButton.swift; sourceTree = "<group>"; };
 		E1CF827924E4518C0041838D /* CustomImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImagePicker.swift; sourceTree = "<group>"; };
 		E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderLabel.swift; sourceTree = "<group>"; };
 		E1CF827D24E45F6F0041838D /* SettingsTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextField.swift; sourceTree = "<group>"; };
@@ -119,9 +123,11 @@
 			children = (
 				E1CF828124E5CCFC0041838D /* AgeRangeLabel.swift */,
 				E145083A24C8D00F00DC7727 /* CustomTextField.swift */,
-				E1CF827924E4518C0041838D /* CustomImagePicker.swift */,
 				E1CF827D24E45F6F0041838D /* SettingsTextField.swift */,
+				E1CF827924E4518C0041838D /* CustomImagePicker.swift */,
 				E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */,
+				E1B5544F250FD7CF00208E56 /* SendMessageButton.swift */,
+				E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -472,6 +478,7 @@
 				E1CF828524E602A10041838D /* Firebase+Extension.swift in Sources */,
 				E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */,
 				E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */,
+				E1B55452250FE10B00208E56 /* KeepSwippingButton.swift in Sources */,
 				E1D427ED24E9A74300AFACBC /* PagingPhotosViewController.swift in Sources */,
 				E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */,
 				E1D427EB24E97FDA00AFACBC /* UIButton+Extension.swift in Sources */,
@@ -493,6 +500,7 @@
 				E1DFBC1324B903EB0092622B /* HomeBottomControlStackView.swift in Sources */,
 				E1DFBC1B24BA617B0092622B /* User.swift in Sources */,
 				E1CF827C24E45ABC0041838D /* SettingsHeaderLabel.swift in Sources */,
+				E1B55450250FD7CF00208E56 /* SendMessageButton.swift in Sources */,
 				E1CF827A24E4518C0041838D /* CustomImagePicker.swift in Sources */,
 				E1D427F024E9AE7800AFACBC /* PhotoViewController.swift in Sources */,
 			);
