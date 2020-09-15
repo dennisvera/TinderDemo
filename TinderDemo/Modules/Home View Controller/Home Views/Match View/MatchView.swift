@@ -58,7 +58,7 @@ final class MatchView: UIView {
     return button
   }()
   
-  private let keepSwipingButton: UIButton = {
+  private let keepSwippingButton: UIButton = {
     let button = KeepSwippingButton(type: .system)
     button.setTitleColor(.white, for: .normal)
     button.setTitle("Keep Swipping", for: .normal)
@@ -74,6 +74,7 @@ final class MatchView: UIView {
     
     setupBlurView()
     setupViews()
+    setupAnimations()
   }
   
   required init?(coder: NSCoder) {
@@ -149,13 +150,53 @@ final class MatchView: UIView {
     }
     
     // Configure Keep Swipping Button
-    addSubview(keepSwipingButton)
-    keepSwipingButton.snp.makeConstraints {
+    addSubview(keepSwippingButton)
+    keepSwippingButton.snp.makeConstraints {
       $0.height.equalTo(60)
       $0.leading.equalTo(sendMessageButton.snp.leading)
       $0.trailing.equalTo(sendMessageButton.snp.trailing)
       $0.top.equalTo(sendMessageButton.snp.bottom).offset(16)
     }
+  }
+  
+  private func setupAnimations() {
+    // Image Views animation starting positions
+    let angle = 30 * CGFloat.pi / 180
+    currenUserImageView.transform = CGAffineTransform(rotationAngle: -angle).concatenating(CGAffineTransform(translationX: 200, y: 0))
+    matchedUserImageView.transform = CGAffineTransform(rotationAngle: angle).concatenating(CGAffineTransform(translationX: -200, y: 0))
+    
+    // Buttons animation starting positions
+    sendMessageButton.transform = CGAffineTransform(translationX: -500, y: 0)
+    keepSwippingButton.transform = CGAffineTransform(translationX: 500, y: 0)
+    
+    // Keyframe animations
+    UIView.animateKeyframes(withDuration: 1.3, delay: 0, options: .calculationModeCubic, animations: {
+      
+      // Animation 1 - Translation back to original position
+      UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.45) {
+        self.currenUserImageView.transform = CGAffineTransform(rotationAngle: -angle)
+        self.matchedUserImageView.transform = CGAffineTransform(rotationAngle: angle)
+      }
+      
+      // Animation 2 - Rotation
+      UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4) {
+        // Rotate Image Views back to their original postition
+        self.currenUserImageView.transform = .identity
+        self.matchedUserImageView.transform = .identity
+      }
+    }) { _ in
+    }
+    
+    // Animate the buttons back to their original postions
+    UIView.animate(withDuration: 0.75,
+                   delay: 0.6 * 1.3,
+                   usingSpringWithDamping: 0.5,
+                   initialSpringVelocity: 0.1,
+                   options: .curveEaseOut, animations: {
+                    // Set buttons back to their original positions
+                    self.sendMessageButton.transform = .identity
+                    self.keepSwippingButton.transform = .identity
+    })
   }
   
   // MARK: - Actions
