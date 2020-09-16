@@ -22,6 +22,8 @@ class MessagesCollectionViewCell: UICollectionViewCell {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
+    
+    setupView()
   }
   
   required init?(coder: NSCoder) {
@@ -31,7 +33,6 @@ class MessagesCollectionViewCell: UICollectionViewCell {
   // MARK: - Helper Methods
   
   private func setupView() {
-    
+    backgroundColor = .red
   }
-  
 }
