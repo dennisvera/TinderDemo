@@ -26,10 +26,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     settings.areTimestampsInSnapshotsEnabled = true
     db.settings = settings
     
+    let homeViewController = HomeViewController()
+    let rootNavigataionController = UINavigationController(rootViewController: homeViewController)
+    
     // Initialize and Configure Main Window
     guard let windowScene = scene as? UIWindowScene else { return }
     window = UIWindow(windowScene: windowScene)
-    window?.rootViewController = HomeViewController()
+    window?.rootViewController = rootNavigataionController
     window?.makeKeyAndVisible()
   }
   

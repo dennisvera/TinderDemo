@@ -26,7 +26,7 @@ class TopNavigationStackView: UIStackView {
     return button
   }()
   
-  private let messageButton: UIButton = {
+  let messagesButton: UIButton = {
     let button = UIButton(type: .system)
     let image = #imageLiteral(resourceName: "top_right_messages_icon").withRenderingMode(.alwaysOriginal)
     button.setImage(image, for: .normal)
@@ -48,7 +48,7 @@ class TopNavigationStackView: UIStackView {
   // MARK: - Helper methods
   
   private func setupStackView() {
-    [settingsButton, UIView(), tinderIconImageView, UIView(), messageButton].forEach { view in
+    [settingsButton, UIView(), tinderIconImageView, UIView(), messagesButton].forEach { view in
       addArrangedSubview(view)
     }
     

@@ -59,6 +59,7 @@ final class HomeViewController: UIViewController {
   
   private func setupView() {
     view.backgroundColor = .white
+    navigationController?.navigationBar.isHidden = true
     
     let mainStackView = UIStackView(arrangedSubviews: [topNavigationStackView, cardsDeckView, bottomControlsStackView])
     mainStackView.axis = .vertical
@@ -327,13 +328,14 @@ final class HomeViewController: UIViewController {
   // MARK: - Actions
   
   private func setupButtonTargets() {
-    topNavigationStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
-    bottomControlsStackView.refreshButton.addTarget(self, action: #selector(handleResfresh), for: .touchUpInside)
+    topNavigationStackView.settingsButton.addTarget(self, action: #selector(handleSettingsButton), for: .touchUpInside)
+    topNavigationStackView.messagesButton.addTarget(self, action: #selector(handleMessagesButton), for: .touchUpInside)
+    bottomControlsStackView.refreshButton.addTarget(self, action: #selector(handleResfreshButton), for: .touchUpInside)
     bottomControlsStackView.likeButton.addTarget(self, action: #selector(handleLikeButton), for: .touchUpInside)
     bottomControlsStackView.dislikeButton.addTarget(self, action: #selector(handleDisLikeButton), for: .touchUpInside)
   }
   
-  @objc private func handleSettings() {
+  @objc private func handleSettingsButton() {
     // Initialize SettingsViewController
     let settingsViewController = SettingsViewController()
     
@@ -346,7 +348,12 @@ final class HomeViewController: UIViewController {
     present(navigationController, animated: true)
   }
   
-  @objc private func handleResfresh() {
+  @objc private func handleMessagesButton() {
+    let messagesViewController = MessagesViewController()    
+    navigationController?.pushViewController(messagesViewController, animated: true)
+  }
+  
+  @objc private func handleResfreshButton() {
     cardsDeckView.subviews.forEach({ $0.removeFromSuperview() })
     fetchUsersFromFirestore()
   }
