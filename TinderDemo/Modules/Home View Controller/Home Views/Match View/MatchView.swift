@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Firebase
 
 final class MatchView: UIView {
   
@@ -15,7 +16,6 @@ final class MatchView: UIView {
   
   private let currenUserImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = #imageLiteral(resourceName: "alyssa1")
     imageView.clipsToBounds = true
     imageView.layer.borderWidth = 2
     imageView.contentMode = .scaleAspectFill
@@ -25,7 +25,6 @@ final class MatchView: UIView {
   
   private let matchedUserImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = #imageLiteral(resourceName: "kelly1")
     imageView.clipsToBounds = true
     imageView.layer.borderWidth = 2
     imageView.contentMode = .scaleAspectFill
@@ -47,7 +46,6 @@ final class MatchView: UIView {
     label.textColor = .white
     label.textAlignment = .center
     label.font = UIFont.systemFont(ofSize: 18)
-    label.text = "You and [name] have liked\neach other"
     return label
   }()
   
@@ -65,7 +63,54 @@ final class MatchView: UIView {
     return button
   }()
   
+  // MARK: -
+  
   private let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+  
+  private lazy var views = [itsAMatchImageView,
+                            itsAMatchLabel,
+                            currenUserImageView,
+                            matchedUserImageView,
+                            sendMessageButton,
+                            keepSwippingButton]
+  
+  // MARK: -
+  
+  var currentUser: User?
+  var matchedUserUid: String? {
+    didSet {
+      Firestore.firestore()
+        .collection("users")
+        .document(matchedUserUid ?? "")
+        .getDocument { [weak self] snapshot, error  in
+          guard let strongSelf = self else { return }
+          
+          if let error = error {
+            print("Unable ot fetch user uid:", error)
+            return
+          }
+          
+          // Fetch user data
+          guard let dictionary = snapshot?.data() else { return }
+          let user = User(dictionary: dictionary)
+          
+          // Set matched user image
+          guard let matchedUserImageUrl = URL(string: user.imageUrl1 ?? "") else { return }
+          strongSelf.matchedUserImageView.sd_setImage(with: matchedUserImageUrl)
+          
+          // Set itsAMatchLabel text
+          guard let matchedUserName = user.name else { return }
+          strongSelf.itsAMatchLabel.text = "You and \(matchedUserName) have liked\neach other"
+          
+          // Set current user image
+          guard let currentUserimageUrl = URL(string: strongSelf.currentUser?.imageUrl1 ?? "") else { return }
+          strongSelf.currenUserImageView.sd_setImage(with: currentUserimageUrl) { (_, _, _, _) in
+            // Set up Animations
+            strongSelf.setupAnimations()
+          }
+      }
+    }
+  }
   
   // MARK: - Initialization
   
@@ -74,7 +119,6 @@ final class MatchView: UIView {
     
     setupBlurView()
     setupViews()
-    setupAnimations()
   }
   
   required init?(coder: NSCoder) {
@@ -105,14 +149,18 @@ final class MatchView: UIView {
   }
   
   private func setupViews() {
+    // Hide views
+    views.forEach { views in
+      addSubview(views)
+      views.alpha = 0
+    }
+    
     // Configure It's a Match Image View
-    addSubview(itsAMatchImageView)
     itsAMatchImageView.snp.makeConstraints {
       $0.centerX.equalToSuperview()
     }
     
     // Configure Description Label
-    addSubview(itsAMatchLabel)
     itsAMatchLabel.snp.makeConstraints {
       $0.centerX.equalToSuperview()
       $0.leading.trailing.equalToSuperview()
@@ -124,7 +172,6 @@ final class MatchView: UIView {
     matchedUserImageView.layer.cornerRadius = imageWidth / 2
     
     // Configure Current User Image View
-    addSubview(currenUserImageView)
     currenUserImageView.snp.makeConstraints {
       $0.centerY.equalToSuperview()
       $0.height.width.equalTo(imageWidth)
@@ -133,7 +180,6 @@ final class MatchView: UIView {
     }
     
     // Configure Match User Image View
-    addSubview(matchedUserImageView)
     matchedUserImageView.snp.makeConstraints {
       $0.centerY.equalToSuperview()
       $0.height.width.equalTo(imageWidth)
@@ -141,7 +187,6 @@ final class MatchView: UIView {
     }
     
     // Configure Send Message Button
-    addSubview(sendMessageButton)
     sendMessageButton.snp.makeConstraints {
       $0.height.equalTo(60)
       $0.leading.equalToSuperview().offset(48)
@@ -150,7 +195,6 @@ final class MatchView: UIView {
     }
     
     // Configure Keep Swipping Button
-    addSubview(keepSwippingButton)
     keepSwippingButton.snp.makeConstraints {
       $0.height.equalTo(60)
       $0.leading.equalTo(sendMessageButton.snp.leading)
@@ -160,6 +204,9 @@ final class MatchView: UIView {
   }
   
   private func setupAnimations() {
+    // Unhide views
+    views.forEach { $0.alpha = 1 }
+    
     // Image Views animation starting positions
     let angle = 30 * CGFloat.pi / 180
     currenUserImageView.transform = CGAffineTransform(rotationAngle: -angle).concatenating(CGAffineTransform(translationX: 200, y: 0))

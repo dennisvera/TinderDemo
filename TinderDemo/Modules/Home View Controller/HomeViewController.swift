@@ -272,6 +272,8 @@ final class HomeViewController: UIViewController {
   
   private func presentMatchView(with cardUid: String) {
     let matchView = MatchView()
+    matchView.matchedUserUid = cardUid
+    matchView.currentUser = user
     
     view.addSubview(matchView)
     matchView.snp.makeConstraints { make in
