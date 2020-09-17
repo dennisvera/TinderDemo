@@ -19,6 +19,7 @@
 		E1CB2DEA2512872600724A83 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DE92512872600724A83 /* MessagesViewController.swift */; };
 		E1CB2DEC2512A08900724A83 /* MessagesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DEB2512A08900724A83 /* MessagesCollectionViewCell.swift */; };
 		E1CB2DF02513BAF000724A83 /* MessagesNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DEF2513BAEF00724A83 /* MessagesNavigationBar.swift */; };
+		E1CB2DF225140D0800724A83 /* MatchedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DF125140D0800724A83 /* MatchedUser.swift */; };
 		E1CF827A24E4518C0041838D /* CustomImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827924E4518C0041838D /* CustomImagePicker.swift */; };
 		E1CF827C24E45ABC0041838D /* SettingsHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */; };
 		E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827D24E45F6F0041838D /* SettingsTextField.swift */; };
@@ -59,6 +60,7 @@
 		E1CB2DE92512872600724A83 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		E1CB2DEB2512A08900724A83 /* MessagesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MessagesCollectionViewCell.swift; path = ../MessagesCollectionViewCell.swift; sourceTree = "<group>"; };
 		E1CB2DEF2513BAEF00724A83 /* MessagesNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesNavigationBar.swift; sourceTree = "<group>"; };
+		E1CB2DF125140D0800724A83 /* MatchedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchedUser.swift; sourceTree = "<group>"; };
 		E1CF827924E4518C0041838D /* CustomImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImagePicker.swift; sourceTree = "<group>"; };
 		E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderLabel.swift; sourceTree = "<group>"; };
 		E1CF827D24E45F6F0041838D /* SettingsTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextField.swift; sourceTree = "<group>"; };
@@ -338,6 +340,7 @@
 			children = (
 				E1DFBC1A24BA617B0092622B /* User.swift */,
 				E1DFBC2124BB8B500092622B /* Advertiser.swift */,
+				E1CB2DF125140D0800724A83 /* MatchedUser.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -520,6 +523,7 @@
 				E145088424CE181400DC7727 /* RegistrationViewModel.swift in Sources */,
 				E145083B24C8D00F00DC7727 /* CustomTextField.swift in Sources */,
 				E1CF828224E5CCFC0041838D /* AgeRangeLabel.swift in Sources */,
+				E1CB2DF225140D0800724A83 /* MatchedUser.swift in Sources */,
 				E1DFBC1524B912280092622B /* TopNavigationStackView.swift in Sources */,
 				E14F9EDA24D9DC1500D63A96 /* SettingsTableViewCell.swift in Sources */,
 				E1FECE522506DC0300167B35 /* MatchView.swift in Sources */,

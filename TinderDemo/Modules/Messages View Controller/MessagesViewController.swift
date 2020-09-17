@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Firebase
 
 final class MessagesViewController: UIViewController {
   
@@ -18,6 +19,7 @@ final class MessagesViewController: UIViewController {
   
   // MARK: -
   
+  private var matchedUsers = [MatchedUser]()
   private let navigationBarHeight: CGFloat = 150
   
   // MARK: - View Life Cycle
@@ -27,6 +29,7 @@ final class MessagesViewController: UIViewController {
     
     setupCollectionViewController()
     setupView()
+    fetchMatchedUsers()
   }
   
   // MARK: - Helper Methods
@@ -65,6 +68,30 @@ final class MessagesViewController: UIViewController {
   @objc private func handleBackButton() {
     navigationController?.popViewController(animated: true)
   }
+  
+  private func fetchMatchedUsers() {
+    guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+    
+    Firestore.firestore()
+      .collection("matches_messages")
+      .document(currentUserID)
+      .collection("matches")
+      .getDocuments { [weak self] snapshot, error in
+        guard let strongSelf = self else { return }
+        
+        if let error = error {
+          print("Unable to Fetch Matched Users:", error)
+          return
+        }
+        
+        snapshot?.documents.forEach({ documentSnapshot in
+          let dictionary = documentSnapshot.data()
+          strongSelf.matchedUsers.append(.init(dictionary: dictionary))
+          
+          strongSelf.collectionView.reloadData()
+        })
+    }
+  }
 }
 
 // MARK: - UICollection View DataSource
@@ -72,14 +99,16 @@ final class MessagesViewController: UIViewController {
 extension MessagesViewController: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 2
+    return matchedUsers.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MessagesCollectionViewCell.reuseIdentifier,
                                                         for: indexPath) as? MessagesCollectionViewCell else {
-                                                          fatalError("Unable to Dequeue Cell")
-    }
+                                                          fatalError("Unable to Dequeue Cell") }
+    
+    let matchedUser = matchedUsers[indexPath.row]
+    cell.configure(with: matchedUser)
     
     return cell
   }
@@ -94,5 +123,11 @@ extension MessagesViewController: UICollectionViewDelegateFlowLayout {
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
     
     return .init(width: 120, height: 140)
+  }
+  
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      insetForSectionAt section: Int) -> UIEdgeInsets {
+    return .init(top: 16, left: 16, bottom: 16, right: 16)
   }
 }

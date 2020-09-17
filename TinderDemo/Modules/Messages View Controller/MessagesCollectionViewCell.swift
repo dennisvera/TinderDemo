@@ -21,7 +21,6 @@ final class MessagesCollectionViewCell: UICollectionViewCell {
   
   private let profileImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = #imageLiteral(resourceName: "kelly1")
     imageView.clipsToBounds = true
     imageView.contentMode = .scaleAspectFill
     return imageView
@@ -29,7 +28,6 @@ final class MessagesCollectionViewCell: UICollectionViewCell {
   
   private let userNameLabel: UILabel = {
     let label = UILabel()
-    label.text = "Lynn Lexx"
     label.numberOfLines = 2
     label.font = .boldSystemFont(ofSize: 14)
     return label
@@ -49,16 +47,14 @@ final class MessagesCollectionViewCell: UICollectionViewCell {
   
   // MARK: - Helper Methods
   
-  private func setupView() {
-    backgroundColor = .lightGray
-    
+  private func setupView() {    
     let stackView = UIStackView(arrangedSubviews: [profileImageView, userNameLabel])
     stackView.spacing = 4
     stackView.axis = .vertical
     stackView.alignment = .center
     stackView.distribution = .fill
     
-    let height: CGFloat = 100
+    let height: CGFloat = 80
     profileImageView.layer.cornerRadius = height / 2
     profileImageView.snp.makeConstraints {
       $0.height.width.equalTo(height)
@@ -70,5 +66,14 @@ final class MessagesCollectionViewCell: UICollectionViewCell {
       $0.leading.trailing.equalToSuperview()
       $0.bottom.equalToSuperview().offset(-4)
     }
+  }
+  
+  // MARK: - Public Methods
+  
+  func configure(with user: MatchedUser) {
+    guard let imageUrl = URL(string: user.profileImageUrl ?? "") else { return }
+    profileImageView.sd_setImage(with: imageUrl)
+    
+    userNameLabel.text = user.name
   }
 }
