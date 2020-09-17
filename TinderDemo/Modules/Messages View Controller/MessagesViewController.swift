@@ -52,7 +52,7 @@ final class MessagesViewController: UIViewController {
     collectionView.backgroundColor = .white
     collectionView.register(MessagesCollectionViewCell.self,
                             forCellWithReuseIdentifier: MessagesCollectionViewCell.reuseIdentifier)
-    collectionView.contentInset = UIEdgeInsets(top: navigationBarHeight, left: 0, bottom: 0, right: 0)
+    collectionView.contentInset = .init(top: navigationBarHeight, left: 0, bottom: 0, right: 0)
     
     view.addSubview(collectionView)
     collectionView.snp.makeConstraints {

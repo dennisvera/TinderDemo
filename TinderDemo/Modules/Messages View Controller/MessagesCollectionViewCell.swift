@@ -47,24 +47,20 @@ final class MessagesCollectionViewCell: UICollectionViewCell {
   
   // MARK: - Helper Methods
   
-  private func setupView() {    
-    let stackView = UIStackView(arrangedSubviews: [profileImageView, userNameLabel])
-    stackView.spacing = 4
-    stackView.axis = .vertical
-    stackView.alignment = .center
-    stackView.distribution = .fill
-    
+  private func setupView() {
     let height: CGFloat = 80
     profileImageView.layer.cornerRadius = height / 2
     profileImageView.snp.makeConstraints {
       $0.height.width.equalTo(height)
     }
     
+    let stackView = UIStackView(arrangedSubviews: [profileImageView, userNameLabel])
+    stackView.axis = .vertical
+    stackView.alignment = .center
+    
     addSubview(stackView)
     stackView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(10)
-      $0.leading.trailing.equalToSuperview()
-      $0.bottom.equalToSuperview().offset(-4)
+      $0.edges.equalToSuperview()
     }
   }
   
@@ -73,7 +69,6 @@ final class MessagesCollectionViewCell: UICollectionViewCell {
   func configure(with user: MatchedUser) {
     guard let imageUrl = URL(string: user.profileImageUrl ?? "") else { return }
     profileImageView.sd_setImage(with: imageUrl)
-    
     userNameLabel.text = user.name
   }
 }

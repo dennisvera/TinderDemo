@@ -68,9 +68,9 @@ final class MessagesNavigationBar: UIView {
     // Configure Messages Image View
     addSubview(messagesImageView)
     messagesImageView.snp.makeConstraints {
-      $0.top.equalToSuperview()
       $0.height.width.equalTo(44)
       $0.centerX.equalToSuperview()
+      $0.top.equalToSuperview().offset(8)
     }
     
     // Configure Back Button
@@ -79,7 +79,7 @@ final class MessagesNavigationBar: UIView {
       $0.height.width.equalTo(34)
       $0.leading.equalToSuperview().offset(16)
       $0.top.equalTo(messagesImageView.snp.top)
-      $0.trailing.equalTo(messagesImageView.snp.leading)
+      $0.trailing.lessThanOrEqualTo(messagesImageView.snp.leading)
     }
     
     // Instantiate Labels Stack View
@@ -91,9 +91,9 @@ final class MessagesNavigationBar: UIView {
     addSubview(stackView)
     stackView.snp.makeConstraints {
       $0.bottom.equalToSuperview()
-      $0.top.equalTo(messagesImageView.snp.bottom).offset(10)
       $0.leading.equalToSuperview().offset(10)
       $0.trailing.equalToSuperview().offset(-10)
+      $0.top.equalTo(messagesImageView.snp.bottom).offset(10)
     }
   }
   
