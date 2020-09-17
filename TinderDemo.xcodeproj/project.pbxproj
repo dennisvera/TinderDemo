@@ -18,6 +18,7 @@
 		E1B55452250FE10B00208E56 /* KeepSwippingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */; };
 		E1CB2DEA2512872600724A83 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DE92512872600724A83 /* MessagesViewController.swift */; };
 		E1CB2DEC2512A08900724A83 /* MessagesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DEB2512A08900724A83 /* MessagesCollectionViewCell.swift */; };
+		E1CB2DF02513BAF000724A83 /* MessagesNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DEF2513BAEF00724A83 /* MessagesNavigationBar.swift */; };
 		E1CF827A24E4518C0041838D /* CustomImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827924E4518C0041838D /* CustomImagePicker.swift */; };
 		E1CF827C24E45ABC0041838D /* SettingsHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */; };
 		E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827D24E45F6F0041838D /* SettingsTextField.swift */; };
@@ -57,6 +58,7 @@
 		E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwippingButton.swift; sourceTree = "<group>"; };
 		E1CB2DE92512872600724A83 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		E1CB2DEB2512A08900724A83 /* MessagesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MessagesCollectionViewCell.swift; path = ../MessagesCollectionViewCell.swift; sourceTree = "<group>"; };
+		E1CB2DEF2513BAEF00724A83 /* MessagesNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesNavigationBar.swift; sourceTree = "<group>"; };
 		E1CF827924E4518C0041838D /* CustomImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImagePicker.swift; sourceTree = "<group>"; };
 		E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderLabel.swift; sourceTree = "<group>"; };
 		E1CF827D24E45F6F0041838D /* SettingsTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextField.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				E1CB2DE92512872600724A83 /* MessagesViewController.swift */,
+				E1CB2DEE2513BAB200724A83 /* Messages Navigation Bar */,
 				E1CB2DED2512A09500724A83 /* Messages Collection View Controller */,
 			);
 			path = "Messages View Controller";
@@ -177,6 +180,14 @@
 				E1CB2DEB2512A08900724A83 /* MessagesCollectionViewCell.swift */,
 			);
 			path = "Messages Collection View Controller";
+			sourceTree = "<group>";
+		};
+		E1CB2DEE2513BAB200724A83 /* Messages Navigation Bar */ = {
+			isa = PBXGroup;
+			children = (
+				E1CB2DEF2513BAEF00724A83 /* MessagesNavigationBar.swift */,
+			);
+			path = "Messages Navigation Bar";
 			sourceTree = "<group>";
 		};
 		E1CF828324E6027B0041838D /* Extensions */ = {
@@ -515,6 +526,7 @@
 				E1DFBC2224BB8B500092622B /* Advertiser.swift in Sources */,
 				E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */,
 				E145083824C8C4B000DC7727 /* RegistrationViewController.swift in Sources */,
+				E1CB2DF02513BAF000724A83 /* MessagesNavigationBar.swift in Sources */,
 				E1DFBC1E24BA7F080092622B /* CardViewViewModel.swift in Sources */,
 				E1CB2DEC2512A08900724A83 /* MessagesCollectionViewCell.swift in Sources */,
 				E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */,
