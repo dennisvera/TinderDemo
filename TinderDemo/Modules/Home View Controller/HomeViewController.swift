@@ -294,7 +294,7 @@ final class HomeViewController: UIViewController {
     // Get the current user name and image url
     guard let currentUser = user else { return }
     
-    let currentUserData: [String: Any] = ["uid": cardUid,
+    let currentUserData: [String: Any] = ["uid": currentUser.uid ?? "",
                                           "name": currentUser.name ?? "",
                                           "profileImageUrl": currentUser.imageUrl1 ?? "",
                                           "timeStamp": Timestamp(date: Date())]
@@ -318,7 +318,7 @@ final class HomeViewController: UIViewController {
     // Get the mathed user name and image url
     guard let matchedUser = users[cardUid] else { return }
     
-    let matchedUserdata: [String: Any] = ["uid": cardUid,
+    let matchedUserdata: [String: Any] = ["uid": matchedUser.uid ?? "",
                                           "name": matchedUser.name ?? "",
                                           "profileImageUrl": matchedUser.imageUrl1 ?? "",
                                           "timeStamp": Timestamp(date: Date())]
