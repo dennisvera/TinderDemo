@@ -26,6 +26,7 @@ final class HomeViewController: UIViewController {
   // MARK: -
   
   private var user: User?
+  private var users = [String: User]()
   private var lastFetchedUser: User?
   private var viewModel = [CardViewViewModel]()
   private let progressHud = JGProgressHUD(style: .dark)
@@ -137,6 +138,7 @@ final class HomeViewController: UIViewController {
       .collection("users")
       .whereField("age", isGreaterThanOrEqualTo: minSeekingAge)
       .whereField("age", isLessThanOrEqualTo: maxSeekingAge)
+      .limit(to: 10)
     
     topCardView = nil
     
@@ -155,6 +157,8 @@ final class HomeViewController: UIViewController {
       snapshot?.documents.forEach({ documentSnapshot in
         let userDictionary = documentSnapshot.data()
         let user = User(dictionary: userDictionary)
+        
+        strongSelf.users[user.uid ?? ""] = user
         
         // Check that the user.uid is not the current user.
         // Current user does not need to see it's own profile.
@@ -267,6 +271,8 @@ final class HomeViewController: UIViewController {
         
         if hasMatched {
           strongSelf.presentMatchView(with: cardUid)
+          strongSelf.saveMatchedUserInfo(with: cardUid)
+          strongSelf.saveMatchedCurrentUserInfo(with: cardUid)
         }
     }
   }
@@ -279,6 +285,54 @@ final class HomeViewController: UIViewController {
     view.addSubview(matchView)
     matchView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
+    }
+  }
+  
+  private func saveMatchedCurrentUserInfo(with cardUid: String) {
+    guard let uid = Auth.auth().currentUser?.uid else { return }
+    
+    // Get the current user name and image url
+    guard let currentUser = user else { return }
+    
+    let currentUserData: [String: Any] = ["uid": cardUid,
+                                          "name": currentUser.name ?? "",
+                                          "profileImageUrl": currentUser.imageUrl1 ?? "",
+                                          "timeStamp": Timestamp(date: Date())]
+    
+    // Save the current user info to FireStore
+    Firestore.firestore()
+      .collection("matches_messages")
+      .document(cardUid)
+      .collection("matches")
+      .document(uid)
+      .setData(currentUserData) { error in
+        if let error = error {
+          print("Unable to Save Current User Info:", error)
+        }
+    }
+  }
+  
+  private func saveMatchedUserInfo(with cardUid: String) {
+    guard let uid = Auth.auth().currentUser?.uid else { return }
+
+    // Get the mathed user name and image url
+    guard let matchedUser = users[cardUid] else { return }
+    
+    let matchedUserdata: [String: Any] = ["uid": cardUid,
+                                          "name": matchedUser.name ?? "",
+                                          "profileImageUrl": matchedUser.imageUrl1 ?? "",
+                                          "timeStamp": Timestamp(date: Date())]
+    
+    // Save the matched user info to FireStore
+    Firestore.firestore()
+      .collection("matches_messages")
+      .document(uid)
+      .collection("matches")
+      .document(cardUid)
+      .setData(matchedUserdata) { error in
+        if let error = error {
+          print("Unable to Save Matched User Info:", error)
+        }
     }
   }
   
