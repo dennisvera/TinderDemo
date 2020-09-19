@@ -20,6 +20,10 @@
 		E1CB2DEC2512A08900724A83 /* MessagesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DEB2512A08900724A83 /* MessagesCollectionViewCell.swift */; };
 		E1CB2DF02513BAF000724A83 /* MessagesNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DEF2513BAEF00724A83 /* MessagesNavigationBar.swift */; };
 		E1CB2DF225140D0800724A83 /* MatchedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DF125140D0800724A83 /* MatchedUser.swift */; };
+		E1CB2DF525151C4A00724A83 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DF425151C4A00724A83 /* ChatViewController.swift */; };
+		E1CB2DF72515215C00724A83 /* Messsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DF62515215C00724A83 /* Messsage.swift */; };
+		E1CB2DFA251523FB00724A83 /* ChatCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DF9251523FB00724A83 /* ChatCollectionViewCell.swift */; };
+		E1CB2DFD25168F3100724A83 /* ChatNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DFC25168F3100724A83 /* ChatNavigationBar.swift */; };
 		E1CF827A24E4518C0041838D /* CustomImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827924E4518C0041838D /* CustomImagePicker.swift */; };
 		E1CF827C24E45ABC0041838D /* SettingsHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */; };
 		E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827D24E45F6F0041838D /* SettingsTextField.swift */; };
@@ -61,6 +65,10 @@
 		E1CB2DEB2512A08900724A83 /* MessagesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MessagesCollectionViewCell.swift; path = ../MessagesCollectionViewCell.swift; sourceTree = "<group>"; };
 		E1CB2DEF2513BAEF00724A83 /* MessagesNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesNavigationBar.swift; sourceTree = "<group>"; };
 		E1CB2DF125140D0800724A83 /* MatchedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchedUser.swift; sourceTree = "<group>"; };
+		E1CB2DF425151C4A00724A83 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		E1CB2DF62515215C00724A83 /* Messsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messsage.swift; sourceTree = "<group>"; };
+		E1CB2DF9251523FB00724A83 /* ChatCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewCell.swift; sourceTree = "<group>"; };
+		E1CB2DFC25168F3100724A83 /* ChatNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatNavigationBar.swift; sourceTree = "<group>"; };
 		E1CF827924E4518C0041838D /* CustomImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImagePicker.swift; sourceTree = "<group>"; };
 		E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderLabel.swift; sourceTree = "<group>"; };
 		E1CF827D24E45F6F0041838D /* SettingsTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextField.swift; sourceTree = "<group>"; };
@@ -172,6 +180,7 @@
 				E1CB2DE92512872600724A83 /* MessagesViewController.swift */,
 				E1CB2DEE2513BAB200724A83 /* Messages Navigation Bar */,
 				E1CB2DED2512A09500724A83 /* Messages Collection View Controller */,
+				E1CB2DF325151C2D00724A83 /* Chat View Controller */,
 			);
 			path = "Messages View Controller";
 			sourceTree = "<group>";
@@ -190,6 +199,32 @@
 				E1CB2DEF2513BAEF00724A83 /* MessagesNavigationBar.swift */,
 			);
 			path = "Messages Navigation Bar";
+			sourceTree = "<group>";
+		};
+		E1CB2DF325151C2D00724A83 /* Chat View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E1CB2DF425151C4A00724A83 /* ChatViewController.swift */,
+				E1CB2DFB25168EF900724A83 /* Chat Navigation Bar */,
+				E1CB2DF8251523CE00724A83 /* Chat Collection View Cell */,
+			);
+			path = "Chat View Controller";
+			sourceTree = "<group>";
+		};
+		E1CB2DF8251523CE00724A83 /* Chat Collection View Cell */ = {
+			isa = PBXGroup;
+			children = (
+				E1CB2DF9251523FB00724A83 /* ChatCollectionViewCell.swift */,
+			);
+			path = "Chat Collection View Cell";
+			sourceTree = "<group>";
+		};
+		E1CB2DFB25168EF900724A83 /* Chat Navigation Bar */ = {
+			isa = PBXGroup;
+			children = (
+				E1CB2DFC25168F3100724A83 /* ChatNavigationBar.swift */,
+			);
+			path = "Chat Navigation Bar";
 			sourceTree = "<group>";
 		};
 		E1CF828324E6027B0041838D /* Extensions */ = {
@@ -339,6 +374,7 @@
 			isa = PBXGroup;
 			children = (
 				E1DFBC1A24BA617B0092622B /* User.swift */,
+				E1CB2DF62515215C00724A83 /* Messsage.swift */,
 				E1DFBC2124BB8B500092622B /* Advertiser.swift */,
 				E1CB2DF125140D0800724A83 /* MatchedUser.swift */,
 			);
@@ -512,6 +548,7 @@
 			files = (
 				E1CB2DEA2512872600724A83 /* MessagesViewController.swift in Sources */,
 				E1CF828824E62B6A0041838D /* LoginViewController.swift in Sources */,
+				E1CB2DFD25168F3100724A83 /* ChatNavigationBar.swift in Sources */,
 				E1CF828524E602A10041838D /* Firebase+Extension.swift in Sources */,
 				E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */,
 				E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */,
@@ -538,10 +575,13 @@
 				E14F9ED624D8D2ED00D63A96 /* SettingsViewController.swift in Sources */,
 				E1CF828024E5C1E40041838D /* AgeRangeTableViewCell.swift in Sources */,
 				E1DFBC1324B903EB0092622B /* HomeBottomControlStackView.swift in Sources */,
+				E1CB2DF525151C4A00724A83 /* ChatViewController.swift in Sources */,
 				E1DFBC1B24BA617B0092622B /* User.swift in Sources */,
 				E1CF827C24E45ABC0041838D /* SettingsHeaderLabel.swift in Sources */,
+				E1CB2DF72515215C00724A83 /* Messsage.swift in Sources */,
 				E1B55450250FD7CF00208E56 /* SendMessageButton.swift in Sources */,
 				E1CF827A24E4518C0041838D /* CustomImagePicker.swift in Sources */,
+				E1CB2DFA251523FB00724A83 /* ChatCollectionViewCell.swift in Sources */,
 				E1D427F024E9AE7800AFACBC /* PhotoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

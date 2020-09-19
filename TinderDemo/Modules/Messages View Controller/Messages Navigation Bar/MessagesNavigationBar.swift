@@ -23,7 +23,7 @@ final class MessagesNavigationBar: UIView {
   
   private let messagesImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.tintColor = #colorLiteral(red: 0.9977821708, green: 0.4371853769, blue: 0.4595726728, alpha: 1)
+    imageView.tintColor = #colorLiteral(red: 0.9960784314, green: 0.4352941176, blue: 0.4588235294, alpha: 1)
     imageView.contentMode = .scaleAspectFit
     imageView.image = #imageLiteral(resourceName: "top_right_messages_icon").withRenderingMode(.alwaysTemplate)
     return imageView

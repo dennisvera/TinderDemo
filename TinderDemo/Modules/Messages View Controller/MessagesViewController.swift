@@ -118,6 +118,11 @@ extension MessagesViewController: UICollectionViewDataSource {
 
 extension MessagesViewController: UICollectionViewDelegateFlowLayout {
   
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let chatViewController = ChatViewController()
+    navigationController?.pushViewController(chatViewController, animated: true)
+  }
+  
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
