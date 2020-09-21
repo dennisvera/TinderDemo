@@ -119,7 +119,9 @@ extension MessagesViewController: UICollectionViewDataSource {
 extension MessagesViewController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let chatViewController = ChatViewController()
+    let matchedUser = matchedUsers[indexPath.item]
+    
+    let chatViewController = ChatViewController(matchedUser: matchedUser)
     navigationController?.pushViewController(chatViewController, animated: true)
   }
   

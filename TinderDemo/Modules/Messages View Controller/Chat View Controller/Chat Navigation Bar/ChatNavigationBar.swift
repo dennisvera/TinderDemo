@@ -15,36 +15,40 @@ final class ChatNavigationBar: UIView {
   
   let backButton: UIButton = {
     let button = UIButton()
-    button.setImage(#imageLiteral(resourceName: "dismiss_circle_icon"), for: .normal)
+    button.setImage(#imageLiteral(resourceName: "back_icon"), for: .normal)
     button.imageView?.contentMode = .scaleAspectFill
     return button
   }()
   
   let reportButton: UIButton = {
     let button = UIButton()
-    button.setImage(#imageLiteral(resourceName: "dismiss_circle_icon"), for: .normal)
+    button.setImage(#imageLiteral(resourceName: "flag_icon"), for: .normal)
     button.imageView?.contentMode = .scaleAspectFill
     return button
   }()
   
   private let profileImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = #imageLiteral(resourceName: "kelly1")
+    imageView.clipsToBounds = true
     imageView.contentMode = .scaleAspectFill
     return imageView
   }()
   
   private let nameLabel: UILabel = {
     let label = UILabel()
-    label.text = "Name"
-    label.font = .boldSystemFont(ofSize: 12)
+    label.text = "Kelly Ann Woods"
+    label.font = .systemFont(ofSize: 16)
     return label
   }()
   
+  private let matchedUser: MatchedUser?
+  
   // MARK: - Initialization
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  init(matchedUser: MatchedUser) {
+    self.matchedUser = matchedUser
+    
+    super.init(frame: .zero)
     
     setupViews()
     setupShadow()
@@ -59,8 +63,13 @@ final class ChatNavigationBar: UIView {
   private func setupViews() {
     backgroundColor = .white
     
+    // Configure Name Label
+    nameLabel.text = matchedUser?.name
+    
     // Configure Profile Image View
     let imageHeight: CGFloat = 50
+    guard let imageUrl = URL(string: matchedUser?.profileImageUrl ?? "") else { return }
+    profileImageView.sd_setImage(with: imageUrl)
     profileImageView.layer.cornerRadius = imageHeight / 2
     profileImageView.snp.makeConstraints {
       $0.width.height.equalTo(imageHeight)
@@ -68,19 +77,22 @@ final class ChatNavigationBar: UIView {
     
     // Instantiate Vertical Stack View
     let verticalStackView = UIStackView(arrangedSubviews: [profileImageView, nameLabel])
-    verticalStackView.spacing = 4
+    verticalStackView.spacing = 8
     verticalStackView.axis = .vertical
     verticalStackView.alignment = .center
     
     // Instantiate Main Stack View
     let mainSatckView = UIStackView(arrangedSubviews: [backButton, verticalStackView, reportButton])
     mainSatckView.axis = .horizontal
-    mainSatckView.distribution = .fillEqually
+    mainSatckView.alignment = .center
+    mainSatckView.distribution = .fill
     
     // Configure Vertical StackView
     addSubview(mainSatckView)
     mainSatckView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.bottom.equalToSuperview()
+      $0.leading.equalToSuperview().offset(16)
+      $0.trailing.equalToSuperview().offset(-16)
     }
   }
   

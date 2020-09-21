@@ -91,9 +91,9 @@ final class MessagesNavigationBar: UIView {
     addSubview(stackView)
     stackView.snp.makeConstraints {
       $0.bottom.equalToSuperview()
-      $0.leading.equalToSuperview().offset(10)
-      $0.trailing.equalToSuperview().offset(-10)
-      $0.top.equalTo(messagesImageView.snp.bottom).offset(10)
+      $0.leading.equalToSuperview().offset(12)
+      $0.trailing.equalToSuperview().offset(-12)
+      $0.top.equalTo(messagesImageView.snp.bottom).offset(12)
     }
   }
   

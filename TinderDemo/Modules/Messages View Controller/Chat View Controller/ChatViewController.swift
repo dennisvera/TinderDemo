@@ -13,12 +13,24 @@ final class ChatViewController: UIViewController {
   
   // MARK: - Properties
   
-  private let chatNavigationBar = ChatNavigationBar()
+  private lazy var chatNavigationBar = ChatNavigationBar(matchedUser: matchedUser)
   private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
   
   // MARK: -
   
-  private let navigationBarHeight: CGFloat = 150
+  private let matchedUser: MatchedUser
+  private let navigationBarHeight: CGFloat = 120
+  
+  // MARK: - Initialization
+  
+  init(matchedUser: MatchedUser) {
+    self.matchedUser = matchedUser
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   // MARK: - View Life Cycle
   
@@ -39,6 +51,8 @@ final class ChatViewController: UIViewController {
       $0.height.equalTo(navigationBarHeight)
       $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
     }
+    
+    chatNavigationBar.backButton.addTarget(self, action: #selector(handleBackButton), for: .touchUpInside)
   }
   
   private func setupCollectionViewController() {
@@ -54,6 +68,12 @@ final class ChatViewController: UIViewController {
     collectionView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
+  }
+  
+  // MARK: - Actions
+  
+  @objc private func handleBackButton() {
+    navigationController?.popViewController(animated: true)
   }
 }
 
@@ -83,5 +103,11 @@ extension ChatViewController: UICollectionViewDelegateFlowLayout {
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
     
     return .init(width: view.frame.width, height: 100)
+  }
+  
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      insetForSectionAt section: Int) -> UIEdgeInsets {
+    return .init(top: 16, left: 16, bottom: 16, right: 16)
   }
 }
