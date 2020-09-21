@@ -15,15 +15,17 @@ final class ChatNavigationBar: UIView {
   
   let backButton: UIButton = {
     let button = UIButton()
-    button.setImage(#imageLiteral(resourceName: "back_icon"), for: .normal)
+    button.tintColor = #colorLiteral(red: 0.9960784314, green: 0.4352941176, blue: 0.4588235294, alpha: 1)
     button.imageView?.contentMode = .scaleAspectFill
+    button.setImage(#imageLiteral(resourceName: "back_icon").withRenderingMode(.alwaysTemplate), for: .normal)
     return button
   }()
   
   let reportButton: UIButton = {
     let button = UIButton()
-    button.setImage(#imageLiteral(resourceName: "flag_icon"), for: .normal)
+    button.tintColor = #colorLiteral(red: 0.9960784314, green: 0.4352941176, blue: 0.4588235294, alpha: 1)
     button.imageView?.contentMode = .scaleAspectFill
+    button.setImage(#imageLiteral(resourceName: "flag_icon").withRenderingMode(.alwaysTemplate), for: .normal)
     return button
   }()
   
@@ -75,6 +77,11 @@ final class ChatNavigationBar: UIView {
       $0.width.height.equalTo(imageHeight)
     }
     
+    // Configure Back Button
+    backButton.snp.makeConstraints {
+      $0.width.equalTo(50)
+    }
+    
     // Instantiate Vertical Stack View
     let verticalStackView = UIStackView(arrangedSubviews: [profileImageView, nameLabel])
     verticalStackView.spacing = 8
@@ -91,7 +98,7 @@ final class ChatNavigationBar: UIView {
     addSubview(mainSatckView)
     mainSatckView.snp.makeConstraints {
       $0.top.bottom.equalToSuperview()
-      $0.leading.equalToSuperview().offset(16)
+      $0.leading.equalToSuperview().offset(4)
       $0.trailing.equalToSuperview().offset(-16)
     }
   }

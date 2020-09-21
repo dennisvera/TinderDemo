@@ -18,6 +18,7 @@ final class ChatViewController: UIViewController {
   
   // MARK: -
   
+  private var messages = [Message]()
   private let matchedUser: MatchedUser
   private let navigationBarHeight: CGFloat = 120
   
@@ -37,19 +38,31 @@ final class ChatViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    messages.append(.init(text: "text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah", isCurrentLoggedUser: true))
+    messages.append(.init(text: "Helllloooo", isCurrentLoggedUser: false))
+    messages.append(.init(text: "text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah", isCurrentLoggedUser: true))
+    messages.append(.init(text: "Helllloooo", isCurrentLoggedUser: false))
+    
     setupCollectionViewController()
     setupView()
   }
   
   // MARK: - Helper Methods
-  private func setupView() {
-    view.backgroundColor = .yellow
-    
+  private func setupView() {    
     // Configure Messages Navigation Bar
     collectionView.addSubview(chatNavigationBar)
     chatNavigationBar.snp.makeConstraints {
       $0.height.equalTo(navigationBarHeight)
       $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+    }
+    
+    // Hide the gap between the Custom Nav Bar and Status Bar
+    let statusBarCover = UIView()
+    statusBarCover.backgroundColor = .white
+    view.addSubview(statusBarCover)
+    statusBarCover.snp.makeConstraints {
+      $0.top.leading.trailing.equalToSuperview()
+      $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.top)
     }
     
     chatNavigationBar.backButton.addTarget(self, action: #selector(handleBackButton), for: .touchUpInside)
@@ -59,10 +72,12 @@ final class ChatViewController: UIViewController {
     collectionView.delegate = self
     collectionView.dataSource = self
     collectionView.isScrollEnabled = true
-    collectionView.backgroundColor = .cyan
+    collectionView.backgroundColor = .white
+    collectionView.alwaysBounceVertical = true
+    collectionView.contentInset.top = navigationBarHeight
+    collectionView.verticalScrollIndicatorInsets.top = navigationBarHeight
     collectionView.register(ChatCollectionViewCell.self,
                             forCellWithReuseIdentifier: ChatCollectionViewCell.reuseIdentifier)
-    collectionView.contentInset = .init(top: navigationBarHeight, left: 0, bottom: 0, right: 0)
     
     view.addSubview(collectionView)
     collectionView.snp.makeConstraints {
@@ -82,18 +97,19 @@ final class ChatViewController: UIViewController {
 extension ChatViewController: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 5
+    return messages.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ChatCollectionViewCell.reuseIdentifier,
                                                         for: indexPath) as? ChatCollectionViewCell else {
                                                           fatalError("Unable to Dequeue Cell") }
-    cell.backgroundColor = .red
+
+    let message = messages[indexPath.item]
+    cell.configure(with: message)
+    
     return cell
   }
-  
-  
 }
 
 extension ChatViewController: UICollectionViewDelegateFlowLayout {
@@ -102,7 +118,18 @@ extension ChatViewController: UICollectionViewDelegateFlowLayout {
                       layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
     
-    return .init(width: view.frame.width, height: 100)
+    // Estimated Sizing
+    let estimatedSizeCell = ChatCollectionViewCell(frame: .init(x: 0,
+                                                                    y: 0,
+                                                                    width: view.frame.width,
+                                                                    height: 1000))
+    
+    estimatedSizeCell.configure(with: messages[indexPath.item])
+    estimatedSizeCell.layoutIfNeeded()
+    
+    let estimatedSize = estimatedSizeCell.systemLayoutSizeFitting(.init(width: view.frame.width, height: 1000))
+    
+    return .init(width: view.frame.width, height: estimatedSize.height)
   }
   
   func collectionView(_ collectionView: UICollectionView,
