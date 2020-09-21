@@ -49,6 +49,12 @@ class ChatCollectionViewCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
+  // MARK: - Overrides
+  
+  override func prepareForReuse() {
+    textView.text = ""
+  }
+  
   // MARK: - Helper Methods
   
   private func setupView() {

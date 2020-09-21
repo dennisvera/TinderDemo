@@ -24,6 +24,7 @@
 		E1CB2DF72515215C00724A83 /* Messsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DF62515215C00724A83 /* Messsage.swift */; };
 		E1CB2DFA251523FB00724A83 /* ChatCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DF9251523FB00724A83 /* ChatCollectionViewCell.swift */; };
 		E1CB2DFD25168F3100724A83 /* ChatNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DFC25168F3100724A83 /* ChatNavigationBar.swift */; };
+		E1CB2DFF25193D7E00724A83 /* CustomInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DFE25193D7E00724A83 /* CustomInputAccessoryView.swift */; };
 		E1CF827A24E4518C0041838D /* CustomImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827924E4518C0041838D /* CustomImagePicker.swift */; };
 		E1CF827C24E45ABC0041838D /* SettingsHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */; };
 		E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827D24E45F6F0041838D /* SettingsTextField.swift */; };
@@ -69,6 +70,7 @@
 		E1CB2DF62515215C00724A83 /* Messsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messsage.swift; sourceTree = "<group>"; };
 		E1CB2DF9251523FB00724A83 /* ChatCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewCell.swift; sourceTree = "<group>"; };
 		E1CB2DFC25168F3100724A83 /* ChatNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatNavigationBar.swift; sourceTree = "<group>"; };
+		E1CB2DFE25193D7E00724A83 /* CustomInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInputAccessoryView.swift; sourceTree = "<group>"; };
 		E1CF827924E4518C0041838D /* CustomImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImagePicker.swift; sourceTree = "<group>"; };
 		E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderLabel.swift; sourceTree = "<group>"; };
 		E1CF827D24E45F6F0041838D /* SettingsTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextField.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */,
 				E1B5544F250FD7CF00208E56 /* SendMessageButton.swift */,
 				E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */,
+				E1CB2DFE25193D7E00724A83 /* CustomInputAccessoryView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -557,6 +560,7 @@
 				E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */,
 				E1D427EB24E97FDA00AFACBC /* UIButton+Extension.swift in Sources */,
 				E1D427E924E847D800AFACBC /* ProfileDetailViewController.swift in Sources */,
+				E1CB2DFF25193D7E00724A83 /* CustomInputAccessoryView.swift in Sources */,
 				E145088424CE181400DC7727 /* RegistrationViewModel.swift in Sources */,
 				E145083B24C8D00F00DC7727 /* CustomTextField.swift in Sources */,
 				E1CF828224E5CCFC0041838D /* AgeRangeLabel.swift in Sources */,

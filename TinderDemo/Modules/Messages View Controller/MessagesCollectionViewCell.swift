@@ -45,6 +45,13 @@ final class MessagesCollectionViewCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
+  // MARK: - Overrides
+  
+  override func prepareForReuse() {
+    userNameLabel.text = ""
+    profileImageView.image = nil
+  }
+  
   // MARK: - Helper Methods
   
   private func setupView() {

@@ -22,6 +22,17 @@ final class ChatViewController: UIViewController {
   private let matchedUser: MatchedUser
   private let navigationBarHeight: CGFloat = 120
   
+  // MARK: -
+  
+  private lazy var customInputAccessoryView: UIView = {
+    let view = CustomInputAccessoryView(frame: .init(x: 0,
+                                                     y: 0,
+                                                     width: self.view.frame.width,
+                                                     height: 50))
+    
+    return view
+  }()
+  
   // MARK: - Initialization
   
   init(matchedUser: MatchedUser) {
@@ -47,6 +58,18 @@ final class ChatViewController: UIViewController {
     setupView()
   }
   
+  // MARK: - Overrides
+  
+  override var inputAccessoryView: UIView? {
+    get {
+      return customInputAccessoryView
+    }
+  }
+  
+  override var canBecomeFirstResponder: Bool {
+    return true
+  }
+  
   // MARK: - Helper Methods
   private func setupView() {    
     // Configure Messages Navigation Bar
@@ -65,6 +88,7 @@ final class ChatViewController: UIViewController {
       $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.top)
     }
     
+    // Set Navigation Button Target
     chatNavigationBar.backButton.addTarget(self, action: #selector(handleBackButton), for: .touchUpInside)
   }
   
@@ -74,6 +98,7 @@ final class ChatViewController: UIViewController {
     collectionView.isScrollEnabled = true
     collectionView.backgroundColor = .white
     collectionView.alwaysBounceVertical = true
+    collectionView.keyboardDismissMode = .interactive
     collectionView.contentInset.top = navigationBarHeight
     collectionView.verticalScrollIndicatorInsets.top = navigationBarHeight
     collectionView.register(ChatCollectionViewCell.self,
@@ -104,7 +129,7 @@ extension ChatViewController: UICollectionViewDataSource {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ChatCollectionViewCell.reuseIdentifier,
                                                         for: indexPath) as? ChatCollectionViewCell else {
                                                           fatalError("Unable to Dequeue Cell") }
-
+    
     let message = messages[indexPath.item]
     cell.configure(with: message)
     
@@ -120,9 +145,9 @@ extension ChatViewController: UICollectionViewDelegateFlowLayout {
     
     // Estimated Sizing
     let estimatedSizeCell = ChatCollectionViewCell(frame: .init(x: 0,
-                                                                    y: 0,
-                                                                    width: view.frame.width,
-                                                                    height: 1000))
+                                                                y: 0,
+                                                                width: view.frame.width,
+                                                                height: 1000))
     
     estimatedSizeCell.configure(with: messages[indexPath.item])
     estimatedSizeCell.layoutIfNeeded()
