@@ -94,7 +94,7 @@ final class MessagesViewController: UIViewController {
   }
 }
 
-// MARK: - UICollection View DataSource
+// MARK: - UICollectionViewDataSource
 
 extension MessagesViewController: UICollectionViewDataSource {
   
@@ -114,15 +114,15 @@ extension MessagesViewController: UICollectionViewDataSource {
   }
 }
 
-// MARK: - UICollection View Delegate Flow Layout
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension MessagesViewController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let matchedUser = matchedUsers[indexPath.item]
     
-    let chatViewController = ChatViewController(matchedUser: matchedUser)
-    navigationController?.pushViewController(chatViewController, animated: true)
+    let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
+    navigationController?.pushViewController(chatCollectionViewController, animated: true)
   }
   
   func collectionView(_ collectionView: UICollectionView,

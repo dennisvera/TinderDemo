@@ -1,8 +1,8 @@
 //
-//  ChatViewController.swift
+//  ChatCollectionViewController.swift
 //  TinderDemo
 //
-//  Created by Dennis Vera on 9/18/20.
+//  Created by Dennis Vera on 9/22/20.
 //  Copyright © 2020 Dennis Vera. All rights reserved.
 //
 
@@ -10,12 +10,11 @@ import UIKit
 import SnapKit
 import Firebase
 
-final class ChatViewController: UIViewController {
+final class ChatCollectionViewController: UICollectionViewController {
   
   // MARK: - Properties
   
   private lazy var chatNavigationBar = ChatNavigationBar(matchedUser: matchedUser)
-  private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
   
   // MARK: -
   
@@ -39,7 +38,8 @@ final class ChatViewController: UIViewController {
   
   init(matchedUser: MatchedUser) {
     self.matchedUser = matchedUser
-    super.init(nibName: nil, bundle: nil)
+    
+    super.init(collectionViewLayout: UICollectionViewFlowLayout())
   }
   
   required init?(coder: NSCoder) {
@@ -69,7 +69,7 @@ final class ChatViewController: UIViewController {
   }
   
   // MARK: - Helper Methods
-  private func setupView() {    
+  private func setupView() {
     // Configure Messages Navigation Bar
     collectionView.addSubview(chatNavigationBar)
     chatNavigationBar.snp.makeConstraints {
@@ -199,15 +199,15 @@ final class ChatViewController: UIViewController {
   }
 }
 
-// MARK: - UICollection View DataSource
+// MARK: - UICollectionViewDataSource
 
-extension ChatViewController: UICollectionViewDataSource {
+extension ChatCollectionViewController {
   
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return messages.count
   }
   
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+  override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ChatCollectionViewCell.reuseIdentifier,
                                                         for: indexPath) as? ChatCollectionViewCell else {
                                                           fatalError("Unable to Dequeue Cell") }
@@ -219,7 +219,9 @@ extension ChatViewController: UICollectionViewDataSource {
   }
 }
 
-extension ChatViewController: UICollectionViewDelegateFlowLayout {
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension ChatCollectionViewController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout,
