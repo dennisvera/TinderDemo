@@ -10,7 +10,9 @@ import UIKit
 import SnapKit
 import Firebase
 import SDWebImage
+import FirebaseAuth
 import JGProgressHUD
+import FirebaseFirestore
 
 protocol SettingsViewControllerDelegate {
   func didSaveSettings()

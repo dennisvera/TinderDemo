@@ -8,7 +8,8 @@
 
 import UIKit
 import SnapKit
-import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 final class MessagesViewController: UIViewController {
   
@@ -50,10 +51,18 @@ final class MessagesViewController: UIViewController {
     collectionView.dataSource = self
     collectionView.isScrollEnabled = true
     collectionView.backgroundColor = .white
-    collectionView.register(MessagesCollectionViewCell.self,
-                            forCellWithReuseIdentifier: MessagesCollectionViewCell.reuseIdentifier)
     collectionView.contentInset = .init(top: navigationBarHeight, left: 0, bottom: 0, right: 0)
     
+    // Register Collection View Cell
+    collectionView.register(MessagesCollectionViewCell.self,
+                            forCellWithReuseIdentifier: MessagesCollectionViewCell.reuseIdentifier)
+    
+    // Register Collection Header View
+    collectionView.register(MatchesHeaderView.self,
+                            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                            withReuseIdentifier: MatchesHeaderView.reuseIdentifier)
+    
+    // Constraint Collection View
     view.addSubview(collectionView)
     collectionView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -136,5 +145,34 @@ extension MessagesViewController: UICollectionViewDelegateFlowLayout {
                       layout collectionViewLayout: UICollectionViewLayout,
                       insetForSectionAt section: Int) -> UIEdgeInsets {
     return .init(top: 16, left: 16, bottom: 16, right: 16)
+  }
+}
+
+// MARK: - HeaderView
+
+extension MessagesViewController {
+  
+  func collectionView(_ collectionView: UICollectionView,
+                      viewForSupplementaryElementOfKind kind: String,
+                      at indexPath: IndexPath) -> UICollectionReusableView {
+    
+    switch kind {
+    case UICollectionView.elementKindSectionHeader:
+      guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                             withReuseIdentifier: MatchesHeaderView.reuseIdentifier,
+                                                                             for: indexPath) as? MatchesHeaderView else {
+                                                                              fatalError("Invalid view type")}
+      
+      return headerView
+    default:
+      assert(false, "Invalid element type")
+    }
+  }
+  
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      referenceSizeForHeaderInSection section: Int) -> CGSize {
+    
+    return .init(width: view.frame.width, height: 250)
   }
 }

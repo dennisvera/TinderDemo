@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import Firebase
+import FirebaseFirestore
 
 final class MatchView: UIView {
   

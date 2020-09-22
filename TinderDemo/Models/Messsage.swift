@@ -6,7 +6,8 @@
 //  Copyright © 2020 Dennis Vera. All rights reserved.
 //
 
-import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 struct Message {
   

@@ -8,6 +8,8 @@
 
 import Foundation
 import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 final class RegistrationViewModel {
   

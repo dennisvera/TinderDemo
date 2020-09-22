@@ -8,8 +8,9 @@
 
 import UIKit
 import SnapKit
-import Firebase
+import FirebaseAuth
 import JGProgressHUD
+import FirebaseFirestore
 
 final class HomeViewController: UIViewController {
   

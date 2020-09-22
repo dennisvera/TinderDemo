@@ -8,7 +8,8 @@
 
 import UIKit
 import SnapKit
-import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 final class ChatCollectionViewController: UICollectionViewController {
   
