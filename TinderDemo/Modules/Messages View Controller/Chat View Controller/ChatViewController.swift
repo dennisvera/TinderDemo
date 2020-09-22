@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Firebase
 
 final class ChatViewController: UIViewController {
   
@@ -24,12 +25,13 @@ final class ChatViewController: UIViewController {
   
   // MARK: -
   
-  private lazy var customInputAccessoryView: UIView = {
+  private lazy var customInputAccessoryView: CustomInputAccessoryView = {
     let view = CustomInputAccessoryView(frame: .init(x: 0,
                                                      y: 0,
                                                      width: self.view.frame.width,
                                                      height: 50))
     
+    view.sendButton.addTarget(self, action: #selector(handleSendButton), for: .touchUpInside)
     return view
   }()
   
@@ -49,12 +51,8 @@ final class ChatViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    messages.append(.init(text: "text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah", isCurrentLoggedUser: true))
-    messages.append(.init(text: "Helllloooo", isCurrentLoggedUser: false))
-    messages.append(.init(text: "text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah!. text messages go here .... .... blah blah blah", isCurrentLoggedUser: true))
-    messages.append(.init(text: "Helllloooo", isCurrentLoggedUser: false))
-    
     setupCollectionViewController()
+    fetchMessages()
     setupView()
   }
   
@@ -90,6 +88,12 @@ final class ChatViewController: UIViewController {
     
     // Set Navigation Button Target
     chatNavigationBar.backButton.addTarget(self, action: #selector(handleBackButton), for: .touchUpInside)
+    
+    // Observe Keyboard sid show changes
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(handleKeyboardShow),
+                                           name: UIResponder.keyboardDidShowNotification,
+                                           object: nil)
   }
   
   private func setupCollectionViewController() {
@@ -110,10 +114,88 @@ final class ChatViewController: UIViewController {
     }
   }
   
+  private func fetchMessages() {
+    guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+    
+    let query = Firestore.firestore()
+      .collection("matches_messages")
+      .document(currentUserId)
+      .collection(matchedUser.uid)
+      .order(by: "timestamp")
+    
+    query.addSnapshotListener { [weak self] querySnapshot, error in
+      guard let strongSelf = self else { return }
+      
+      if let error = error {
+        print("Unable to Fetch Messages:", error)
+        return
+      }
+      
+      querySnapshot?.documentChanges.forEach({ change in
+        if change.type == .added {
+          let dictionary = change.document.data()
+          strongSelf.messages.append(.init(dictionary: dictionary))
+        }
+      })
+      
+      strongSelf.collectionView.reloadData()
+      strongSelf.collectionView.scrollToItem(at: [0, strongSelf.messages.count - 1], at: .bottom, animated: true)
+    }
+  }
+  
   // MARK: - Actions
   
   @objc private func handleBackButton() {
     navigationController?.popViewController(animated: true)
+  }
+  
+  @objc private func handleSendButton() {
+    guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+    
+    // Save messages to current user acccount
+    let currentUserCollection = Firestore.firestore()
+      .collection("matches_messages")
+      .document(currentUserId)
+      .collection(matchedUser.uid)
+    
+    let data: [String: Any] = ["text": customInputAccessoryView.textView.text ?? "",
+                               "fromId": currentUserId,
+                               "toId": matchedUser.uid,
+                               "timestamp": Timestamp(date: Date())]
+    
+    currentUserCollection.addDocument(data: data) { [weak self] error in
+      guard let strongSelf = self else { return }
+      
+      if let error = error {
+        print("Unable to Save Message:", error)
+        return
+      }
+      
+      strongSelf.customInputAccessoryView.textView.text = nil
+      strongSelf.customInputAccessoryView.placeHolderLabel.isHidden = false
+    }
+    
+    // Save messages to matched user acccount
+    let matchedUserCollection = Firestore.firestore()
+      .collection("matches_messages")
+      .document(matchedUser.uid)
+      .collection(currentUserId)
+    
+    matchedUserCollection.addDocument(data: data) { [weak self] error in
+      guard let strongSelf = self else { return }
+      
+      if let error = error {
+        print("Unable to Save Message:", error)
+        return
+      }
+      
+      strongSelf.customInputAccessoryView.textView.text = nil
+      strongSelf.customInputAccessoryView.placeHolderLabel.isHidden = false
+    }
+  }
+  
+  @objc private func handleKeyboardShow() {
+    self.collectionView.scrollToItem(at: [0, messages.count - 1], at: .bottom, animated: true)
   }
 }
 

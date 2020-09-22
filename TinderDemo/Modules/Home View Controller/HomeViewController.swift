@@ -297,7 +297,7 @@ final class HomeViewController: UIViewController {
     let currentUserData: [String: Any] = ["uid": currentUser.uid ?? "",
                                           "name": currentUser.name ?? "",
                                           "profileImageUrl": currentUser.imageUrl1 ?? "",
-                                          "timeStamp": Timestamp(date: Date())]
+                                          "timestamp": Timestamp(date: Date())]
     
     // Save the current user info to FireStore
     Firestore.firestore()
@@ -321,7 +321,7 @@ final class HomeViewController: UIViewController {
     let matchedUserdata: [String: Any] = ["uid": matchedUser.uid ?? "",
                                           "name": matchedUser.name ?? "",
                                           "profileImageUrl": matchedUser.imageUrl1 ?? "",
-                                          "timeStamp": Timestamp(date: Date())]
+                                          "timestamp": Timestamp(date: Date())]
     
     // Save the matched user info to FireStore
     Firestore.firestore()

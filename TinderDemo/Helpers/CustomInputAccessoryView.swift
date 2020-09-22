@@ -13,7 +13,7 @@ final class CustomInputAccessoryView: UIView {
   
   // MARK: - Properties
   
-  private let placeHolderLabel: UILabel = {
+  let placeHolderLabel: UILabel = {
     let label = UILabel()
     label.text = "Enter Comment"
     label.textColor = .lightGray
@@ -21,14 +21,14 @@ final class CustomInputAccessoryView: UIView {
     return label
   }()
   
-  private let textView: UITextView = {
+  let textView: UITextView = {
     let textView = UITextView()
     textView.isScrollEnabled = false
     textView.font = .systemFont(ofSize: 16)
     return textView
   }()
   
-  private let sendButton: UIButton = {
+  let sendButton: UIButton = {
     let button = UIButton()
     button.setTitle("Send", for: .normal)
     button.setTitleColor(.black, for: .normal)
