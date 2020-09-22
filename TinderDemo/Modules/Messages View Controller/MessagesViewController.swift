@@ -58,9 +58,9 @@ final class MessagesViewController: UIViewController {
                             forCellWithReuseIdentifier: MessagesCollectionViewCell.reuseIdentifier)
     
     // Register Collection Header View
-    collectionView.register(MatchesHeaderView.self,
+    collectionView.register(MessagesHeaderView.self,
                             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                            withReuseIdentifier: MatchesHeaderView.reuseIdentifier)
+                            withReuseIdentifier: MessagesHeaderView.reuseIdentifier)
     
     // Constraint Collection View
     view.addSubview(collectionView)
@@ -159,8 +159,8 @@ extension MessagesViewController {
     switch kind {
     case UICollectionView.elementKindSectionHeader:
       guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                             withReuseIdentifier: MatchesHeaderView.reuseIdentifier,
-                                                                             for: indexPath) as? MatchesHeaderView else {
+                                                                             withReuseIdentifier: MessagesHeaderView.reuseIdentifier,
+                                                                             for: indexPath) as? MessagesHeaderView else {
                                                                               fatalError("Invalid view type")}
       
       return headerView

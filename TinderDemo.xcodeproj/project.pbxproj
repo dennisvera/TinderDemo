@@ -26,7 +26,7 @@
 		E1CB2DFD25168F3100724A83 /* ChatNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DFC25168F3100724A83 /* ChatNavigationBar.swift */; };
 		E1CB2DFF25193D7E00724A83 /* CustomInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DFE25193D7E00724A83 /* CustomInputAccessoryView.swift */; };
 		E1CB2E01251A5C7F00724A83 /* ChatCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2E00251A5C7F00724A83 /* ChatCollectionViewController.swift */; };
-		E1CB2E03251A663400724A83 /* MatchesHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2E02251A663400724A83 /* MatchesHeaderView.swift */; };
+		E1CB2E03251A663400724A83 /* MessagesHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2E02251A663400724A83 /* MessagesHeaderView.swift */; };
 		E1CB2E06251A748400724A83 /* MatchesHorizontalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2E05251A748400724A83 /* MatchesHorizontalViewController.swift */; };
 		E1CF827A24E4518C0041838D /* CustomImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827924E4518C0041838D /* CustomImagePicker.swift */; };
 		E1CF827C24E45ABC0041838D /* SettingsHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */; };
@@ -76,8 +76,8 @@
 		E1CB2DFC25168F3100724A83 /* ChatNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatNavigationBar.swift; sourceTree = "<group>"; };
 		E1CB2DFE25193D7E00724A83 /* CustomInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInputAccessoryView.swift; sourceTree = "<group>"; };
 		E1CB2E00251A5C7F00724A83 /* ChatCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewController.swift; sourceTree = "<group>"; };
-		E1CB2E02251A663400724A83 /* MatchesHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesHeaderView.swift; sourceTree = "<group>"; };
-		E1CB2E05251A748400724A83 /* MatchesHorizontalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MatchesHorizontalViewController.swift; path = "Matches Horizontal VIew Controller/MatchesHorizontalViewController.swift"; sourceTree = "<group>"; };
+		E1CB2E02251A663400724A83 /* MessagesHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesHeaderView.swift; sourceTree = "<group>"; };
+		E1CB2E05251A748400724A83 /* MatchesHorizontalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesHorizontalViewController.swift; sourceTree = "<group>"; };
 		E1CF827924E4518C0041838D /* CustomImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImagePicker.swift; sourceTree = "<group>"; };
 		E1CF827B24E45ABC0041838D /* SettingsHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderLabel.swift; sourceTree = "<group>"; };
 		E1CF827D24E45F6F0041838D /* SettingsTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextField.swift; sourceTree = "<group>"; };
@@ -243,10 +243,8 @@
 		E1CB2E04251A744C00724A83 /* Messages Header View */ = {
 			isa = PBXGroup;
 			children = (
-				E1CB2E02251A663400724A83 /* MatchesHeaderView.swift */,
+				E1CB2E02251A663400724A83 /* MessagesHeaderView.swift */,
 				E1CB2E07251A760500724A83 /* Matches Horizontal VIew Controller */,
-				E1CB2E05251A748400724A83 /* MatchesHorizontalViewController.swift */,
-				E135CEF0251A848D004528A9 /* MatchesHorizontalCollectionViewCell.swift */,
 			);
 			path = "Messages Header View";
 			sourceTree = "<group>";
@@ -254,6 +252,8 @@
 		E1CB2E07251A760500724A83 /* Matches Horizontal VIew Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E1CB2E05251A748400724A83 /* MatchesHorizontalViewController.swift */,
+				E1FF9CD5251A9C7B00520CBC /* Matches Horizontal Collection View cell */,
 			);
 			path = "Matches Horizontal VIew Controller";
 			sourceTree = "<group>";
@@ -445,6 +445,14 @@
 			path = "Match View";
 			sourceTree = "<group>";
 		};
+		E1FF9CD5251A9C7B00520CBC /* Matches Horizontal Collection View cell */ = {
+			isa = PBXGroup;
+			children = (
+				E135CEF0251A848D004528A9 /* MatchesHorizontalCollectionViewCell.swift */,
+			);
+			path = "Matches Horizontal Collection View cell";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -587,7 +595,7 @@
 				E1B55452250FE10B00208E56 /* KeepSwippingButton.swift in Sources */,
 				E1D427ED24E9A74300AFACBC /* PagingPhotosViewController.swift in Sources */,
 				E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */,
-				E1CB2E03251A663400724A83 /* MatchesHeaderView.swift in Sources */,
+				E1CB2E03251A663400724A83 /* MessagesHeaderView.swift in Sources */,
 				E1D427EB24E97FDA00AFACBC /* UIButton+Extension.swift in Sources */,
 				E1D427E924E847D800AFACBC /* ProfileDetailViewController.swift in Sources */,
 				E1CB2DFF25193D7E00724A83 /* CustomInputAccessoryView.swift in Sources */,

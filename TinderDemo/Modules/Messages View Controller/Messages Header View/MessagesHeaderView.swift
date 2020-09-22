@@ -1,5 +1,5 @@
 //
-//  MatchesHeaderView.swift
+//  MessagesHeaderView.swift
 //  TinderDemo
 //
 //  Created by Dennis Vera on 9/22/20.
@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-final class MatchesHeaderView: UICollectionReusableView {
+final class MessagesHeaderView: UICollectionReusableView {
   
   // MARK: - Static Properties
   
