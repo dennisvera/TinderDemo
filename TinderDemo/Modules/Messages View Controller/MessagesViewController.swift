@@ -22,10 +22,14 @@ final class MessagesViewController: UIViewController {
   
   private var recentMessages = [RecentMessage]()
   private var recentMessagesDictionary = [String: RecentMessage]()
-
+  
   // MARK: -
-
+  
   private let navigationBarHeight: CGFloat = 150
+  
+  // MARK: -
+  
+  private var listener: ListenerRegistration?
   
   // MARK: - View Life Cycle
   
@@ -35,6 +39,15 @@ final class MessagesViewController: UIViewController {
     setupCollectionViewController()
     setupView()
     fetchRecentMessages()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    
+    // Remove the listner to avoid memory leaks
+    if isMovingFromParent {
+      listener?.remove()
+    }
   }
   
   // MARK: - Helper Methods
@@ -95,27 +108,28 @@ final class MessagesViewController: UIViewController {
   private func fetchRecentMessages() {
     guard let currentUserID = Auth.auth().currentUser?.uid else { return }
     
-    Firestore.firestore()
+    let query = Firestore.firestore()
       .collection("matches_messages")
       .document(currentUserID)
       .collection("recent_messages")
-      .addSnapshotListener { [weak self] querySnapshot, error in
-        guard let strongSelf = self else { return }
-        
-        if let error = error {
-          print("Unable to Fetch Matched Users:", error)
-          return
+    
+    listener = query.addSnapshotListener { [weak self] querySnapshot, error in
+      guard let strongSelf = self else { return }
+      
+      if let error = error {
+        print("Unable to Fetch Matched Users:", error)
+        return
+      }
+      
+      querySnapshot?.documentChanges.forEach({ change in
+        if change.type == .added || change.type == .modified {
+          let dictionary = change.document.data()
+          let recentMessage = RecentMessage(dictionary: dictionary)
+          strongSelf.recentMessagesDictionary[recentMessage.uid] = recentMessage
         }
-        
-        querySnapshot?.documentChanges.forEach({ change in
-          if change.type == .added || change.type == .modified {
-            let dictionary = change.document.data()
-            let recentMessage = RecentMessage(dictionary: dictionary)
-            strongSelf.recentMessagesDictionary[recentMessage.uid] = recentMessage
-          }
-        })
-        
-        strongSelf.resetMessages()
+      })
+      
+      strongSelf.resetMessages()
     }
   }
   

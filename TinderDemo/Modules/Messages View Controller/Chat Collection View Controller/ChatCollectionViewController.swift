@@ -36,6 +36,10 @@ final class ChatCollectionViewController: UICollectionViewController {
     return view
   }()
   
+  // MARK: -
+
+  private var listener: ListenerRegistration?
+  
   // MARK: - Initialization
   
   init(matchedUser: MatchedUser) {
@@ -57,6 +61,15 @@ final class ChatCollectionViewController: UICollectionViewController {
     fetchCurrentUser()
     fetchMessages()
     setupView()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    
+    // Remove the listner to avoid memory leaks
+    if isMovingFromParent {
+      listener?.remove()
+    }
   }
   
   // MARK: - Overrides
@@ -145,7 +158,7 @@ final class ChatCollectionViewController: UICollectionViewController {
       .collection(matchedUser.uid)
       .order(by: "timestamp")
     
-    query.addSnapshotListener { [weak self] querySnapshot, error in
+    listener = query.addSnapshotListener { [weak self] querySnapshot, error in
       guard let strongSelf = self else { return }
       
       if let error = error {
