@@ -28,9 +28,25 @@ final class MessagesCollectionViewCell: UICollectionViewCell {
   
   private let userNameLabel: UILabel = {
     let label = UILabel()
-    label.numberOfLines = 2
-    label.font = .boldSystemFont(ofSize: 14)
+    label.numberOfLines = 1
+    label.textColor = .black
+    label.font = .boldSystemFont(ofSize: 18)
     return label
+  }()
+  
+  private let messageTextLabel: UILabel = {
+    let label = UILabel()
+    label.numberOfLines = 2
+    label.textColor = .gray
+    label.font = .systemFont(ofSize: 16)
+    label.text = "this is text that will end up being two lines long in order to see the ui work correctly."
+    return label
+  }()
+  
+  private let separatorLineView: UIView = {
+    let view = UIView()
+    view.backgroundColor = UIColor(white: 0.8, alpha: 1)
+    return view
   }()
   
   // MARK: - Initialization
@@ -55,19 +71,33 @@ final class MessagesCollectionViewCell: UICollectionViewCell {
   // MARK: - Helper Methods
   
   private func setupView() {
-    let height: CGFloat = 80
+    let height: CGFloat = 94
     profileImageView.layer.cornerRadius = height / 2
     profileImageView.snp.makeConstraints {
       $0.height.width.equalTo(height)
     }
     
-    let stackView = UIStackView(arrangedSubviews: [profileImageView, userNameLabel])
-    stackView.axis = .vertical
+    let verticalStackView = UIStackView(arrangedSubviews: [userNameLabel, messageTextLabel])
+    verticalStackView.spacing = 4
+    verticalStackView.axis = .vertical
+    
+    let stackView = UIStackView(arrangedSubviews: [profileImageView, verticalStackView])
+    stackView.spacing = 20
+    stackView.axis = .horizontal
     stackView.alignment = .center
     
     addSubview(stackView)
     stackView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.leading.equalToSuperview().offset(20)
+      $0.trailing.equalToSuperview().offset(-20)
+    }
+    
+    addSubview(separatorLineView)
+    separatorLineView.snp.makeConstraints {
+      $0.height.equalTo(0.5)
+      $0.trailing.equalToSuperview()
+      $0.leading.equalTo(userNameLabel.snp.leading)
+      $0.top.equalTo(stackView.snp.bottom).offset(14)
     }
   }
   

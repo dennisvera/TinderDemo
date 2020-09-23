@@ -44,6 +44,15 @@ final class MessagesViewController: UIViewController {
       $0.height.equalTo(navigationBarHeight)
       $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
     }
+    
+    // Hide the gap between the Custom Nav Bar and Status Bar
+    let statusBarCover = UIView()
+    statusBarCover.backgroundColor = .white
+    view.addSubview(statusBarCover)
+    statusBarCover.snp.makeConstraints {
+      $0.top.leading.trailing.equalToSuperview()
+      $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.top)
+    }
   }
   
   private func setupCollectionViewController() {
@@ -51,7 +60,8 @@ final class MessagesViewController: UIViewController {
     collectionView.dataSource = self
     collectionView.isScrollEnabled = true
     collectionView.backgroundColor = .white
-    collectionView.contentInset = .init(top: navigationBarHeight, left: 0, bottom: 0, right: 0)
+    collectionView.contentInset.top = navigationBarHeight
+    collectionView.verticalScrollIndicatorInsets.top = navigationBarHeight
     
     // Register Collection View Cell
     collectionView.register(MessagesCollectionViewCell.self,
@@ -138,13 +148,19 @@ extension MessagesViewController: UICollectionViewDelegateFlowLayout {
                       layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
     
-    return .init(width: 120, height: 140)
+    return .init(width: view.frame.width, height: 130)
   }
   
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout,
                       insetForSectionAt section: Int) -> UIEdgeInsets {
-    return .init(top: 16, left: 16, bottom: 16, right: 16)
+    return .init(top: 0, left: 0, bottom: 16, right: 0)
+  }
+  
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    return 0
   }
 }
 

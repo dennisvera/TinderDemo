@@ -190,8 +190,8 @@
 			isa = PBXGroup;
 			children = (
 				E1CB2DE92512872600724A83 /* MessagesViewController.swift */,
-				E1CB2DEE2513BAB200724A83 /* Messages Navigation Bar */,
 				E1CB2E04251A744C00724A83 /* Messages Header View */,
+				E1CB2DEE2513BAB200724A83 /* Messages Navigation Bar */,
 				E1CB2DED2512A09500724A83 /* Messages Collection View Cells */,
 				E1CB2DF325151C2D00724A83 /* Chat Collection View Controller */,
 			);
