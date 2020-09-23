@@ -29,6 +29,7 @@ final class MatchesHorizontalCollectionViewCell: UICollectionViewCell {
   private let userNameLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 2
+    label.textColor =  #colorLiteral(red: 0.3450689912, green: 0.3451144099, blue: 0.3450536132, alpha: 1)
     label.font = .boldSystemFont(ofSize: 14)
     return label
   }()

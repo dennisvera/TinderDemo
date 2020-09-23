@@ -37,7 +37,7 @@ final class MessagesCollectionViewCell: UICollectionViewCell {
   private let messageTextLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 2
-    label.textColor = .gray
+    label.textColor = #colorLiteral(red: 0.5685824156, green: 0.5686529875, blue: 0.5685582757, alpha: 1)
     label.font = .systemFont(ofSize: 16)
     label.text = "this is text that will end up being two lines long in order to see the ui work correctly."
     return label

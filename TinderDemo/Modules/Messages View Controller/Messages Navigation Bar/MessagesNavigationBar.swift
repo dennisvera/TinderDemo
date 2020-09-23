@@ -15,7 +15,7 @@ final class MessagesNavigationBar: UIView {
   
   let backButton: UIButton = {
     let button = UIButton()
-    button.tintColor = .lightGray
+    button.tintColor = #colorLiteral(red: 0.8273723125, green: 0.8512359262, blue: 0.8856532574, alpha: 1)
     button.imageView?.contentMode = .scaleAspectFill
     button.setImage(#imageLiteral(resourceName: "app_icon").withRenderingMode(.alwaysTemplate), for: .normal)
     return button
@@ -41,7 +41,7 @@ final class MessagesNavigationBar: UIView {
   private let feedLabel: UILabel = {
     let label = UILabel()
     label.text = "Feed"
-    label.textColor = .lightGray
+    label.textColor = #colorLiteral(red: 0.5764250159, green: 0.5764964819, blue: 0.576400578, alpha: 1)
     label.textAlignment = .center
     label.font = .boldSystemFont(ofSize: 22)
     return label
