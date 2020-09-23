@@ -21,6 +21,11 @@ final class MessagesViewController: UIViewController {
   // MARK: -
   
   private var matchedUsers = [MatchedUser]()
+  private var recentMessages = [RecentMessage]()
+  private var recentMessagesDictionary = [String: RecentMessage]()
+
+  // MARK: -
+
   private let navigationBarHeight: CGFloat = 150
   
   // MARK: - View Life Cycle
@@ -31,6 +36,7 @@ final class MessagesViewController: UIViewController {
     setupCollectionViewController()
     setupView()
     fetchMatchedUsers()
+    fetchRecentMessages()
   }
   
   // MARK: - Helper Methods
@@ -106,10 +112,44 @@ final class MessagesViewController: UIViewController {
         snapshot?.documents.forEach({ documentSnapshot in
           let dictionary = documentSnapshot.data()
           strongSelf.matchedUsers.append(.init(dictionary: dictionary))
-          
-          strongSelf.collectionView.reloadData()
         })
     }
+  }
+  
+  private func fetchRecentMessages() {
+    guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+    
+    Firestore.firestore()
+      .collection("matches_messages")
+      .document(currentUserID)
+      .collection("recent_messages")
+      .addSnapshotListener { [weak self] querySnapshot, error in
+        guard let strongSelf = self else { return }
+        
+        if let error = error {
+          print("Unable to Fetch Matched Users:", error)
+          return
+        }
+        
+        querySnapshot?.documentChanges.forEach({ change in
+          if change.type == .added || change.type == .modified {
+            let dictionary = change.document.data()
+            let recentMessage = RecentMessage(dictionary: dictionary)
+            strongSelf.recentMessagesDictionary[recentMessage.uid] = recentMessage
+          }
+        })
+        
+        strongSelf.resetMessages()
+    }
+  }
+  
+  private func resetMessages() {
+    let values = Array(recentMessagesDictionary.values)
+    recentMessages = values.sorted(by: { recentMessage1, recentMesage2 -> Bool in
+      return recentMessage1.timestamp.compare(recentMesage2.timestamp) == .orderedDescending
+    })
+    
+    collectionView.reloadData()
   }
 }
 
@@ -118,7 +158,7 @@ final class MessagesViewController: UIViewController {
 extension MessagesViewController: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return matchedUsers.count
+    return recentMessages.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -126,8 +166,8 @@ extension MessagesViewController: UICollectionViewDataSource {
                                                         for: indexPath) as? MessagesCollectionViewCell else {
                                                           fatalError("Unable to Dequeue Cell") }
     
-    let matchedUser = matchedUsers[indexPath.row]
-    cell.configure(with: matchedUser)
+    let recentMessage = recentMessages[indexPath.item]
+    cell.configure(with: recentMessage)
     
     return cell
   }
@@ -138,10 +178,8 @@ extension MessagesViewController: UICollectionViewDataSource {
 extension MessagesViewController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let matchedUser = matchedUsers[indexPath.item]
-    
-    let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
-    navigationController?.pushViewController(chatCollectionViewController, animated: true)
+//    let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
+//    navigationController?.pushViewController(chatCollectionViewController, animated: true)
   }
   
   func collectionView(_ collectionView: UICollectionView,

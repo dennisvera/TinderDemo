@@ -103,9 +103,11 @@ final class MessagesCollectionViewCell: UICollectionViewCell {
   
   // MARK: - Public Methods
   
-  func configure(with user: MatchedUser) {
-    guard let imageUrl = URL(string: user.profileImageUrl ?? "") else { return }
+  func configure(with recentMessage: RecentMessage) {
+    userNameLabel.text = recentMessage.name
+    messageTextLabel.text = recentMessage.text
+    
+    guard let imageUrl = URL(string: recentMessage.profileImageUrl) else { return }
     profileImageView.sd_setImage(with: imageUrl)
-    userNameLabel.text = user.name
   }
 }

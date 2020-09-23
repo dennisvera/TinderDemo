@@ -52,6 +52,7 @@
 		E1DFBC2224BB8B500092622B /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DFBC2124BB8B500092622B /* Advertiser.swift */; };
 		E1FECE522506DC0300167B35 /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FECE512506DC0300167B35 /* MatchView.swift */; };
 		E1FF9CD4251A951F00520CBC /* MatchesHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CD3251A951F00520CBC /* MatchesHeaderLabel.swift */; };
+		E1FF9CD7251AF40600520CBC /* RecentMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CD6251AF40600520CBC /* RecentMessages.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -104,6 +105,7 @@
 		E1DFBC2124BB8B500092622B /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
 		E1FECE512506DC0300167B35 /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
 		E1FF9CD3251A951F00520CBC /* MatchesHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesHeaderLabel.swift; sourceTree = "<group>"; };
+		E1FF9CD6251AF40600520CBC /* RecentMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentMessages.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -408,6 +410,7 @@
 				E1CB2DF62515215C00724A83 /* Messsage.swift */,
 				E1DFBC2124BB8B500092622B /* Advertiser.swift */,
 				E1CB2DF125140D0800724A83 /* MatchedUser.swift */,
+				E1FF9CD6251AF40600520CBC /* RecentMessages.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -590,6 +593,7 @@
 				E1CF828824E62B6A0041838D /* LoginViewController.swift in Sources */,
 				E1CB2DFD25168F3100724A83 /* ChatNavigationBar.swift in Sources */,
 				E1CF828524E602A10041838D /* Firebase+Extension.swift in Sources */,
+				E1FF9CD7251AF40600520CBC /* RecentMessages.swift in Sources */,
 				E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */,
 				E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */,
 				E1B55452250FE10B00208E56 /* KeepSwippingButton.swift in Sources */,
