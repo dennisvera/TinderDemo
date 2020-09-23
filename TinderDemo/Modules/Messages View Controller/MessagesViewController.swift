@@ -20,7 +20,6 @@ final class MessagesViewController: UIViewController {
   
   // MARK: -
   
-  private var matchedUsers = [MatchedUser]()
   private var recentMessages = [RecentMessage]()
   private var recentMessagesDictionary = [String: RecentMessage]()
 
@@ -35,7 +34,6 @@ final class MessagesViewController: UIViewController {
     
     setupCollectionViewController()
     setupView()
-    fetchMatchedUsers()
     fetchRecentMessages()
   }
   
@@ -92,28 +90,6 @@ final class MessagesViewController: UIViewController {
   
   @objc private func handleBackButton() {
     navigationController?.popViewController(animated: true)
-  }
-  
-  private func fetchMatchedUsers() {
-    guard let currentUserID = Auth.auth().currentUser?.uid else { return }
-    
-    Firestore.firestore()
-      .collection("matches_messages")
-      .document(currentUserID)
-      .collection("matches")
-      .getDocuments { [weak self] snapshot, error in
-        guard let strongSelf = self else { return }
-        
-        if let error = error {
-          print("Unable to Fetch Matched Users:", error)
-          return
-        }
-        
-        snapshot?.documents.forEach({ documentSnapshot in
-          let dictionary = documentSnapshot.data()
-          strongSelf.matchedUsers.append(.init(dictionary: dictionary))
-        })
-    }
   }
   
   private func fetchRecentMessages() {
@@ -178,8 +154,14 @@ extension MessagesViewController: UICollectionViewDataSource {
 extension MessagesViewController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//    let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
-//    navigationController?.pushViewController(chatCollectionViewController, animated: true)
+    let recentMessage = recentMessages[indexPath.item]
+    let dictionary = ["uid": recentMessage.uid,
+                      "name": recentMessage.name,
+                      "profileImageUrl": recentMessage.profileImageUrl]
+    
+    let matchedUser = MatchedUser(dictionary: dictionary)
+    let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
+    navigationController?.pushViewController(chatCollectionViewController, animated: true)
   }
   
   func collectionView(_ collectionView: UICollectionView,

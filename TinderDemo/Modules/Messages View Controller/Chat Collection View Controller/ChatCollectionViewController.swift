@@ -19,6 +19,7 @@ final class ChatCollectionViewController: UICollectionViewController {
   
   // MARK: -
   
+  private var currentUser: User?
   private var messages = [Message]()
   private let matchedUser: MatchedUser
   private let navigationBarHeight: CGFloat = 120
@@ -53,6 +54,7 @@ final class ChatCollectionViewController: UICollectionViewController {
     super.viewDidLoad()
     
     setupCollectionViewController()
+    fetchCurrentUser()
     fetchMessages()
     setupView()
   }
@@ -115,6 +117,25 @@ final class ChatCollectionViewController: UICollectionViewController {
     }
   }
   
+  private func fetchCurrentUser() {
+    guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+    
+    Firestore.firestore()
+      .collection("users")
+      .document(currentUserId)
+      .getDocument { [weak self] snapshot, error in
+        guard let strongSelf = self else { return }
+        
+        if let error = error {
+          print("Unable to fethc current user:", error)
+          return
+        }
+        
+        let data = snapshot?.data() ?? [:]
+        strongSelf.currentUser = User(dictionary: data)
+    }
+  }
+  
   private func fetchMessages() {
     guard let currentUserId = Auth.auth().currentUser?.uid else { return }
     
@@ -144,13 +165,7 @@ final class ChatCollectionViewController: UICollectionViewController {
     }
   }
   
-  // MARK: - Actions
-  
-  @objc private func handleBackButton() {
-    navigationController?.popViewController(animated: true)
-  }
-  
-  @objc private func handleSendButton() {
+  private func saveToFromMesages() {
     guard let currentUserId = Auth.auth().currentUser?.uid else { return }
     
     // Save messages to current user acccount
@@ -193,6 +208,61 @@ final class ChatCollectionViewController: UICollectionViewController {
       strongSelf.customInputAccessoryView.textView.text = nil
       strongSelf.customInputAccessoryView.placeHolderLabel.isHidden = false
     }
+  }
+  
+  private func saveToFromRecentMessages() {
+    guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+    
+    // Save most recent message to current user
+    let data: [String: Any] = ["uid": matchedUser.uid,
+                               "name": matchedUser.name,
+                               "timestamp": Timestamp(date: Date()),
+                               "text": customInputAccessoryView.textView.text ?? "",
+                               "profileImageUrl": matchedUser.profileImageUrl ?? ""]
+    
+    Firestore.firestore()
+      .collection("matches_messages")
+      .document(currentUserId)
+      .collection("recent_messages")
+      .document(matchedUser.uid)
+      .setData(data) { error in
+        if let error = error {
+          print("Unable to Save Last Message:", error)
+          return
+        }
+    }
+    
+    // Save most recent messages to matched user
+    guard let currentUser = currentUser else { return }
+    
+    let currentUserData: [String: Any] = ["uid": currentUserId,
+                                          "name": currentUser.name ?? "",
+                                          "timestamp": Timestamp(date: Date()),
+                                          "text": customInputAccessoryView.textView.text ?? "",
+                                          "profileImageUrl": currentUser.imageUrl1 ?? ""]
+    
+    Firestore.firestore()
+      .collection("matches_messages")
+      .document(matchedUser.uid)
+      .collection("recent_messages")
+      .document(currentUserId)
+      .setData(currentUserData) { error in
+        if let error = error {
+          print("Unable to Save Last Message:", error)
+          return
+        }
+    }
+  }
+  
+  // MARK: - Actions
+  
+  @objc private func handleBackButton() {
+    navigationController?.popViewController(animated: true)
+  }
+  
+  @objc private func handleSendButton() {
+    saveToFromMesages()
+    saveToFromRecentMessages()
   }
   
   @objc private func handleKeyboardShow() {
