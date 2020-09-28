@@ -103,7 +103,7 @@ extension MatchesHorizontalViewController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let name = NSNotification.Name(rawValue: Strings.matchesHorizontalControllerSegue)
-    NotificationCenter.default.post(name: name, object: nil, userInfo: ["indexPathKey": indexPath.item])
+    NotificationCenter.default.post(name: name, object: nil, userInfo: ["matchedUser": matchedUsers[indexPath.item]])
   }
   
   func collectionView(_ collectionView: UICollectionView,

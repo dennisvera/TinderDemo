@@ -157,11 +157,10 @@ final class MessagesViewController: UIViewController {
   }
   
   @objc private func didSelectMatchedUser(_ notification: Notification) {
-    guard let indexPath = notification.userInfo?["indexPathKey"] as? Int else { return }
-    let recentMessage = recentMessages[indexPath]
-    let dictionary = ["uid": recentMessage.uid,
-                      "name": recentMessage.name,
-                      "profileImageUrl": recentMessage.profileImageUrl]
+    guard let userInfo = notification.userInfo?["matchedUser"] as? MatchedUser else { return }
+    let dictionary = ["uid": userInfo.uid,
+                      "name": userInfo.name,
+                      "profileImageUrl": userInfo.profileImageUrl ?? ""]
     
     let matchedUser = MatchedUser(dictionary: dictionary)
     let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
