@@ -102,10 +102,8 @@ extension MatchesHorizontalViewController: UICollectionViewDataSource {
 extension MatchesHorizontalViewController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let matchedUser = matchedUsers[indexPath.item]
-    
-    let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
-    navigationController?.pushViewController(chatCollectionViewController, animated: true)
+    let name = NSNotification.Name(rawValue: Strings.matchesHorizontalControllerSegue)
+    NotificationCenter.default.post(name: name, object: nil, userInfo: ["indexPathKey": indexPath.item])
   }
   
   func collectionView(_ collectionView: UICollectionView,

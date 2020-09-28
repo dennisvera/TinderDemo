@@ -53,6 +53,7 @@
 		E1FECE522506DC0300167B35 /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FECE512506DC0300167B35 /* MatchView.swift */; };
 		E1FF9CD4251A951F00520CBC /* MatchesHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CD3251A951F00520CBC /* MatchesHeaderLabel.swift */; };
 		E1FF9CD7251AF40600520CBC /* RecentMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CD6251AF40600520CBC /* RecentMessages.swift */; };
+		E1FF9CD92522902700520CBC /* Strings+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CD82522902700520CBC /* Strings+Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -106,6 +107,7 @@
 		E1FECE512506DC0300167B35 /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
 		E1FF9CD3251A951F00520CBC /* MatchesHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesHeaderLabel.swift; sourceTree = "<group>"; };
 		E1FF9CD6251AF40600520CBC /* RecentMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentMessages.swift; sourceTree = "<group>"; };
+		E1FF9CD82522902700520CBC /* Strings+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Strings+Helpers.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 		E145083924C8CFC800DC7727 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				E1FF9CD82522902700520CBC /* Strings+Helpers.swift */,
 				E1CF828124E5CCFC0041838D /* AgeRangeLabel.swift */,
 				E145083A24C8D00F00DC7727 /* CustomTextField.swift */,
 				E1CF827D24E45F6F0041838D /* SettingsTextField.swift */,
@@ -600,6 +603,7 @@
 				E1D427ED24E9A74300AFACBC /* PagingPhotosViewController.swift in Sources */,
 				E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */,
 				E1CB2E03251A663400724A83 /* MessagesHeaderView.swift in Sources */,
+				E1FF9CD92522902700520CBC /* Strings+Helpers.swift in Sources */,
 				E1D427EB24E97FDA00AFACBC /* UIButton+Extension.swift in Sources */,
 				E1D427E924E847D800AFACBC /* ProfileDetailViewController.swift in Sources */,
 				E1CB2DFF25193D7E00724A83 /* CustomInputAccessoryView.swift in Sources */,

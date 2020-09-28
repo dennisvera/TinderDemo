@@ -31,6 +31,12 @@ final class MessagesViewController: UIViewController {
   
   private var listener: ListenerRegistration?
   
+  // Deinitialization
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+  
   // MARK: - View Life Cycle
   
   override func viewDidLoad() {
@@ -39,6 +45,7 @@ final class MessagesViewController: UIViewController {
     setupCollectionViewController()
     setupView()
     fetchRecentMessages()
+    createNotifications()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -99,12 +106,6 @@ final class MessagesViewController: UIViewController {
     messagesNavigationBar.backButton.addTarget(self, action: #selector(handleBackButton), for: .touchUpInside)
   }
   
-  // MARK: - Actions
-  
-  @objc private func handleBackButton() {
-    navigationController?.popViewController(animated: true)
-  }
-  
   private func fetchRecentMessages() {
     guard let currentUserID = Auth.auth().currentUser?.uid else { return }
     
@@ -140,6 +141,31 @@ final class MessagesViewController: UIViewController {
     })
     
     collectionView.reloadData()
+  }
+  
+  // MARK: - Actions
+  
+  @objc private func handleBackButton() {
+    navigationController?.popViewController(animated: true)
+  }
+  
+  // MARK: - Notifications
+  
+  private func createNotifications() {
+    let name = NSNotification.Name(rawValue: Strings.matchesHorizontalControllerSegue)
+    NotificationCenter.default.addObserver(self, selector: #selector(didSelectMatchedUser), name: name, object: nil)
+  }
+  
+  @objc private func didSelectMatchedUser(_ notification: Notification) {
+    guard let indexPath = notification.userInfo?["indexPathKey"] as? Int else { return }
+    let recentMessage = recentMessages[indexPath]
+    let dictionary = ["uid": recentMessage.uid,
+                      "name": recentMessage.name,
+                      "profileImageUrl": recentMessage.profileImageUrl]
+    
+    let matchedUser = MatchedUser(dictionary: dictionary)
+    let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
+    navigationController?.pushViewController(chatCollectionViewController, animated: true)
   }
 }
 
