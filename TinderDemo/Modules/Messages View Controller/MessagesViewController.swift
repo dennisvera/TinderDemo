@@ -110,9 +110,9 @@ final class MessagesViewController: UIViewController {
     guard let currentUserID = Auth.auth().currentUser?.uid else { return }
     
     let query = Firestore.firestore()
-      .collection("matches_messages")
+      .collection(Strings.matchesMessagesCollection)
       .document(currentUserID)
-      .collection("recent_messages")
+      .collection(Strings.recentMessagesCollection)
     
     listener = query.addSnapshotListener { [weak self] querySnapshot, error in
       guard let strongSelf = self else { return }
@@ -157,10 +157,10 @@ final class MessagesViewController: UIViewController {
   }
   
   @objc private func didSelectMatchedUser(_ notification: Notification) {
-    guard let userInfo = notification.userInfo?["matchedUser"] as? MatchedUser else { return }
-    let dictionary = ["uid": userInfo.uid,
-                      "name": userInfo.name,
-                      "profileImageUrl": userInfo.profileImageUrl ?? ""]
+    guard let userInfo = notification.userInfo?[Strings.matchedUserKey] as? MatchedUser else { return }
+    let dictionary = [Strings.uid: userInfo.uid,
+                      Strings.name: userInfo.name,
+                      Strings.profileImageUrl: userInfo.profileImageUrl ?? ""]
     
     let matchedUser = MatchedUser(dictionary: dictionary)
     let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
@@ -194,9 +194,9 @@ extension MessagesViewController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let recentMessage = recentMessages[indexPath.item]
-    let dictionary = ["uid": recentMessage.uid,
-                      "name": recentMessage.name,
-                      "profileImageUrl": recentMessage.profileImageUrl]
+    let dictionary = [Strings.uid: recentMessage.uid,
+                      Strings.name: recentMessage.name,
+                      Strings.profileImageUrl: recentMessage.profileImageUrl]
     
     let matchedUser = MatchedUser(dictionary: dictionary)
     let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)

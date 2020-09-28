@@ -58,9 +58,9 @@ final class MatchesHorizontalViewController: UIViewController {
     guard let currentUserID = Auth.auth().currentUser?.uid else { return }
     
     Firestore.firestore()
-      .collection("matches_messages")
+      .collection(Strings.matchesMessagesCollection)
       .document(currentUserID)
-      .collection("matches")
+      .collection(Strings.matchesCollection)
       .getDocuments { [weak self] snapshot, error in
         guard let strongSelf = self else { return }
         
@@ -103,7 +103,7 @@ extension MatchesHorizontalViewController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let name = NSNotification.Name(rawValue: Strings.matchesHorizontalControllerSegue)
-    NotificationCenter.default.post(name: name, object: nil, userInfo: ["matchedUser": matchedUsers[indexPath.item]])
+    NotificationCenter.default.post(name: name, object: nil, userInfo: [Strings.matchedUserKey: matchedUsers[indexPath.item]])
   }
   
   func collectionView(_ collectionView: UICollectionView,
