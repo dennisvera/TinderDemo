@@ -54,6 +54,7 @@
 		E1FF9CD4251A951F00520CBC /* MatchesHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CD3251A951F00520CBC /* MatchesHeaderLabel.swift */; };
 		E1FF9CD7251AF40600520CBC /* RecentMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CD6251AF40600520CBC /* RecentMessages.swift */; };
 		E1FF9CD92522902700520CBC /* Strings+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CD82522902700520CBC /* Strings+Helpers.swift */; };
+		E1FF9CDC2523AA1A00520CBC /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CDB2523AA1A00520CBC /* AppCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,6 +109,7 @@
 		E1FF9CD3251A951F00520CBC /* MatchesHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesHeaderLabel.swift; sourceTree = "<group>"; };
 		E1FF9CD6251AF40600520CBC /* RecentMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentMessages.swift; sourceTree = "<group>"; };
 		E1FF9CD82522902700520CBC /* Strings+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Strings+Helpers.swift"; sourceTree = "<group>"; };
+		E1FF9CDB2523AA1A00520CBC /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -329,6 +331,7 @@
 			isa = PBXGroup;
 			children = (
 				E1DFBC0A24B7A5830092622B /* Appplication Delegates */,
+				E1FF9CDA2523A9FC00520CBC /* Coordinators */,
 				E1DFBC1924BA61610092622B /* Models */,
 				E1DFBC0F24B7A5EF0092622B /* Modules */,
 				E145083924C8CFC800DC7727 /* Helpers */,
@@ -457,6 +460,14 @@
 				E135CEF0251A848D004528A9 /* MatchesHorizontalCollectionViewCell.swift */,
 			);
 			path = "Matches Horizontal Collection View cell";
+			sourceTree = "<group>";
+		};
+		E1FF9CDA2523A9FC00520CBC /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				E1FF9CDB2523AA1A00520CBC /* AppCoordinator.swift */,
+			);
+			path = Coordinators;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -633,6 +644,7 @@
 				E1FF9CD4251A951F00520CBC /* MatchesHeaderLabel.swift in Sources */,
 				E1B55450250FD7CF00208E56 /* SendMessageButton.swift in Sources */,
 				E1CF827A24E4518C0041838D /* CustomImagePicker.swift in Sources */,
+				E1FF9CDC2523AA1A00520CBC /* AppCoordinator.swift in Sources */,
 				E1CB2DFA251523FB00724A83 /* ChatCollectionViewCell.swift in Sources */,
 				E1D427F024E9AE7800AFACBC /* PhotoViewController.swift in Sources */,
 			);

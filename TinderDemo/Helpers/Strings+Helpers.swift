@@ -12,14 +12,13 @@ struct Strings {
   // MARK: Firebase Firestore
   
   static let uid = "uid"
-  static let name = "nanme"
+  static let name = "name"
   static let profileImageUrl = "profileImageUrl"
-  
+  static let matchedUserKey = "matchedUserKey"
   static let matchesCollection = "matches"
   static let recentMessagesCollection = "recent_messages"
   static let matchesMessagesCollection = "matches_messages"
   
-  static let matchedUserKey = "matchedUserKey"
   
   // MARK: - Notifications
   
