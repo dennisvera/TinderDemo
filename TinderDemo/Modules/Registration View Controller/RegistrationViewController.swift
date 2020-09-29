@@ -21,7 +21,7 @@ final class RegistrationViewController: UIViewController {
     button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     button.layer.cornerRadius = 16
     button.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
-    button.setTitle("Select Photo", for: .normal)
+    button.setTitle(Strings.selectPhoto, for: .normal)
     button.imageView?.contentMode = .scaleAspectFill
     button.widthAnchor.constraint(equalToConstant: 275).isActive = true
     button.heightAnchor.constraint(equalToConstant: 300).isActive = true
@@ -33,7 +33,7 @@ final class RegistrationViewController: UIViewController {
   private let fullNameTextField: CustomTextField = {
     let textField = CustomTextField(padding: 16, height: 50)
     textField.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    textField.placeholder = "Enter full name"
+    textField.placeholder = Strings.enterFullName
     textField.addTarget(self, action: #selector(handleTextChanged(textField:)),
                         for: .editingChanged)
     return textField
@@ -42,7 +42,7 @@ final class RegistrationViewController: UIViewController {
   private let emailTextField: CustomTextField = {
     let textField = CustomTextField(padding: 16, height: 50)
     textField.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    textField.placeholder = "Enter email"
+    textField.placeholder = Strings.enterEmail
     textField.keyboardType = .emailAddress
     textField.addTarget(self, action: #selector(handleTextChanged(textField:)),
                         for: .editingChanged)
@@ -53,7 +53,7 @@ final class RegistrationViewController: UIViewController {
     let textField = CustomTextField(padding: 16, height: 50)
     textField.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     textField.isSecureTextEntry = true
-    textField.placeholder = "Enter password"
+    textField.placeholder = Strings.enterPassword
     textField.addTarget(self, action: #selector(handleTextChanged(textField:)),
                         for: .editingChanged)
     return textField
@@ -64,7 +64,7 @@ final class RegistrationViewController: UIViewController {
     button.isEnabled = false
     button.layer.cornerRadius = 22
     button.backgroundColor = .lightGray
-    button.setTitle("Register", for: .normal)
+    button.setTitle(Strings.register, for: .normal)
     button.setTitleColor(.darkGray, for: .disabled)
     button.heightAnchor.constraint(equalToConstant: 44).isActive = true
     button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
@@ -75,7 +75,7 @@ final class RegistrationViewController: UIViewController {
   private let loginButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitleColor(.white, for: .normal)
-    button.setTitle("Go to Login", for: .normal)
+    button.setTitle(Strings.goToLogin, for: .normal)
     button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
     button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
     return button
@@ -107,10 +107,17 @@ final class RegistrationViewController: UIViewController {
   }()
   
   // MARK: -
+  
   var delegate: LoginViewControllerDelegate?
   private let progressHud = JGProgressHUD()
   private let gradientLayer = CAGradientLayer()
   private var viewModel = RegistrationViewModel()
+  
+  // MARK: - Deinitialization
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
   
   // MARK: - View Life Cycle 
   
@@ -126,14 +133,9 @@ final class RegistrationViewController: UIViewController {
   
   override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
-    // Set the gradient layer to equal the view bounds
+    // Set the gradient layer equal to the view bounds
     // when the device rotates
     gradientLayer.frame = view.bounds
-  }
-  
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    NotificationCenter.default.removeObserver(self)
   }
   
   // MARK: - Overrides
@@ -152,7 +154,7 @@ final class RegistrationViewController: UIViewController {
   private func setupView() {
     navigationController?.isNavigationBarHidden = true
     
-    // Add Stack View to Sub View
+    // Configure Main Stack View
     view.addSubview(mainStackView)
     mainStackView.snp.makeConstraints { make in
       make.centerY.equalToSuperview()
@@ -160,7 +162,7 @@ final class RegistrationViewController: UIViewController {
       make.trailing.equalToSuperview().offset(-50)
     }
     
-    // Add Login Button
+    // Configure Login Button
     view.addSubview(loginButton)
     loginButton.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
@@ -206,7 +208,7 @@ final class RegistrationViewController: UIViewController {
       guard let strongSelf = self else { return }
       
       if isRegistering == true {
-        strongSelf.progressHud.textLabel.text = "Register"
+        strongSelf.progressHud.textLabel.text = Strings.register
         strongSelf.progressHud.show(in: strongSelf.view)
       } else {
         strongSelf.progressHud.dismiss()
@@ -316,7 +318,7 @@ final class RegistrationViewController: UIViewController {
     
     // Configure Registration Error Hud
     let hud = JGProgressHUD(style: .dark)
-    hud.textLabel.text = "Failed to Register"
+    hud.textLabel.text = Strings.faileToRegister
     hud.detailTextLabel.text = error.localizedDescription
     hud.show(in: view)
     hud.dismiss(afterDelay: 4)

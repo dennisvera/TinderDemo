@@ -119,16 +119,16 @@ final class RegistrationViewModel {
   private func saveUserInfoToFireStore(with imageUrl: String, completion: @escaping Completion) {
     let uid = Auth.auth().currentUser?.uid ?? ""
     let documentData: [String: Any] = [
-      "age": 18,
-      "uid": uid,
-      "imageUrl1": imageUrl,
-      "fullName": fullName ?? "",
-      "minSeekingAge": SettingsViewController.defaultMinSeekingAge,
-      "maxSeekingAge": SettingsViewController.defaultMaxSeekingAge
+      Strings.age: 18,
+      Strings.uid: uid,
+      Strings.imageUrl1: imageUrl,
+      Strings.fullName: fullName ?? "",
+      Strings.minSeekingAge: SettingsViewController.defaultMinSeekingAge,
+      Strings.maxSeekingAge: SettingsViewController.defaultMaxSeekingAge
     ]
     
     Firestore.firestore()
-      .collection("users")
+      .collection(Strings.usersCollection)
       .document(uid)
       .setData(documentData) { error in
         if let error = error {
