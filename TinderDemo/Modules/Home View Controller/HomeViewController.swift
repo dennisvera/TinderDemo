@@ -27,10 +27,14 @@ final class HomeViewController: UIViewController {
   // MARK: -
   
   private var user: User?
-  private var users = [String: User]()
   private var lastFetchedUser: User?
+  private var users = [String: User]()
   private var viewModel = [CardViewViewModel]()
   private let progressHud = JGProgressHUD(style: .dark)
+  
+  // MARK: -
+  
+  private var homeViewModel: HomeViewModel?
   
   // MARK: -
   
@@ -40,6 +44,18 @@ final class HomeViewController: UIViewController {
   // MARK: -
   
   private var swipes = [String: Int]()
+  
+  // Initialization
+  
+  init(homeViewModel: HomeViewModel) {
+    self.homeViewModel = homeViewModel
+    
+    super.init(nibName: nil, bundle: .main)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   // MARK: - View Life Cycle
   
@@ -404,8 +420,7 @@ final class HomeViewController: UIViewController {
   }
   
   @objc private func handleMessagesButton() {
-    let messagesViewController = MessagesViewController()    
-    navigationController?.pushViewController(messagesViewController, animated: true)
+    homeViewModel?.showMessages()
   }
   
   @objc private func handleResfreshButton() {

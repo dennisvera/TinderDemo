@@ -55,6 +55,7 @@
 		E1FF9CD7251AF40600520CBC /* RecentMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CD6251AF40600520CBC /* RecentMessages.swift */; };
 		E1FF9CD92522902700520CBC /* Strings+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CD82522902700520CBC /* Strings+Helpers.swift */; };
 		E1FF9CDC2523AA1A00520CBC /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CDB2523AA1A00520CBC /* AppCoordinator.swift */; };
+		E1FF9CE225252F2A00520CBC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CE125252F2A00520CBC /* HomeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +111,7 @@
 		E1FF9CD6251AF40600520CBC /* RecentMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentMessages.swift; sourceTree = "<group>"; };
 		E1FF9CD82522902700520CBC /* Strings+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Strings+Helpers.swift"; sourceTree = "<group>"; };
 		E1FF9CDB2523AA1A00520CBC /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		E1FF9CE125252F2A00520CBC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -404,6 +406,7 @@
 			isa = PBXGroup;
 			children = (
 				E1DFBBFA24B7A5710092622B /* HomeViewController.swift */,
+				E1FF9CE025252EDF00520CBC /* View Models */,
 				E1DFBC1124B903AE0092622B /* Home Views */,
 			);
 			path = "Home View Controller";
@@ -468,6 +471,14 @@
 				E1FF9CDB2523AA1A00520CBC /* AppCoordinator.swift */,
 			);
 			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		E1FF9CE025252EDF00520CBC /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				E1FF9CE125252F2A00520CBC /* HomeViewModel.swift */,
+			);
+			path = "View Models";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -607,6 +618,7 @@
 				E1CF828824E62B6A0041838D /* LoginViewController.swift in Sources */,
 				E1CB2DFD25168F3100724A83 /* ChatNavigationBar.swift in Sources */,
 				E1CF828524E602A10041838D /* Firebase+Extension.swift in Sources */,
+				E1FF9CE225252F2A00520CBC /* HomeViewModel.swift in Sources */,
 				E1FF9CD7251AF40600520CBC /* RecentMessages.swift in Sources */,
 				E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */,
 				E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */,

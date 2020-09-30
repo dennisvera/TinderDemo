@@ -33,7 +33,7 @@ class TopNavigationStackView: UIStackView {
     return button
   }()
   
-  // MARK: - Initilization
+  // MARK: - Initialization
   
   override init(frame: CGRect) {
     super.init(frame: frame)

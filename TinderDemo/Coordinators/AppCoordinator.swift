@@ -23,14 +23,33 @@ final class AppCoordinator {
   // MARK: -
   
   func start() {
-    showHomeViewController()
+    showHome()
   }
   
   // MARK: - Helper Methods
   
-  private func showHomeViewController() {
-    let homeViewController = HomeViewController()
+  private func showHome() {
+    // Initialize Home View Model
+    let viewModel = HomeViewModel()
     
-    navigationController.present(homeViewController, animated: true)
+    // Configure View Model
+    viewModel.didShowMessages = { [weak self] in
+      guard let strongSelf = self else { return }
+      strongSelf.showMessages()
+    }
+    
+    // Initialize Homes View Controller
+    let homeViewController = HomeViewController(homeViewModel: viewModel)
+    
+    // Push Homes View Controller Onto Navigation Stack
+    navigationController.pushViewController(homeViewController, animated: true)
+  }
+  
+  private func showMessages() {
+    // Initialize Messages View Controller
+    let messagesViewController = MessagesViewController()
+    
+    // Push Messages View Controller Onto Navigation Stack
+    navigationController.pushViewController(messagesViewController, animated: true)
   }
 }

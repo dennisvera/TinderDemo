@@ -59,14 +59,14 @@ final class SettingsViewController: UIViewController {
                                                        target: self,
                                                        action: #selector(handleCancel))
     
-    navigationItem.rightBarButtonItems = [ UIBarButtonItem(title: "Save",
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(handleSave)),
-                                           UIBarButtonItem(title: "Logout",
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(handleLogout))]
+    navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "Save",
+                                                          style: .plain,
+                                                          target: self,
+                                                          action: #selector(handleSave)),
+                                          UIBarButtonItem(title: "Logout",
+                                                          style: .plain,
+                                                          target: self,
+                                                          action: #selector(handleLogout))]
   }
   
   private func setupTableViewController() {
