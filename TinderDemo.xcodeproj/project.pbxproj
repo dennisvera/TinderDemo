@@ -56,6 +56,7 @@
 		E1FF9CD92522902700520CBC /* Strings+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CD82522902700520CBC /* Strings+Helpers.swift */; };
 		E1FF9CDC2523AA1A00520CBC /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CDB2523AA1A00520CBC /* AppCoordinator.swift */; };
 		E1FF9CE225252F2A00520CBC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CE125252F2A00520CBC /* HomeViewModel.swift */; };
+		E1FF9CE52525401600520CBC /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CE42525401600520CBC /* MessagesViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -112,6 +113,7 @@
 		E1FF9CD82522902700520CBC /* Strings+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Strings+Helpers.swift"; sourceTree = "<group>"; };
 		E1FF9CDB2523AA1A00520CBC /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		E1FF9CE125252F2A00520CBC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		E1FF9CE42525401600520CBC /* MessagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				E1CB2DE92512872600724A83 /* MessagesViewController.swift */,
+				E1FF9CE32525400300520CBC /* View Models */,
 				E1CB2E04251A744C00724A83 /* Messages Header View */,
 				E1CB2DEE2513BAB200724A83 /* Messages Navigation Bar */,
 				E1CB2DED2512A09500724A83 /* Messages Collection View Cells */,
@@ -481,6 +484,14 @@
 			path = "View Models";
 			sourceTree = "<group>";
 		};
+		E1FF9CE32525400300520CBC /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				E1FF9CE42525401600520CBC /* MessagesViewModel.swift */,
+			);
+			path = "View Models";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -629,6 +640,7 @@
 				E1FF9CD92522902700520CBC /* Strings+Helpers.swift in Sources */,
 				E1D427EB24E97FDA00AFACBC /* UIButton+Extension.swift in Sources */,
 				E1D427E924E847D800AFACBC /* ProfileDetailViewController.swift in Sources */,
+				E1FF9CE52525401600520CBC /* MessagesViewModel.swift in Sources */,
 				E1CB2DFF25193D7E00724A83 /* CustomInputAccessoryView.swift in Sources */,
 				E145088424CE181400DC7727 /* RegistrationViewModel.swift in Sources */,
 				E145083B24C8D00F00DC7727 /* CustomTextField.swift in Sources */,

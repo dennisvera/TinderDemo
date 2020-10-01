@@ -15,21 +15,25 @@ final class MessagesViewController: UIViewController {
   
   // MARK: - Properties
   
+  private let navigationBarHeight: CGFloat = 150
   private let messagesNavigationBar = MessagesNavigationBar()
   private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
   
   // MARK: -
   
-  private var recentMessages = [RecentMessage]()
-  private var recentMessagesDictionary = [String: RecentMessage]()
+  private let viewModel: MessagesViewModel
   
-  // MARK: -
+  // Initialization
   
-  private let navigationBarHeight: CGFloat = 150
+  init(viewModel: MessagesViewModel) {
+    self.viewModel = viewModel
+    
+    super.init(nibName: nil, bundle: .main)
+  }
   
-  // MARK: -
-  
-  private var listener: ListenerRegistration?
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   // Deinitialization
   
@@ -44,16 +48,16 @@ final class MessagesViewController: UIViewController {
     
     setupCollectionViewController()
     setupView()
-    fetchRecentMessages()
+    setupViewModel()
     createNotifications()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     
-    // Remove the listner to avoid memory leaks
+    // Remove listener to avoid memory leaks
     if isMovingFromParent {
-      listener?.remove()
+      viewModel.removeListener()
     }
   }
   
@@ -106,47 +110,22 @@ final class MessagesViewController: UIViewController {
     messagesNavigationBar.backButton.addTarget(self, action: #selector(handleBackButton), for: .touchUpInside)
   }
   
-  private func fetchRecentMessages() {
-    guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+  private func setupViewModel() {
+    // Fetch Messages
+    viewModel.loadData()
     
-    let query = Firestore.firestore()
-      .collection(Strings.matchesMessagesCollection)
-      .document(currentUserID)
-      .collection(Strings.recentMessagesCollection)
-    
-    listener = query.addSnapshotListener { [weak self] querySnapshot, error in
+    // Install Handler
+    viewModel.messagesDidChange = { [weak self] in
+      // Update Collection View
       guard let strongSelf = self else { return }
-      
-      if let error = error {
-        print("Unable to Fetch Matched Users:", error)
-        return
-      }
-      
-      querySnapshot?.documentChanges.forEach({ change in
-        if change.type == .added || change.type == .modified {
-          let dictionary = change.document.data()
-          let recentMessage = RecentMessage(dictionary: dictionary)
-          strongSelf.recentMessagesDictionary[recentMessage.uid] = recentMessage
-        }
-      })
-      
-      strongSelf.resetMessages()
+      strongSelf.collectionView.reloadData()
     }
-  }
-  
-  private func resetMessages() {
-    let values = Array(recentMessagesDictionary.values)
-    recentMessages = values.sorted(by: { recentMessage1, recentMesage2 -> Bool in
-      return recentMessage1.timestamp.compare(recentMesage2.timestamp) == .orderedDescending
-    })
-    
-    collectionView.reloadData()
   }
   
   // MARK: - Actions
   
   @objc private func handleBackButton() {
-    navigationController?.popViewController(animated: true)
+    viewModel.navigateBackHome()
   }
   
   // MARK: - Notifications
@@ -173,7 +152,7 @@ final class MessagesViewController: UIViewController {
 extension MessagesViewController: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return recentMessages.count
+    return viewModel.numberOfMessages
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -181,7 +160,7 @@ extension MessagesViewController: UICollectionViewDataSource {
                                                         for: indexPath) as? MessagesCollectionViewCell else {
                                                           fatalError("Unable to Dequeue Cell") }
     
-    let recentMessage = recentMessages[indexPath.item]
+    let recentMessage = viewModel.message(at: indexPath.item)
     cell.configure(with: recentMessage)
     
     return cell
@@ -193,7 +172,7 @@ extension MessagesViewController: UICollectionViewDataSource {
 extension MessagesViewController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let recentMessage = recentMessages[indexPath.item]
+    let recentMessage = viewModel.message(at: indexPath.item)
     let dictionary = [Strings.uid: recentMessage.uid,
                       Strings.name: recentMessage.name,
                       Strings.profileImageUrl: recentMessage.profileImageUrl]

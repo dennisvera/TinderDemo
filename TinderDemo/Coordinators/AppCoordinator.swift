@@ -46,10 +46,24 @@ final class AppCoordinator {
   }
   
   private func showMessages() {
+    // Initialize Messages View Model
+    let viewModel = MessagesViewModel()
+
+    // Configure View Model
+    viewModel.didSelectBackButton = { [weak self] in
+      guard let strongSelf = self else { return }
+      strongSelf.dismissMessages()
+    }
+
     // Initialize Messages View Controller
-    let messagesViewController = MessagesViewController()
-    
+    let messagesViewController = MessagesViewController(viewModel: viewModel)
+
     // Push Messages View Controller Onto Navigation Stack
     navigationController.pushViewController(messagesViewController, animated: true)
+  }
+  
+  private func dismissMessages() {
+    // Pop Messages View Controller from Navigation Stack
+    navigationController.popViewController(animated: true)
   }
 }
