@@ -8,11 +8,15 @@
 
 import UIKit
 
-final class AppCoordinator {
+final class AppCoordinator: NSObject {
   
   // MARK: - Properties
   
   private let navigationController = UINavigationController()
+  
+  // MARK: -
+  
+  private var childCoordinators: [Coordinator] = []
   
   // MARK: - Public API
   
@@ -20,9 +24,12 @@ final class AppCoordinator {
     return navigationController
   }
   
-  // MARK: -
+  // MARK: - Public Methods
   
   func start() {
+    // Set Navigation Controller Delegate
+    navigationController.delegate = self
+    
     showHome()
   }
   
@@ -32,7 +39,7 @@ final class AppCoordinator {
     // Initialize Home View Model
     let viewModel = HomeViewModel()
     
-    // Configure View Model
+    // Install Handler
     viewModel.didShowMessages = { [weak self] in
       guard let strongSelf = self else { return }
       strongSelf.showMessages()
@@ -48,40 +55,50 @@ final class AppCoordinator {
   // MARK: - Messages View Controller
   
   private func showMessages() {
-    // Initialize Messages View Model
-    let viewModel = MessagesViewModel()
-
-    // Configure View Model
-    viewModel.didSelectBackButton = { [weak self] in
-      guard let strongSelf = self else { return }
-      strongSelf.dismissMessages()
-    }
-
-    // Initialize Messages View Controller
-    let messagesViewController = MessagesViewController(viewModel: viewModel)
+    // Initialize Messages Coordinator
+    let messagesCoordinator = MesagesCoordinator(navigationController: navigationController)
     
-    // Configure Messages View Controller
-    messagesViewController.didSelectMessage = { [weak self] user in
-      guard let strongSelf = self else { return }
-      strongSelf.showChat(with: user)
-    }
-
-    // Push Messages View Controller Onto Navigation Stack
-    navigationController.pushViewController(messagesViewController, animated: true)
+    // Push Message Coordinator
+    pushCoordinator(messagesCoordinator)
   }
   
-  private func dismissMessages() {
-    // Pop Messages View Controller from Navigation Stack
-    navigationController.popViewController(animated: true)
+  // MARK: - Helper Methods
+  
+  private func pushCoordinator(_ coordinator: Coordinator) {
+    // Install Handler
+    coordinator.didFinish = { [weak self] coordinator in
+      self?.popCoordinator(coordinator)
+    }
+    
+    // Start Coordinator
+    coordinator.start()
+    
+    // Append Coordinator
+    childCoordinators.append(coordinator)
   }
   
-  // MARK: - Chat Collection View Controller
+  private func popCoordinator(_ coordinator: Coordinator) {
+    if let index = childCoordinators.firstIndex(where: { $0 === coordinator  }) {
+      childCoordinators.remove(at: index)
+    }
+  }
+}
+
+// MARK: - UINavigation Controller Delegate
+
+extension AppCoordinator: UINavigationControllerDelegate {
   
-  private func showChat(with matchedUser: MatchedUser) {
-    // Initialize Chat Collection View Controller
-    let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
-    
-    // Push Chat Collection View Controller Onto Navigation Stack
-    navigationController.pushViewController(chatCollectionViewController, animated: true)
+  // MARK: - Helper Methods
+  
+  func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    childCoordinators.forEach { coordinator in
+      coordinator.navigationController(navigationController, willShow: viewController, animated: true)
+    }
+  }
+  
+  func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+    childCoordinators.forEach { coordinator in
+      coordinator.navigationController(navigationController, didShow: viewController, animated: true)
+    }
   }
 }

@@ -12,11 +12,11 @@ import FirebaseFirestore
 extension Firestore {
   
   func fetchCurrentUser(completion: @escaping (User?, Error?) -> ()) {
-    guard let userUid = Auth.auth().currentUser?.uid else { return }
+    guard let currentUserId = Auth.auth().currentUser?.uid else { return }
     
     Firestore.firestore()
-      .collection("users")
-      .document(userUid)
+      .collection(Strings.usersCollection)
+      .document(currentUserId)
       .getDocument { (snapshot, error) in
         if let error = error {
           completion(nil, error)

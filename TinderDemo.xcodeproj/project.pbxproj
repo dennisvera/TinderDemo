@@ -57,6 +57,8 @@
 		E1FF9CDC2523AA1A00520CBC /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CDB2523AA1A00520CBC /* AppCoordinator.swift */; };
 		E1FF9CE225252F2A00520CBC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CE125252F2A00520CBC /* HomeViewModel.swift */; };
 		E1FF9CE52525401600520CBC /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CE42525401600520CBC /* MessagesViewModel.swift */; };
+		E1FF9CE82526317C00520CBC /* MessagesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CE72526317C00520CBC /* MessagesCoordinator.swift */; };
+		E1FF9CEB2526391200520CBC /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CEA2526391200520CBC /* Coordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -114,6 +116,8 @@
 		E1FF9CDB2523AA1A00520CBC /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		E1FF9CE125252F2A00520CBC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		E1FF9CE42525401600520CBC /* MessagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
+		E1FF9CE72526317C00520CBC /* MessagesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesCoordinator.swift; sourceTree = "<group>"; };
+		E1FF9CEA2526391200520CBC /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -472,6 +476,8 @@
 			isa = PBXGroup;
 			children = (
 				E1FF9CDB2523AA1A00520CBC /* AppCoordinator.swift */,
+				E1FF9CE62526315A00520CBC /* Child Coordinators */,
+				E1FF9CE9252638ED00520CBC /* Protocols */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -490,6 +496,22 @@
 				E1FF9CE42525401600520CBC /* MessagesViewModel.swift */,
 			);
 			path = "View Models";
+			sourceTree = "<group>";
+		};
+		E1FF9CE62526315A00520CBC /* Child Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				E1FF9CE72526317C00520CBC /* MessagesCoordinator.swift */,
+			);
+			path = "Child Coordinators";
+			sourceTree = "<group>";
+		};
+		E1FF9CE9252638ED00520CBC /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				E1FF9CEA2526391200520CBC /* Coordinator.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -656,7 +678,9 @@
 				E145083824C8C4B000DC7727 /* RegistrationViewController.swift in Sources */,
 				E1CB2DF02513BAF000724A83 /* MessagesNavigationBar.swift in Sources */,
 				E1DFBC1E24BA7F080092622B /* CardViewViewModel.swift in Sources */,
+				E1FF9CE82526317C00520CBC /* MessagesCoordinator.swift in Sources */,
 				E1CB2DEC2512A08900724A83 /* MessagesCollectionViewCell.swift in Sources */,
+				E1FF9CEB2526391200520CBC /* Coordinator.swift in Sources */,
 				E1DFBBF924B7A5710092622B /* SceneDelegate.swift in Sources */,
 				E1DFBC1824B9FD070092622B /* CardView.swift in Sources */,
 				E14F9ED624D8D2ED00D63A96 /* SettingsViewController.swift in Sources */,
