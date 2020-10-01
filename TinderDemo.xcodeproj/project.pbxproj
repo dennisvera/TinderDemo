@@ -59,6 +59,7 @@
 		E1FF9CE52525401600520CBC /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CE42525401600520CBC /* MessagesViewModel.swift */; };
 		E1FF9CE82526317C00520CBC /* MessagesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CE72526317C00520CBC /* MessagesCoordinator.swift */; };
 		E1FF9CEB2526391200520CBC /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CEA2526391200520CBC /* Coordinator.swift */; };
+		E1FF9CED252691B300520CBC /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CEC252691B300520CBC /* HomeCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,6 +119,7 @@
 		E1FF9CE42525401600520CBC /* MessagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
 		E1FF9CE72526317C00520CBC /* MessagesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesCoordinator.swift; sourceTree = "<group>"; };
 		E1FF9CEA2526391200520CBC /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		E1FF9CEC252691B300520CBC /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -501,6 +503,7 @@
 		E1FF9CE62526315A00520CBC /* Child Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				E1FF9CEC252691B300520CBC /* HomeCoordinator.swift */,
 				E1FF9CE72526317C00520CBC /* MessagesCoordinator.swift */,
 			);
 			path = "Child Coordinators";
@@ -653,6 +656,7 @@
 				E1CF828524E602A10041838D /* Firebase+Extension.swift in Sources */,
 				E1FF9CE225252F2A00520CBC /* HomeViewModel.swift in Sources */,
 				E1FF9CD7251AF40600520CBC /* RecentMessages.swift in Sources */,
+				E1FF9CED252691B300520CBC /* HomeCoordinator.swift in Sources */,
 				E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */,
 				E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */,
 				E1B55452250FE10B00208E56 /* KeepSwippingButton.swift in Sources */,

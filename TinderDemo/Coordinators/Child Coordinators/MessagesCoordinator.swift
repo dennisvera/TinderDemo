@@ -55,7 +55,7 @@ final class MesagesCoordinator: Coordinator {
     // Install Handler
     viewModel.didSelectBackButton = { [weak self] in
       guard let strongSelf = self else { return }
-      strongSelf.dismissMessages()
+      strongSelf.hideMessages()
     }
     
     // Initialize Messages View Controller
@@ -71,7 +71,7 @@ final class MesagesCoordinator: Coordinator {
     navigationController.pushViewController(messagesViewController, animated: true)
   }
   
-  private func dismissMessages() {
+  private func hideMessages() {
     // Pop Messages View Controller from Navigation Stack
     navigationController.popViewController(animated: true)
   }

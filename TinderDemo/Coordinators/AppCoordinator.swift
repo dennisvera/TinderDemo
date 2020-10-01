@@ -33,35 +33,6 @@ final class AppCoordinator: NSObject {
     showHome()
   }
   
-  // MARK: - Home View Controller
-  
-  private func showHome() {
-    // Initialize Home View Model
-    let viewModel = HomeViewModel()
-    
-    // Install Handler
-    viewModel.didShowMessages = { [weak self] in
-      guard let strongSelf = self else { return }
-      strongSelf.showMessages()
-    }
-    
-    // Initialize Homes View Controller
-    let homeViewController = HomeViewController(homeViewModel: viewModel)
-    
-    // Push Homes View Controller Onto Navigation Stack
-    navigationController.pushViewController(homeViewController, animated: true)
-  }
-  
-  // MARK: - Messages View Controller
-  
-  private func showMessages() {
-    // Initialize Messages Coordinator
-    let messagesCoordinator = MesagesCoordinator(navigationController: navigationController)
-    
-    // Push Message Coordinator
-    pushCoordinator(messagesCoordinator)
-  }
-  
   // MARK: - Helper Methods
   
   private func pushCoordinator(_ coordinator: Coordinator) {
@@ -81,6 +52,32 @@ final class AppCoordinator: NSObject {
     if let index = childCoordinators.firstIndex(where: { $0 === coordinator  }) {
       childCoordinators.remove(at: index)
     }
+  }
+  
+  // MARK: - Home View Controller
+  
+  private func showHome() {
+    // Initialize Home Coordinator
+    let homeCoordinator = HomeCoordinator(navigationController: navigationController)
+    
+    // Install Handler
+    homeCoordinator.didSelectMessage = { [weak self] in
+      guard let strongSelf = self else { return }
+      strongSelf.showMessages()
+    }
+    
+    // Push Home Coordinator
+    pushCoordinator(homeCoordinator)
+  }
+  
+  // MARK: - Messages View Controller
+  
+  private func showMessages() {
+    // Initialize Messages Coordinator
+    let messagesCoordinator = MesagesCoordinator(navigationController: navigationController)
+    
+    // Push Message Coordinator
+    pushCoordinator(messagesCoordinator)
   }
 }
 
