@@ -23,7 +23,11 @@ final class MessagesViewController: UIViewController {
   
   private let viewModel: MessagesViewModel
   
-  // Initialization
+  // MARK: -
+  
+  var didSelectMessage: ((MatchedUser) -> Void)?
+  
+  // MARK: - Initialization
   
   init(viewModel: MessagesViewModel) {
     self.viewModel = viewModel
@@ -35,7 +39,7 @@ final class MessagesViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-  // Deinitialization
+  // MARK: - Deinitialization
   
   deinit {
     NotificationCenter.default.removeObserver(self)
@@ -140,7 +144,7 @@ final class MessagesViewController: UIViewController {
     let dictionary = [Strings.uid: userInfo.uid,
                       Strings.name: userInfo.name,
                       Strings.profileImageUrl: userInfo.profileImageUrl ?? ""]
-    
+
     let matchedUser = MatchedUser(dictionary: dictionary)
     let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
     navigationController?.pushViewController(chatCollectionViewController, animated: true)
@@ -177,9 +181,8 @@ extension MessagesViewController: UICollectionViewDelegateFlowLayout {
                       Strings.name: recentMessage.name,
                       Strings.profileImageUrl: recentMessage.profileImageUrl]
     
-    let matchedUser = MatchedUser(dictionary: dictionary)
-    let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
-    navigationController?.pushViewController(chatCollectionViewController, animated: true)
+    let user = MatchedUser(dictionary: dictionary)
+    didSelectMessage?(user)
   }
   
   func collectionView(_ collectionView: UICollectionView,

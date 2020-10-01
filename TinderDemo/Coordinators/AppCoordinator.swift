@@ -26,7 +26,7 @@ final class AppCoordinator {
     showHome()
   }
   
-  // MARK: - Helper Methods
+  // MARK: - Home View Controller
   
   private func showHome() {
     // Initialize Home View Model
@@ -45,6 +45,8 @@ final class AppCoordinator {
     navigationController.pushViewController(homeViewController, animated: true)
   }
   
+  // MARK: - Messages View Controller
+  
   private func showMessages() {
     // Initialize Messages View Model
     let viewModel = MessagesViewModel()
@@ -57,6 +59,12 @@ final class AppCoordinator {
 
     // Initialize Messages View Controller
     let messagesViewController = MessagesViewController(viewModel: viewModel)
+    
+    // Configure Messages View Controller
+    messagesViewController.didSelectMessage = { [weak self] user in
+      guard let strongSelf = self else { return }
+      strongSelf.showChat(with: user)
+    }
 
     // Push Messages View Controller Onto Navigation Stack
     navigationController.pushViewController(messagesViewController, animated: true)
@@ -65,5 +73,15 @@ final class AppCoordinator {
   private func dismissMessages() {
     // Pop Messages View Controller from Navigation Stack
     navigationController.popViewController(animated: true)
+  }
+  
+  // MARK: - Chat Collection View Controller
+  
+  private func showChat(with matchedUser: MatchedUser) {
+    // Initialize Chat Collection View Controller
+    let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
+    
+    // Push Chat Collection View Controller Onto Navigation Stack
+    navigationController.pushViewController(chatCollectionViewController, animated: true)
   }
 }
