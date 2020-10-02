@@ -33,11 +33,10 @@ final class SettingsViewController: UIViewController {
   
   // MARK: -
   
-  private var user: User?
-  private var deleagate: SettingsViewControllerDelegate?
+  private var delegate: SettingsViewControllerDelegate?
   
   // MARK: -
-
+  
   private let viewModel: SettingsViewModel
   
   // MARK: -
@@ -110,16 +109,8 @@ final class SettingsViewController: UIViewController {
   }
   
   private func fetchCurrentUser() {
-    Firestore.firestore().fetchCurrentUser { [weak self] (user, error) in
+    viewModel.fetchCurrentUser { [weak self] in
       guard let strongSelf = self else { return }
-
-      if let error = error {
-        print("Failed to Fetch User:", error)
-        return
-      }
-      
-      // Set user
-      strongSelf.user = user
       
       // Load user photos
       strongSelf.loadUserPhotos()
@@ -130,7 +121,7 @@ final class SettingsViewController: UIViewController {
   }
   
   private func loadUserPhotos() {
-    if let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) {
+    if let imageUrl = viewModel.user?.imageUrl1, let url = URL(string: imageUrl) {
       // The SDWebImageManager will handle chaching the image for us.
       /// Chaching the image  saves the image on the phone  after  its been fetched the first time,
       /// thiis will guarante we dont fetch an imagea again that  we have previously loaded..
@@ -144,7 +135,7 @@ final class SettingsViewController: UIViewController {
       }
     }
     
-    if let imageUrl = user?.imageUrl2, let url = URL(string: imageUrl) {
+    if let imageUrl = viewModel.user?.imageUrl2, let url = URL(string: imageUrl) {
       SDWebImageManager.shared.loadImage(with: url,
                                          options: .continueInBackground,
                                          progress: nil) { [weak self] (image, _, _, _, _, _) in
@@ -155,7 +146,7 @@ final class SettingsViewController: UIViewController {
       }
     }
     
-    if let imageUrl = user?.imageUrl3, let url = URL(string: imageUrl) {
+    if let imageUrl = viewModel.user?.imageUrl3, let url = URL(string: imageUrl) {
       SDWebImageManager.shared.loadImage(with: url,
                                          options: .continueInBackground,
                                          progress: nil) { [weak self] (image, _, _, _, _, _) in
@@ -214,8 +205,8 @@ final class SettingsViewController: UIViewController {
     ageRangeCell.minLabel.text = "Min: \(minValue)"
     ageRangeCell.maxLabel.text = "Max: \(maxValue)"
     
-    user?.minSeekingAge = minValue
-    user?.maxSeekingAge = maxValue
+    viewModel.user?.minSeekingAge = minValue
+    viewModel.user?.maxSeekingAge = maxValue
   }
   
   // MARK: - Actions
@@ -226,49 +217,13 @@ final class SettingsViewController: UIViewController {
   }
   
   @objc private func handleLogout() {
-    try? Auth.auth().signOut()
-    
     // Dismiss View Controller
-    dismiss(animated: true)
+    viewModel.handleSignOut()
   }
   
   @objc private func handleSave() {
-    // Save users info to Firestore
-    guard let userUid = Auth.auth().currentUser?.uid else { return }
-    
-    let documentData: [String: Any] = [
-      "uid" : userUid,
-      "age" : user?.age ?? -1,
-      "bio" : user?.bio ?? "",
-      "fullName" : user?.name ?? "",
-      "imageUrl1" : user?.imageUrl1 ?? "",
-      "imageUrl2" : user?.imageUrl2 ?? "",
-      "imageUrl3" : user?.imageUrl3 ?? "",
-      "profession" : user?.profession ?? "",
-      "minSeekingAge" : user?.minSeekingAge ?? -1,
-      "maxSeekingAge" : user?.maxSeekingAge ?? -1
-    ]
-    
-    let progressHud = JGProgressHUD(style: .dark)
-    progressHud.textLabel.text = "Saving settings"
-    
-    Firestore.firestore()
-      .collection("users")
-      .document(userUid)
-      .setData(documentData) { [weak self] error in
-        progressHud.dismiss()
-        
-        if let error = error {
-          print("Failed to save user's settings to Firestore:", error)
-        }
-        
-        print("Saved user info to Firestore")
-        
-        guard let strongSelf = self else { return }
-        strongSelf.dismiss(animated: true) {
-          // Refresh cards in HomeViewController via delegate
-          strongSelf.deleagate?.didSaveSettings()
-        }
+    viewModel.handleSave { [weak self] in
+      self?.delegate?.didSaveSettings()
     }
   }
   
@@ -290,19 +245,19 @@ final class SettingsViewController: UIViewController {
   // MARK: - Actions / Save User Info
   
   @objc private func handleNameChange(textField: UITextField) {
-    user?.name = textField.text
+    viewModel.user?.name = textField.text
   }
   
   @objc private func handleProfessionChange(textField: UITextField) {
-    user?.profession = textField.text
+    viewModel.user?.profession = textField.text
   }
   
   @objc private func handleAgeChange(textField: UITextField) {
-    user?.age = Int(textField.text ?? "")
+    viewModel.user?.age = Int(textField.text ?? "")
   }
   
   @objc private func handleBioChange(textField: UITextField) {
-    user?.bio = textField.text
+    viewModel.user?.bio = textField.text
   }
 }
 
@@ -324,24 +279,24 @@ extension SettingsViewController: UITableViewDataSource {
                                                     fatalError("\n" + "Unable to Dequeue Settings Cell") }
     switch indexPath.section {
     case 1:
-      cell.textField.text = user?.name
+      cell.textField.text = viewModel.user?.name
       cell.textField.placeholder = "Enter Name"
       cell.textField.addTarget(self, action: #selector(handleNameChange(textField:)),
                                for: .editingChanged)
     case 2:
-      cell.textField.text = user?.profession
+      cell.textField.text = viewModel.user?.profession
       cell.textField.placeholder = "Enter Profession"
       cell.textField.addTarget(self, action: #selector(handleProfessionChange(textField:)),
                                for: .editingChanged)
     case 3:
-      if let age = user?.age {
+      if let age = viewModel.user?.age {
         cell.textField.text = String(age)
       }
       cell.textField.placeholder = "Enter Age"
       cell.textField.addTarget(self, action: #selector(handleAgeChange(textField:)),
                                for: .editingChanged)
     case 4:
-      cell.textField.text = user?.bio
+      cell.textField.text = viewModel.user?.bio
       cell.textField.placeholder = "Enter Bio"
       cell.textField.addTarget(self, action: #selector(handleBioChange(textField:)),
                                for: .editingChanged)
@@ -354,8 +309,8 @@ extension SettingsViewController: UITableViewDataSource {
       ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinAgeChange(slider:)), for: .valueChanged)
       ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange(slider:)), for: .valueChanged)
       
-      let minSeekingAge = user?.minSeekingAge ?? SettingsViewController.defaultMinSeekingAge
-      let maxSeekingAge = user?.maxSeekingAge ?? SettingsViewController.defaultMaxSeekingAge
+      let minSeekingAge = viewModel.user?.minSeekingAge ?? SettingsViewController.defaultMinSeekingAge
+      let maxSeekingAge = viewModel.user?.maxSeekingAge ?? SettingsViewController.defaultMaxSeekingAge
       
       // Set the AgeRangeCell min and max labels
       ageRangeCell.minLabel.text = "Min: \(minSeekingAge)"
@@ -454,11 +409,11 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
         // Set the selected image to the selected button
         guard let strongSelf = self else { return }
         if imageButton == strongSelf.imageButton1 {
-          strongSelf.user?.imageUrl1 = url?.absoluteString
+          strongSelf.viewModel.user?.imageUrl1 = url?.absoluteString
         } else if imageButton == strongSelf.imageButton2 {
-          strongSelf.user?.imageUrl2 = url?.absoluteString
+          strongSelf.viewModel.user?.imageUrl2 = url?.absoluteString
         } else {
-          strongSelf.user?.imageUrl3 = url?.absoluteString
+          strongSelf.viewModel.user?.imageUrl3 = url?.absoluteString
         }
       }
     }
