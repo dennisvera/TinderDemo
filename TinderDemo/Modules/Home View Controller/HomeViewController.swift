@@ -45,7 +45,7 @@ final class HomeViewController: UIViewController {
   
   private var swipes = [String: Int]()
   
-  // Initialization
+  // MARK: -  Initialization
   
   init(homeViewModel: HomeViewModel) {
     self.homeViewModel = homeViewModel

@@ -50,16 +50,19 @@ final class SettingsCoordinator: Coordinator {
   // MARK: - Private Methods
   
   private func showSettings() {
-    // Initialize Home View Controller
-    let settingsViewController = SettingsViewController()
+    // Initialize Settings View Model
+    let viewModel = SettingsViewModel()
     
     // Install Handler
-    settingsViewController.didSelectCancel = { [weak self] in
+    viewModel.didSelectCancel = { [weak self] in
       guard let strongSelf = self else { return }
       strongSelf.handleCancel()
     }
     
-    // Push Home View Controller Onto Navigation Stack
+    // Initialize Settings View Controller
+    let settingsViewController = SettingsViewController(viewModel: viewModel)
+    
+    // Push Settings View Controller Onto Navigation Stack
     navigationController.pushViewController(settingsViewController, animated: true)
   }
   

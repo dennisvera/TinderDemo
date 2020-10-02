@@ -61,6 +61,7 @@
 		E1FF9CEB2526391200520CBC /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CEA2526391200520CBC /* Coordinator.swift */; };
 		E1FF9CED252691B300520CBC /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CEC252691B300520CBC /* HomeCoordinator.swift */; };
 		E1FF9CEF25269E6E00520CBC /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CEE25269E6E00520CBC /* SettingsCoordinator.swift */; };
+		E1FF9CF52527AB0C00520CBC /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CF42527AB0C00520CBC /* SettingsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -122,6 +123,7 @@
 		E1FF9CEA2526391200520CBC /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		E1FF9CEC252691B300520CBC /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		E1FF9CEE25269E6E00520CBC /* SettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
+		E1FF9CF42527AB0C00520CBC /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				E14F9ED524D8D2ED00D63A96 /* SettingsViewController.swift */,
+				E1FF9CF32527AACC00520CBC /* View Models */,
 				E14F9ED824D9DBE800D63A96 /* Settings Table View Cell  */,
 			);
 			path = "Settings View Controller";
@@ -520,6 +523,14 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		E1FF9CF32527AACC00520CBC /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				E1FF9CF42527AB0C00520CBC /* SettingsViewModel.swift */,
+			);
+			path = "View Models";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -699,6 +710,7 @@
 				E1FF9CD4251A951F00520CBC /* MatchesHeaderLabel.swift in Sources */,
 				E1B55450250FD7CF00208E56 /* SendMessageButton.swift in Sources */,
 				E1FF9CEF25269E6E00520CBC /* SettingsCoordinator.swift in Sources */,
+				E1FF9CF52527AB0C00520CBC /* SettingsViewModel.swift in Sources */,
 				E1CF827A24E4518C0041838D /* CustomImagePicker.swift in Sources */,
 				E1FF9CDC2523AA1A00520CBC /* AppCoordinator.swift in Sources */,
 				E1CB2DFA251523FB00724A83 /* ChatCollectionViewCell.swift in Sources */,

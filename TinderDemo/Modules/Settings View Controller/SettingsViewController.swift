@@ -22,28 +22,40 @@ final class SettingsViewController: UIViewController {
   
   // MARK: Properties
   
-  let tableView = UITableView(frame: .zero, style: .plain)
+  private let tableView = UITableView(frame: .zero, style: .plain)
   
   // MARK: -
   
-  lazy var header = createHeader()
-  lazy var imageButton1 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
-  lazy var imageButton2 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
-  lazy var imageButton3 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
+  private lazy var header = createHeader()
+  private lazy var imageButton1 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
+  private lazy var imageButton2 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
+  private lazy var imageButton3 = createHeaderButton(with: #selector(handleSelectedPhoto(button:)))
   
   // MARK: -
   
-  var user: User?
-  var deleagate: SettingsViewControllerDelegate?
+  private var user: User?
+  private var deleagate: SettingsViewControllerDelegate?
   
   // MARK: -
 
-  var didSelectCancel: (() -> Void)?
+  private let viewModel: SettingsViewModel
   
   // MARK: -
   
   static let defaultMinSeekingAge = 18
   static let defaultMaxSeekingAge = 50
+  
+  // MARK: -  Initialization
+  
+  init(viewModel: SettingsViewModel) {
+    self.viewModel = viewModel
+    
+    super.init(nibName: nil, bundle: .main)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   // MARK: View Life Cycle
   
@@ -210,7 +222,7 @@ final class SettingsViewController: UIViewController {
   
   @objc private func handleCancel() {
     // Dismiss View Controller
-    didSelectCancel?()
+    viewModel.handleCancel()
   }
   
   @objc private func handleLogout() {
