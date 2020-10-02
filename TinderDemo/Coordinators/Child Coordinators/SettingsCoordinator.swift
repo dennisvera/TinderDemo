@@ -1,5 +1,5 @@
 //
-//  HomeCoordinator.swift
+//  SettingsCoordinator.swift
 //  TinderDemo
 //
 //  Created by Dennis Vera on 10/1/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class HomeCoordinator: Coordinator {
+final class SettingsCoordinator: Coordinator {
   
   // MARK: - Properties
   
@@ -17,14 +17,13 @@ final class HomeCoordinator: Coordinator {
   
   // MARK: -
   
-  var didSelectMessage: (() -> Void)?
-  var didSelectSettings: (() -> Void)?
   var didFinish: ((Coordinator) -> Void)?
   
   // MARK: - Initialization
   
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
+    navigationController.navigationBar.isHidden = false
     
     // Set Initial View Controller
     self.initialViewController = navigationController.viewControllers.last
@@ -33,13 +32,13 @@ final class HomeCoordinator: Coordinator {
   // MARK: - Deinitialization
   
   deinit {
-    print("Home Coordinator is Being Deallocated")
+    print("Settings Coordinator is Being Deallocated")
   }
   
   // MARK: - Public Methods
   
   func start() {
-    showHome()
+    showSettings()
   }
   
   func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
@@ -50,25 +49,22 @@ final class HomeCoordinator: Coordinator {
   
   // MARK: - Private Methods
   
-  private func showHome() {
-    // Initialize Home View Model
-    let viewModel = HomeViewModel()
+  private func showSettings() {
+    // Initialize Home View Controller
+    let settingsViewController = SettingsViewController()
     
     // Install Handler
-    viewModel.didShowMessages = { [weak self] in
+    settingsViewController.didSelectCancel = { [weak self] in
       guard let strongSelf = self else { return }
-      strongSelf.didSelectMessage?()
+      strongSelf.handleCancel()
     }
-    
-    viewModel.didShowSettings = { [weak self] in
-      guard let strongSelf = self else { return }
-      strongSelf.didSelectSettings?()
-    }
-    
-    // Initialize Home View Controller
-    let homeViewController = HomeViewController(homeViewModel: viewModel)
     
     // Push Home View Controller Onto Navigation Stack
-    navigationController.pushViewController(homeViewController, animated: true)
+    navigationController.pushViewController(settingsViewController, animated: true)
+  }
+  
+  private func handleCancel() {
+    // Pop Settings View Controller from Navigation Stack
+    navigationController.popViewController(animated: true)
   }
 }

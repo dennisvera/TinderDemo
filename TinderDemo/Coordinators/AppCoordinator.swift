@@ -66,6 +66,11 @@ final class AppCoordinator: NSObject {
       strongSelf.showMessages()
     }
     
+    homeCoordinator.didSelectSettings = { [weak self] in
+      guard let strongSelf = self else { return }
+      strongSelf.showSettings()
+    }
+    
     // Push Home Coordinator
     pushCoordinator(homeCoordinator)
   }
@@ -78,6 +83,14 @@ final class AppCoordinator: NSObject {
     
     // Push Message Coordinator
     pushCoordinator(messagesCoordinator)
+  }
+  
+  private func showSettings() {
+    // Initialize Settings Coordinator
+    let settingsCoordinator = SettingsCoordinator(navigationController: navigationController)
+    
+    // Push  Settings Coordinator
+    pushCoordinator(settingsCoordinator)
   }
 }
 

@@ -407,16 +407,7 @@ final class HomeViewController: UIViewController {
   }
   
   @objc private func handleSettingsButton() {
-    // Initialize SettingsViewController
-    let settingsViewController = SettingsViewController()
-    
-    // Instantiate the SettingsViewControllerDelegate
-    settingsViewController.deleagate = self
-    
-    // Navigate to the SettingsViewController
-    let navigationController = UINavigationController(rootViewController: settingsViewController)
-    navigationController.modalPresentationStyle = .fullScreen
-    present(navigationController, animated: true)
+    homeViewModel?.showSettings()
   }
   
   @objc private func handleMessagesButton() {

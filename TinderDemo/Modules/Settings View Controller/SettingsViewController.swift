@@ -37,6 +37,10 @@ final class SettingsViewController: UIViewController {
   var deleagate: SettingsViewControllerDelegate?
   
   // MARK: -
+
+  var didSelectCancel: (() -> Void)?
+  
+  // MARK: -
   
   static let defaultMinSeekingAge = 18
   static let defaultMaxSeekingAge = 50
@@ -49,6 +53,12 @@ final class SettingsViewController: UIViewController {
     setupTableViewController()
     setupNavigationController()
     fetchCurrentUser()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    
+    navigationController?.navigationBar.isHidden = true
   }
   
   private func setupNavigationController() {
@@ -200,7 +210,7 @@ final class SettingsViewController: UIViewController {
   
   @objc private func handleCancel() {
     // Dismiss View Controller
-    dismiss(animated: true)
+    didSelectCancel?()
   }
   
   @objc private func handleLogout() {

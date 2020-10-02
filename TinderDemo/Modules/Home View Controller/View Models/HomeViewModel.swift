@@ -13,10 +13,15 @@ final class HomeViewModel {
   // MARK: - Properties
   
   var didShowMessages: (() -> Void)?
+  var didShowSettings: (() -> Void)?
   
   // MARK: - Public API
   
   func showMessages() {
     didShowMessages?()
+  }
+  
+  func showSettings() {
+    didShowSettings?()
   }
 }

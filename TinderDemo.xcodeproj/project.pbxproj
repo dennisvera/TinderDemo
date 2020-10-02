@@ -60,6 +60,7 @@
 		E1FF9CE82526317C00520CBC /* MessagesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CE72526317C00520CBC /* MessagesCoordinator.swift */; };
 		E1FF9CEB2526391200520CBC /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CEA2526391200520CBC /* Coordinator.swift */; };
 		E1FF9CED252691B300520CBC /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CEC252691B300520CBC /* HomeCoordinator.swift */; };
+		E1FF9CEF25269E6E00520CBC /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CEE25269E6E00520CBC /* SettingsCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,6 +121,7 @@
 		E1FF9CE72526317C00520CBC /* MessagesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesCoordinator.swift; sourceTree = "<group>"; };
 		E1FF9CEA2526391200520CBC /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		E1FF9CEC252691B300520CBC /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
+		E1FF9CEE25269E6E00520CBC /* SettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -504,6 +506,7 @@
 			isa = PBXGroup;
 			children = (
 				E1FF9CEC252691B300520CBC /* HomeCoordinator.swift */,
+				E1FF9CEE25269E6E00520CBC /* SettingsCoordinator.swift */,
 				E1FF9CE72526317C00520CBC /* MessagesCoordinator.swift */,
 			);
 			path = "Child Coordinators";
@@ -695,6 +698,7 @@
 				E1CB2DF72515215C00724A83 /* Messsage.swift in Sources */,
 				E1FF9CD4251A951F00520CBC /* MatchesHeaderLabel.swift in Sources */,
 				E1B55450250FD7CF00208E56 /* SendMessageButton.swift in Sources */,
+				E1FF9CEF25269E6E00520CBC /* SettingsCoordinator.swift in Sources */,
 				E1CF827A24E4518C0041838D /* CustomImagePicker.swift in Sources */,
 				E1FF9CDC2523AA1A00520CBC /* AppCoordinator.swift in Sources */,
 				E1CB2DFA251523FB00724A83 /* ChatCollectionViewCell.swift in Sources */,
