@@ -73,18 +73,18 @@ final class SettingsViewController: UIViewController {
   }
   
   private func setupNavigationController() {
-    navigationItem.title = "Settings"
+    navigationItem.title = Strings.settingsTitle
     navigationController?.navigationBar.prefersLargeTitles = true
-    navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel",
+    navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancel,
                                                        style: .plain,
                                                        target: self,
                                                        action: #selector(handleCancel))
     
-    navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "Save",
+    navigationItem.rightBarButtonItems = [UIBarButtonItem(title: Strings.save,
                                                           style: .plain,
                                                           target: self,
                                                           action: #selector(handleSave)),
-                                          UIBarButtonItem(title: "Logout",
+                                          UIBarButtonItem(title: Strings.logout,
                                                           style: .plain,
                                                           target: self,
                                                           action: #selector(handleLogout))]
@@ -189,7 +189,7 @@ final class SettingsViewController: UIViewController {
     button.layer.cornerRadius = 8
     button.backgroundColor = .white
     button.imageView?.contentMode = .scaleAspectFill
-    button.setTitle("Select Photo", for: .normal)
+    button.setTitle(Strings.selectPhoto, for: .normal)
     button.addTarget(self, action: selector, for: .touchUpInside)
     return button
   }
@@ -222,8 +222,10 @@ final class SettingsViewController: UIViewController {
   }
   
   @objc private func handleSave() {
+    // Save Current Users Info
     viewModel.handleSave { [weak self] in
-      self?.delegate?.didSaveSettings()
+      guard let strongSelf = self else { return }
+      strongSelf.delegate?.didSaveSettings()
     }
   }
   
@@ -280,24 +282,24 @@ extension SettingsViewController: UITableViewDataSource {
     switch indexPath.section {
     case 1:
       cell.textField.text = viewModel.user?.name
-      cell.textField.placeholder = "Enter Name"
+      cell.textField.placeholder = Strings.enterName
       cell.textField.addTarget(self, action: #selector(handleNameChange(textField:)),
                                for: .editingChanged)
     case 2:
       cell.textField.text = viewModel.user?.profession
-      cell.textField.placeholder = "Enter Profession"
+      cell.textField.placeholder = Strings.enterProfession
       cell.textField.addTarget(self, action: #selector(handleProfessionChange(textField:)),
                                for: .editingChanged)
     case 3:
       if let age = viewModel.user?.age {
         cell.textField.text = String(age)
       }
-      cell.textField.placeholder = "Enter Age"
+      cell.textField.placeholder = Strings.enterAge
       cell.textField.addTarget(self, action: #selector(handleAgeChange(textField:)),
                                for: .editingChanged)
     case 4:
       cell.textField.text = viewModel.user?.bio
-      cell.textField.placeholder = "Enter Bio"
+      cell.textField.placeholder = Strings.enterBio
       cell.textField.addTarget(self, action: #selector(handleBioChange(textField:)),
                                for: .editingChanged)
     default:

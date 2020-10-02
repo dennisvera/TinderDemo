@@ -56,20 +56,20 @@ final class SettingsViewModel {
     guard let userUid = Auth.auth().currentUser?.uid else { return }
     
     let documentData: [String: Any] = [
-      "uid" : userUid,
-      "age" : user?.age ?? -1,
-      "bio" : user?.bio ?? "",
-      "fullName" : user?.name ?? "",
-      "imageUrl1" : user?.imageUrl1 ?? "",
-      "imageUrl2" : user?.imageUrl2 ?? "",
-      "imageUrl3" : user?.imageUrl3 ?? "",
-      "profession" : user?.profession ?? "",
-      "minSeekingAge" : user?.minSeekingAge ?? -1,
-      "maxSeekingAge" : user?.maxSeekingAge ?? -1
+      Strings.uid : userUid,
+      Strings.age : user?.age ?? -1,
+      Strings.bio : user?.bio ?? "",
+      Strings.fullName : user?.name ?? "",
+      Strings.imageUrl1 : user?.imageUrl1 ?? "",
+      Strings.imageUrl2 : user?.imageUrl2 ?? "",
+      Strings.imageUrl3 : user?.imageUrl3 ?? "",
+      Strings.profession : user?.profession ?? "",
+      Strings.minSeekingAge : user?.minSeekingAge ?? -1,
+      Strings.maxSeekingAge : user?.maxSeekingAge ?? -1
     ]
     
     Firestore.firestore()
-      .collection("users")
+      .collection(Strings.usersCollection)
       .document(userUid)
       .setData(documentData) { [weak self] error in
         guard let strongSelf = self else { return }
@@ -77,9 +77,7 @@ final class SettingsViewModel {
         if let error = error {
           print("Failed to save user's settings to Firestore:", error)
         }
-        
-        print("Saved Settings User Info")
-        
+                
         completion()
         strongSelf.didSelectSave?()
     }
