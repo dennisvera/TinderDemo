@@ -51,6 +51,22 @@ final class SettingsViewModel {
     }
   }
   
+  func evaluateMinAndMaxSliderValue(with ageRangeCell: AgeRangeTableViewCell) {
+    let minValue = Int(ageRangeCell.minSlider.value)
+    var maxValue = Int(ageRangeCell.maxSlider.value)
+    
+    maxValue = max(minValue, maxValue)
+    
+    ageRangeCell.maxSlider.value = Float(maxValue)
+    ageRangeCell.minLabel.text = "Min: \(minValue)"
+    ageRangeCell.maxLabel.text = "Max: \(maxValue)"
+    
+    user?.minSeekingAge = minValue
+    user?.maxSeekingAge = maxValue
+  }
+  
+   // MARK: - Save User Info
+  
   func handleSave(completion: @escaping () -> Void) {
     // Save users info to Firestore
     guard let user = user, let userUid = Auth.auth().currentUser?.uid else { return }
@@ -81,5 +97,21 @@ final class SettingsViewModel {
         completion()
         strongSelf.didSelectSave?()
     }
+  }
+  
+  func handleNameChange(with textField: UITextField) {
+    user?.name = textField.text
+  }
+  
+  func handleProfessionChange(with textField: UITextField) {
+    user?.profession = textField.text
+  }
+  
+  func handleAgeChange(with textField: UITextField) {
+    user?.age = Int(textField.text ?? "")
+  }
+  
+  func handleBioChange(with textField: UITextField) {
+    user?.bio = textField.text
   }
 }

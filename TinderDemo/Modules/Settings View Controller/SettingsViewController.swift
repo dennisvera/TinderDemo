@@ -197,17 +197,7 @@ final class SettingsViewController: UIViewController {
   
   private func evaluateMinAndMaxSliderValue() {
     guard let ageRangeCell = tableView.cellForRow(at: [5, 0]) as? AgeRangeTableViewCell else { return }
-    let minValue = Int(ageRangeCell.minSlider.value)
-    var maxValue = Int(ageRangeCell.maxSlider.value)
-    
-    maxValue = max(minValue, maxValue)
-    
-    ageRangeCell.maxSlider.value = Float(maxValue)
-    ageRangeCell.minLabel.text = "Min: \(minValue)"
-    ageRangeCell.maxLabel.text = "Max: \(maxValue)"
-    
-    viewModel.user?.minSeekingAge = minValue
-    viewModel.user?.maxSeekingAge = maxValue
+    viewModel.evaluateMinAndMaxSliderValue(with: ageRangeCell)
   }
   
   // MARK: - Actions
@@ -251,19 +241,19 @@ final class SettingsViewController: UIViewController {
   // MARK: - Actions / Save User Info
   
   @objc private func handleNameChange(textField: UITextField) {
-    viewModel.user?.name = textField.text
+    viewModel.handleNameChange(with: textField)
   }
   
   @objc private func handleProfessionChange(textField: UITextField) {
-    viewModel.user?.profession = textField.text
+    viewModel.handleProfessionChange(with: textField)
   }
   
   @objc private func handleAgeChange(textField: UITextField) {
-    viewModel.user?.age = Int(textField.text ?? "")
+    viewModel.handleAgeChange(with: textField)
   }
   
   @objc private func handleBioChange(textField: UITextField) {
-    viewModel.user?.bio = textField.text
+    viewModel.handleBioChange(with: textField)
   }
 }
 
