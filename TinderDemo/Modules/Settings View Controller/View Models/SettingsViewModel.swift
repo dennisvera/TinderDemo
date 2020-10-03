@@ -53,19 +53,19 @@ final class SettingsViewModel {
   
   func handleSave(completion: @escaping () -> Void) {
     // Save users info to Firestore
-    guard let userUid = Auth.auth().currentUser?.uid else { return }
+    guard let user = user, let userUid = Auth.auth().currentUser?.uid else { return }
     
     let documentData: [String: Any] = [
       Strings.uid : userUid,
-      Strings.age : user?.age ?? -1,
-      Strings.bio : user?.bio ?? "",
-      Strings.fullName : user?.name ?? "",
-      Strings.imageUrl1 : user?.imageUrl1 ?? "",
-      Strings.imageUrl2 : user?.imageUrl2 ?? "",
-      Strings.imageUrl3 : user?.imageUrl3 ?? "",
-      Strings.profession : user?.profession ?? "",
-      Strings.minSeekingAge : user?.minSeekingAge ?? -1,
-      Strings.maxSeekingAge : user?.maxSeekingAge ?? -1
+      Strings.age : user.age ?? -1,
+      Strings.bio : user.bio ?? "",
+      Strings.fullName : user.name ?? "",
+      Strings.imageUrl1 : user.imageUrl1 ?? "",
+      Strings.imageUrl2 : user.imageUrl2 ?? "",
+      Strings.imageUrl3 : user.imageUrl3 ?? "",
+      Strings.profession : user.profession ?? "",
+      Strings.minSeekingAge : user.minSeekingAge ?? -1,
+      Strings.maxSeekingAge : user.maxSeekingAge ?? -1
     ]
     
     Firestore.firestore()

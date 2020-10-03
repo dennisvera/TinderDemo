@@ -46,7 +46,12 @@ struct Strings {
   static let enterName = "Enter Name"
   static let settingsTitle = "Settings"
   static let enterProfession = "Enter Profession"
-
+  
+  static let capitalBio = "Bio"
+  static let capitalAge = "Age"
+  static let capitalName = "Name"
+  static let capitalProfession = "Profession"
+  static let seekingAgeRange = "Seeking Age Range"
   
   // MARK: - Bunttons
   

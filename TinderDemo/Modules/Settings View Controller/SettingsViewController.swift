@@ -38,6 +38,7 @@ final class SettingsViewController: UIViewController {
   // MARK: -
   
   private let viewModel: SettingsViewModel
+  private let progressHud = JGProgressHUD(style: .dark)
   
   // MARK: -
   
@@ -222,9 +223,12 @@ final class SettingsViewController: UIViewController {
   }
   
   @objc private func handleSave() {
+    progressHud.textLabel.text = "Saving settings"
+    
     // Save Current Users Info
     viewModel.handleSave { [weak self] in
       guard let strongSelf = self else { return }
+      strongSelf.progressHud.dismiss()
       strongSelf.delegate?.didSaveSettings()
     }
   }
@@ -343,15 +347,15 @@ extension SettingsViewController: UITableViewDelegate {
     
     switch section {
     case 1:
-      headerLabel.text = "Name"
+      headerLabel.text = Strings.capitalName
     case 2:
-      headerLabel.text = "Profession"
+      headerLabel.text = Strings.capitalProfession
     case 3:
-      headerLabel.text = "Age"
+      headerLabel.text = Strings.capitalAge
     case 4:
-      headerLabel.text = "Bio"
+      headerLabel.text = Strings.capitalBio
     default:
-      headerLabel.text = "Seeking Age Range"
+      headerLabel.text = Strings.seekingAgeRange
     }
     
     return headerLabel
