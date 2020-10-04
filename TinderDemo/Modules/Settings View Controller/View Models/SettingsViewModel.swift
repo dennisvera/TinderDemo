@@ -8,12 +8,12 @@
 
 import Foundation
 import Firebase
-import FirebaseAuth
-import FirebaseFirestore
 
 final class SettingsViewModel {
   
   // MARK: - Properties
+  
+  private let firestoreService: FirestoreService
   
   var user: User?
   
@@ -23,20 +23,25 @@ final class SettingsViewModel {
   var didSelectCancel: (() -> Void)?
   var didSelectSignOut: (() -> Void)?
   
-  // MARK: - Public API
+  // MARK: - Initialization
+  
+  init(firestoreService: FirestoreService) {
+    self.firestoreService = firestoreService
+  }
+  
+  // MARK: - Public Methods
   
   func handleCancel() {
     didSelectCancel?()
   }
   
   func handleSignOut() {
-    try? Auth.auth().signOut()
-    
     didSelectSignOut?()
+    firestoreService.signOut()
   }
   
   func fetchCurrentUser(completion: @escaping () -> Void) {
-    Firestore.firestore().fetchCurrentUser { [weak self] (user, error) in
+    firestoreService.fetchCurrentUser { [weak self] (user, error) in
       guard let strongSelf = self else { return }
       
       if let error = error {
@@ -58,21 +63,19 @@ final class SettingsViewModel {
     maxValue = max(minValue, maxValue)
     
     ageRangeCell.maxSlider.value = Float(maxValue)
-    ageRangeCell.minLabel.text = "Min: \(minValue)"
-    ageRangeCell.maxLabel.text = "Max: \(maxValue)"
+    ageRangeCell.minLabel.text = Strings.min + " \(minValue)"
+    ageRangeCell.maxLabel.text = Strings.max + " \(maxValue)"
     
     user?.minSeekingAge = minValue
     user?.maxSeekingAge = maxValue
   }
   
-   // MARK: - Save User Info
-  
-  func handleSave(completion: @escaping () -> Void) {
+  func saveCurrentUserSettingsInfo(completion: @escaping () -> Void) {
     // Save users info to Firestore
-    guard let user = user, let userUid = Auth.auth().currentUser?.uid else { return }
+    guard let user = user, let currentUserUid = Auth.auth().currentUser?.uid else { return }
     
     let documentData: [String: Any] = [
-      Strings.uid : userUid,
+      Strings.uid : currentUserUid,
       Strings.age : user.age ?? -1,
       Strings.bio : user.bio ?? "",
       Strings.fullName : user.name ?? "",
@@ -84,19 +87,10 @@ final class SettingsViewModel {
       Strings.maxSeekingAge : user.maxSeekingAge ?? -1
     ]
     
-    Firestore.firestore()
-      .collection(Strings.usersCollection)
-      .document(userUid)
-      .setData(documentData) { [weak self] error in
-        guard let strongSelf = self else { return }
-        
-        if let error = error {
-          print("Failed to save user's settings to Firestore:", error)
-        }
-                
-        completion()
-        strongSelf.didSelectSave?()
-    }
+    firestoreService.saveCurrentUserSettingsInfo(with: currentUserUid, documentData: documentData)
+    
+    completion()
+    didSelectSave?()
   }
   
   func handleNameChange(with textField: UITextField) {

@@ -53,6 +53,13 @@ struct Strings {
   static let capitalProfession = "Profession"
   static let seekingAgeRange = "Seeking Age Range"
   
+  static let savingSetttings = "Saving Settings"
+  
+  // MARK: - Generals
+  
+  static let min = "Min:"
+  static let max = "Max:"
+
   // MARK: - Bunttons
   
   static let save = "Save"

@@ -213,10 +213,11 @@ final class SettingsViewController: UIViewController {
   }
   
   @objc private func handleSave() {
-    progressHud.textLabel.text = "Saving settings"
+    progressHud.textLabel.text = Strings.savingSetttings
+    progressHud.show(in: view)
     
     // Save Current Users Info
-    viewModel.handleSave { [weak self] in
+    viewModel.saveCurrentUserSettingsInfo { [weak self] in
       guard let strongSelf = self else { return }
       strongSelf.progressHud.dismiss()
       strongSelf.delegate?.didSaveSettings()
@@ -309,8 +310,8 @@ extension SettingsViewController: UITableViewDataSource {
       let maxSeekingAge = viewModel.user?.maxSeekingAge ?? SettingsViewController.defaultMaxSeekingAge
       
       // Set the AgeRangeCell min and max labels
-      ageRangeCell.minLabel.text = "Min: \(minSeekingAge)"
-      ageRangeCell.maxLabel.text = "Max: \(maxSeekingAge)"
+      ageRangeCell.minLabel.text = Strings.min + " \(minSeekingAge)"
+      ageRangeCell.maxLabel.text = Strings.max + " \(maxSeekingAge)"
       
       // Set the AgeRangeCell min and max sliders
       ageRangeCell.minSlider.value = Float(minSeekingAge)
@@ -381,13 +382,14 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
     let reference = Storage.storage().reference(withPath: "/images/\(fileName)")
     guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else { return }
     
-    let progressHud = JGProgressHUD(style: .dark)
     progressHud.textLabel.text = "Uploading Image ..."
     progressHud.show(in: view)
     
-    reference.putData(uploadData, metadata: nil) { _, error in
+    reference.putData(uploadData, metadata: nil) { [weak self] _, error in
+      guard let strongSelf = self else { return }
+
       if let error = error {
-        progressHud.dismiss()
+        strongSelf.progressHud.dismiss()
         print("Failed to upload image to Firebase storage:", error)
         return
       }
@@ -395,15 +397,14 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
       print("Finished uploading user's settings image")
       
       // Retrieve the Image download URL
-      reference.downloadURL { [weak self] (url, error) in
-        progressHud.dismiss()
+      reference.downloadURL { (url, error) in
+        strongSelf.progressHud.dismiss()
         
         if let error = error {
           print("Failed to retrieve image download url:", error)
         }
         
         // Set the selected image to the selected button
-        guard let strongSelf = self else { return }
         if imageButton == strongSelf.imageButton1 {
           strongSelf.viewModel.user?.imageUrl1 = url?.absoluteString
         } else if imageButton == strongSelf.imageButton2 {

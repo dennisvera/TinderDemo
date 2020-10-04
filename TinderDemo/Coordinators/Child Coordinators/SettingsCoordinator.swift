@@ -17,6 +17,10 @@ final class SettingsCoordinator: Coordinator {
   
   // MARK: -
   
+  private let firestoreService = FirestoreService()
+  
+  // MARK: -
+  
   var didFinish: ((Coordinator) -> Void)?
   
   // MARK: - Initialization
@@ -51,7 +55,7 @@ final class SettingsCoordinator: Coordinator {
   
   private func showSettings() {
     // Initialize Settings View Model
-    let viewModel = SettingsViewModel()
+    let viewModel = SettingsViewModel(firestoreService: firestoreService)
     
     // Install Handlers
     viewModel.didSelectCancel = { [weak self] in

@@ -17,6 +17,10 @@ final class HomeCoordinator: Coordinator {
   
   // MARK: -
   
+  private let firestoreService = FirestoreService()
+
+  // MARK: -
+  
   var didSelectMessage: (() -> Void)?
   var didSelectSettings: (() -> Void)?
   var didFinish: ((Coordinator) -> Void)?
@@ -66,7 +70,7 @@ final class HomeCoordinator: Coordinator {
     }
     
     // Initialize Home View Controller
-    let homeViewController = HomeViewController(homeViewModel: viewModel)
+    let homeViewController = HomeViewController(homeViewModel: viewModel, firestoreService: firestoreService)
     
     // Push Home View Controller Onto Navigation Stack
     navigationController.pushViewController(homeViewController, animated: true)

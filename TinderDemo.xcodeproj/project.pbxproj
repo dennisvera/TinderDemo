@@ -15,6 +15,7 @@
 		E145088624CF478300DC7727 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E145088524CF478300DC7727 /* GoogleService-Info.plist */; };
 		E14F9ED624D8D2ED00D63A96 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14F9ED524D8D2ED00D63A96 /* SettingsViewController.swift */; };
 		E14F9EDA24D9DC1500D63A96 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14F9ED924D9DC1500D63A96 /* SettingsTableViewCell.swift */; };
+		E150A092252A79780000FBC2 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E150A091252A79780000FBC2 /* FirestoreService.swift */; };
 		E1B55450250FD7CF00208E56 /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B5544F250FD7CF00208E56 /* SendMessageButton.swift */; };
 		E1B55452250FE10B00208E56 /* KeepSwippingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */; };
 		E1CB2DEA2512872600724A83 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DE92512872600724A83 /* MessagesViewController.swift */; };
@@ -33,7 +34,6 @@
 		E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827D24E45F6F0041838D /* SettingsTextField.swift */; };
 		E1CF828024E5C1E40041838D /* AgeRangeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF827F24E5C1E40041838D /* AgeRangeTableViewCell.swift */; };
 		E1CF828224E5CCFC0041838D /* AgeRangeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828124E5CCFC0041838D /* AgeRangeLabel.swift */; };
-		E1CF828524E602A10041838D /* Firebase+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828424E602A10041838D /* Firebase+Extension.swift */; };
 		E1CF828824E62B6A0041838D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828724E62B6A0041838D /* LoginViewController.swift */; };
 		E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF828A24E632920041838D /* LoginViewModel.swift */; };
 		E1D427E924E847D800AFACBC /* ProfileDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D427E824E847D800AFACBC /* ProfileDetailViewController.swift */; };
@@ -75,6 +75,7 @@
 		E145088524CF478300DC7727 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E14F9ED524D8D2ED00D63A96 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		E14F9ED924D9DC1500D63A96 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
+		E150A091252A79780000FBC2 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		E1B5544F250FD7CF00208E56 /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
 		E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwippingButton.swift; sourceTree = "<group>"; };
 		E1CB2DE92512872600724A83 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
@@ -93,7 +94,6 @@
 		E1CF827D24E45F6F0041838D /* SettingsTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextField.swift; sourceTree = "<group>"; };
 		E1CF827F24E5C1E40041838D /* AgeRangeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeTableViewCell.swift; sourceTree = "<group>"; };
 		E1CF828124E5CCFC0041838D /* AgeRangeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeLabel.swift; sourceTree = "<group>"; };
-		E1CF828424E602A10041838D /* Firebase+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firebase+Extension.swift"; sourceTree = "<group>"; };
 		E1CF828724E62B6A0041838D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E1CF828A24E632920041838D /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		E1D427E824E847D800AFACBC /* ProfileDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetailViewController.swift; sourceTree = "<group>"; };
@@ -208,6 +208,14 @@
 			path = "Settings Table View Cell ";
 			sourceTree = "<group>";
 		};
+		E150A093252A82D70000FBC2 /* Firestore Service */ = {
+			isa = PBXGroup;
+			children = (
+				E150A091252A79780000FBC2 /* FirestoreService.swift */,
+			);
+			path = "Firestore Service";
+			sourceTree = "<group>";
+		};
 		E1CB2DE8251285C200724A83 /* Messages View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -284,7 +292,6 @@
 		E1CF828324E6027B0041838D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				E1CF828424E602A10041838D /* Firebase+Extension.swift */,
 				E1D427EA24E97FDA00AFACBC /* UIButton+Extension.swift */,
 			);
 			path = Extensions;
@@ -347,6 +354,7 @@
 			isa = PBXGroup;
 			children = (
 				E1DFBC0A24B7A5830092622B /* Appplication Delegates */,
+				E150A093252A82D70000FBC2 /* Firestore Service */,
 				E1FF9CDA2523A9FC00520CBC /* Coordinators */,
 				E1DFBC1924BA61610092622B /* Models */,
 				E1DFBC0F24B7A5EF0092622B /* Modules */,
@@ -667,7 +675,6 @@
 				E1CB2DEA2512872600724A83 /* MessagesViewController.swift in Sources */,
 				E1CF828824E62B6A0041838D /* LoginViewController.swift in Sources */,
 				E1CB2DFD25168F3100724A83 /* ChatNavigationBar.swift in Sources */,
-				E1CF828524E602A10041838D /* Firebase+Extension.swift in Sources */,
 				E1FF9CE225252F2A00520CBC /* HomeViewModel.swift in Sources */,
 				E1FF9CD7251AF40600520CBC /* RecentMessages.swift in Sources */,
 				E1FF9CED252691B300520CBC /* HomeCoordinator.swift in Sources */,
@@ -693,6 +700,7 @@
 				E1DFBC2224BB8B500092622B /* Advertiser.swift in Sources */,
 				E1CB2E06251A748400724A83 /* MatchesHorizontalViewController.swift in Sources */,
 				E1DFBBF724B7A5710092622B /* AppDelegate.swift in Sources */,
+				E150A092252A79780000FBC2 /* FirestoreService.swift in Sources */,
 				E145083824C8C4B000DC7727 /* RegistrationViewController.swift in Sources */,
 				E1CB2DF02513BAF000724A83 /* MessagesNavigationBar.swift in Sources */,
 				E1DFBC1E24BA7F080092622B /* CardViewViewModel.swift in Sources */,

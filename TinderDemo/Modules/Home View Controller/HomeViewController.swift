@@ -34,6 +34,7 @@ final class HomeViewController: UIViewController {
   
   // MARK: -
   
+  private let firestoreService: FirestoreService
   private var homeViewModel: HomeViewModel?
   
   // MARK: -
@@ -47,8 +48,9 @@ final class HomeViewController: UIViewController {
   
   // MARK: -  Initialization
   
-  init(homeViewModel: HomeViewModel) {
+  init(homeViewModel: HomeViewModel, firestoreService: FirestoreService) {
     self.homeViewModel = homeViewModel
+    self.firestoreService = firestoreService
     
     super.init(nibName: nil, bundle: .main)
   }
@@ -106,7 +108,7 @@ final class HomeViewController: UIViewController {
     
     cardsDeckView.subviews.forEach { $0.removeFromSuperview() }
     
-    Firestore.firestore().fetchCurrentUser { [weak self] (user, error) in
+    firestoreService.fetchCurrentUser { [weak self] (user, error) in
       guard let strongSelf = self else { return }
       
       // Dismiss ProgressHud
@@ -180,7 +182,7 @@ final class HomeViewController: UIViewController {
         // Check that the user.uid is not the current user.
         // Current user does not need to see it's own profile.
         let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
-//        let hasNotSwipedBefore = strongSelf.swipes[user.uid ?? ""] == nil
+        //        let hasNotSwipedBefore = strongSelf.swipes[user.uid ?? ""] == nil
         let hasNotSwipedBefore = true
         
         if isNotCurrentUser && hasNotSwipedBefore {
@@ -253,7 +255,7 @@ final class HomeViewController: UIViewController {
             .document(uid)
             .setData(documentData) { [weak self] error in
               guard let strongSelf = self else { return }
-
+              
               if let error = error {
                 print("Failed to Save Swipe Data:", error)
                 return
@@ -264,7 +266,7 @@ final class HomeViewController: UIViewController {
               }
           }
         }
-     }
+    }
   }
   
   private func checkIfMatchExists(cardUid: String) {
@@ -331,7 +333,7 @@ final class HomeViewController: UIViewController {
   
   private func saveMatchedUserInfo(with cardUid: String) {
     guard let uid = Auth.auth().currentUser?.uid else { return }
-
+    
     // Get the mathed user name and image url
     guard let matchedUser = users[cardUid] else { return }
     
