@@ -16,7 +16,7 @@ class AgeRangeTableViewCell: UITableViewCell {
   static var reuseIdentifier: String {
     return String(describing: self)
   }
-
+  
   // MARK: - Public Properties
   
   let minLabel: UILabel = {
@@ -28,7 +28,7 @@ class AgeRangeTableViewCell: UITableViewCell {
     let label = AgeRangeLabel()
     return label
   }()
-    
+  
   let minSlider: UISlider = {
     let slider = UISlider()
     slider.minimumValue = 18
@@ -55,7 +55,7 @@ class AgeRangeTableViewCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - Helper Methods
+  // MARK: - Private Methods
   
   private func setupView() {    
     let mainstackView = UIStackView(arrangedSubviews: [UIStackView(arrangedSubviews: [minLabel, minSlider]),
@@ -68,5 +68,20 @@ class AgeRangeTableViewCell: UITableViewCell {
       make.leading.top.equalToSuperview().offset(16)
       make.trailing.bottom.equalToSuperview().offset(-16)
     }
+  }
+  
+  // MARK: - Public Methods
+  
+  func configure(with user: User?) {
+    let minSeekingAge = user?.minSeekingAge ?? SettingsViewController.defaultMinSeekingAge
+    let maxSeekingAge = user?.maxSeekingAge ?? SettingsViewController.defaultMaxSeekingAge
+    
+    // Set the AgeRangeCell min and max labels
+    minLabel.text = Strings.min + " \(minSeekingAge)"
+    maxLabel.text = Strings.max + " \(maxSeekingAge)"
+    
+    // Set the AgeRangeCell min and max sliders
+    minSlider.value = Float(minSeekingAge)
+    maxSlider.value = Float(maxSeekingAge)
   }
 }

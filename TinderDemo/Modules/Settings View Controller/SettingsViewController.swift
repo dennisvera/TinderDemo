@@ -273,29 +273,19 @@ extension SettingsViewController: UITableViewDataSource {
                                                     fatalError("\n" + "Unable to Dequeue Settings Cell") }
     switch indexPath.section {
     case 1:
-      cell.textField.text = viewModel.user?.name
-      cell.textField.placeholder = Strings.enterName
-      cell.textField.addTarget(self, action: #selector(handleNameChange(textField:)),
-                               for: .editingChanged)
+      cell.configureName(with: viewModel.user)
+      cell.textField.addTarget(self, action: #selector(handleNameChange(textField:)), for: .editingChanged)
     case 2:
-      cell.textField.text = viewModel.user?.profession
-      cell.textField.placeholder = Strings.enterProfession
-      cell.textField.addTarget(self, action: #selector(handleProfessionChange(textField:)),
-                               for: .editingChanged)
+      cell.configureProfession(with: viewModel.user)
+      cell.textField.addTarget(self, action: #selector(handleProfessionChange(textField:)), for: .editingChanged)
     case 3:
-      if let age = viewModel.user?.age {
-        cell.textField.text = String(age)
-      }
-      cell.textField.placeholder = Strings.enterAge
-      cell.textField.addTarget(self, action: #selector(handleAgeChange(textField:)),
-                               for: .editingChanged)
+      cell.configureAge(with: viewModel.user)
+      cell.textField.addTarget(self, action: #selector(handleAgeChange(textField:)), for: .editingChanged)
     case 4:
-      cell.textField.text = viewModel.user?.bio
-      cell.textField.placeholder = Strings.enterBio
-      cell.textField.addTarget(self, action: #selector(handleBioChange(textField:)),
-                               for: .editingChanged)
+      cell.configureBio(with: viewModel.user)
+      cell.textField.addTarget(self, action: #selector(handleBioChange(textField:)), for: .editingChanged)
     default:
-      print("")
+      break
     }
     
     if indexPath.section == 5 {
@@ -303,16 +293,7 @@ extension SettingsViewController: UITableViewDataSource {
       ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinAgeChange(slider:)), for: .valueChanged)
       ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange(slider:)), for: .valueChanged)
       
-      let minSeekingAge = viewModel.user?.minSeekingAge ?? SettingsViewController.defaultMinSeekingAge
-      let maxSeekingAge = viewModel.user?.maxSeekingAge ?? SettingsViewController.defaultMaxSeekingAge
-      
-      // Set the AgeRangeCell min and max labels
-      ageRangeCell.minLabel.text = Strings.min + " \(minSeekingAge)"
-      ageRangeCell.maxLabel.text = Strings.max + " \(maxSeekingAge)"
-      
-      // Set the AgeRangeCell min and max sliders
-      ageRangeCell.minSlider.value = Float(minSeekingAge)
-      ageRangeCell.maxSlider.value = Float(maxSeekingAge)
+      ageRangeCell.configure(with: viewModel.user)
       
       return ageRangeCell
     }

@@ -36,12 +36,37 @@ final class SettingsTableViewCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - Helper Methods
+  // MARK: - Private Methods
   
   private func setupTextField() {
     addSubview(textField)
     textField.snp.makeConstraints { make in
       make.edges.equalToSuperview()
     }
+  }
+  
+  // MARK: - Public Methods
+  
+  func configureName(with user: User?) {
+    textField.text = user?.name
+    textField.placeholder = Strings.enterName
+  }
+  
+  func configureProfession(with user: User?) {
+    textField.text = user?.profession
+    textField.placeholder = Strings.enterProfession
+  }
+  
+  func configureAge(with user: User?) {
+    if let age = user?.age {
+      textField.text = String(age)
+    }
+    
+    textField.placeholder = Strings.enterAge
+  }
+  
+  func configureBio(with user: User?) {
+    textField.text = user?.bio
+    textField.placeholder = Strings.enterBio
   }
 }
