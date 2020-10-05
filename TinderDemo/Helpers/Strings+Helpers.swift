@@ -16,6 +16,7 @@ struct Strings {
   static let bio = "bio"
   static let name = "name"
   static let fullName = "fullName"
+  static let imagePath = "/images/"
   static let imageUrl1 = "imageUrl1"
   static let imageUrl2 = "imageUrl2"
   static let imageUrl3 = "imageUrl3"
@@ -37,7 +38,6 @@ struct Strings {
   static let enterEmail = "Enter email"
   static let enterPassword = "Enter password"
   static let enterFullName = "Enter full name"
-  static let faileToRegister = "Failed to Register"
   
   // MARK: - SettingsViewController
   
@@ -53,7 +53,10 @@ struct Strings {
   static let capitalProfession = "Profession"
   static let seekingAgeRange = "Seeking Age Range"
   
+  // MARK: - ProgressHud
+  
   static let savingSetttings = "Saving Settings"
+  static let uploadingImage = "Uploading Image ..."
   
   // MARK: - Generals
   
@@ -70,4 +73,13 @@ struct Strings {
   // MARK: - Notifications
   
   static let matchesHorizontalControllerSegue = "matchesHorizontalControllerSegue"
+  
+  // MARK: - Errors
+  
+  static let faileToRegister = "Failed to Register User"
+  static let failedToFetchCurrentUser = "Failed to Fetch Current User:"
+  static let failedToUplaodImage = "Failed to Upload Image to Firestore:"
+  static let failedToFetchImageUrl = "Failed to Fetch Image Download Url:"
+  static let failedToSaveUserSettingsInfo = "Failed to Save User Settings Info to Firestore:"
+
 }

@@ -8,11 +8,8 @@
 
 import UIKit
 import SnapKit
-import Firebase
 import SDWebImage
-import FirebaseAuth
 import JGProgressHUD
-import FirebaseFirestore
 
 protocol SettingsViewControllerDelegate {
   func didSaveSettings()
@@ -376,43 +373,30 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
     
     // Dismiss UIPicker Controller
     dismiss(animated: true)
-    
-    // Store Image to FireBase Storage
-    let fileName = UUID().uuidString
-    let reference = Storage.storage().reference(withPath: "/images/\(fileName)")
-    guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else { return }
-    
-    progressHud.textLabel.text = "Uploading Image ..."
+
+    progressHud.textLabel.text = Strings.uploadingImage
     progressHud.show(in: view)
     
-    reference.putData(uploadData, metadata: nil) { [weak self] _, error in
+    guard let imageData = selectedImage?.jpegData(compressionQuality: 0.75) else { return }
+    
+    viewModel.saveImage(with: imageData) { [weak self] (url, error) in
       guard let strongSelf = self else { return }
-
+      
       if let error = error {
+        print(Strings.failedToUplaodImage, error)
         strongSelf.progressHud.dismiss()
-        print("Failed to upload image to Firebase storage:", error)
-        return
       }
       
-      print("Finished uploading user's settings image")
-      
-      // Retrieve the Image download URL
-      reference.downloadURL { (url, error) in
-        strongSelf.progressHud.dismiss()
-        
-        if let error = error {
-          print("Failed to retrieve image download url:", error)
-        }
-        
-        // Set the selected image to the selected button
-        if imageButton == strongSelf.imageButton1 {
-          strongSelf.viewModel.user?.imageUrl1 = url?.absoluteString
-        } else if imageButton == strongSelf.imageButton2 {
-          strongSelf.viewModel.user?.imageUrl2 = url?.absoluteString
-        } else {
-          strongSelf.viewModel.user?.imageUrl3 = url?.absoluteString
-        }
+      // Set the selected image to the selected button
+      if imageButton == strongSelf.imageButton1 {
+        strongSelf.viewModel.user?.imageUrl1 = url?.absoluteString
+      } else if imageButton == strongSelf.imageButton2 {
+        strongSelf.viewModel.user?.imageUrl2 = url?.absoluteString
+      } else {
+        strongSelf.viewModel.user?.imageUrl3 = url?.absoluteString
       }
+      
+      strongSelf.progressHud.dismiss()
     }
   }
 }

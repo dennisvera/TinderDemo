@@ -45,7 +45,7 @@ final class SettingsViewModel {
       guard let strongSelf = self else { return }
       
       if let error = error {
-        print("Failed to Fetch User:", error)
+        print(Strings.failedToFetchCurrentUser, error)
         return
       }
       
@@ -91,6 +91,20 @@ final class SettingsViewModel {
     
     completion()
     didSelectSave?()
+  }
+  
+  func saveImage(with uploadData: Data, completion: @escaping (URL?, Error?) -> Void) {
+    firestoreService.saveImage(with: uploadData) { (url, error) in
+      if let error = error {
+        completion(nil, error)
+        return
+      }
+      
+      if let url = url {
+        completion(url, nil)
+        return
+      }
+    }
   }
   
   func handleNameChange(with textField: UITextField) {
