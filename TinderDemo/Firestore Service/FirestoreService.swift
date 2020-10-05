@@ -14,6 +14,7 @@ final class FirestoreService {
   
   // MARK: - Properties
   
+  private var listener: ListenerRegistration?
   private let firestore = Firestore.firestore()
   private let currentUserId = Auth.auth().currentUser?.uid
   
@@ -21,6 +22,10 @@ final class FirestoreService {
   
   func signOut() {
     try? Auth.auth().signOut()
+  }
+  
+  func removeListener() {
+    listener?.remove()
   }
   
   func fetchCurrentUser(completion: @escaping (User?, Error?) -> Void) {
@@ -73,6 +78,28 @@ final class FirestoreService {
           return
         }
       }
+    }
+  }
+  
+  func fetchMessages(completion: @escaping ([String: Any]?, Error?) -> Void) {
+    guard let currentUserId = currentUserId else { return }
+    
+    let query = firestore
+      .collection(Strings.matchesMessagesCollection)
+      .document(currentUserId)
+      .collection(Strings.recentMessagesCollection)
+    
+    listener = query.addSnapshotListener { querySnapshot, error in
+      if let error = error {
+        completion(nil, error)
+      }
+      
+      querySnapshot?.documentChanges.forEach({ change in
+        if change.type == .added || change.type == .modified {
+          let dictionary = change.document.data()
+          completion(dictionary, nil)
+        }
+      })
     }
   }
 }

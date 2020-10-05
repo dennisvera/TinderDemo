@@ -7,14 +7,15 @@
 //
 
 import Foundation
-import FirebaseAuth
-import FirebaseFirestore
 
 final class MessagesViewModel {
   
   // MARK: - Properties
   
-  private var listener: ListenerRegistration?
+  private let firestoreService: FirestoreService
+
+  // MARK: -
+  
   private var recentMessagesDictionary = [String: RecentMessage]()
   private var recentMessages: [RecentMessage] = [] {
     didSet {
@@ -35,38 +36,33 @@ final class MessagesViewModel {
   var messagesDidChange: (() -> Void)?
   var didSelectBackButton: (() -> Void)?
   
+  // MARK: - Initialization
+  
+  init(firestoreService: FirestoreService) {
+    self.firestoreService = firestoreService
+  }
+  
   // MARK: - Public API
   
-  func loadData() {
-    guard let currentUserID = Auth.auth().currentUser?.uid else { return }
-    
-    let query = Firestore.firestore()
-      .collection(Strings.matchesMessagesCollection)
-      .document(currentUserID)
-      .collection(Strings.recentMessagesCollection)
-    
-    listener = query.addSnapshotListener { [weak self] querySnapshot, error in
+  func loadMessages() {
+    firestoreService.fetchMessages { [weak self] (dictionary, error) in
       guard let strongSelf = self else { return }
       
       if let error = error {
-        print("Unable to Fetch Matched Users:", error)
+        print(Strings.failedToFetchMessages, error)
         return
       }
       
-      querySnapshot?.documentChanges.forEach({ change in
-        if change.type == .added || change.type == .modified {
-          let dictionary = change.document.data()
-          let recentMessage = RecentMessage(dictionary: dictionary)
-          strongSelf.recentMessagesDictionary[recentMessage.uid] = recentMessage
-        }
-      })
+      guard let dictionary = dictionary else { return }
+      let recentMessage = RecentMessage(dictionary: dictionary)
+      strongSelf.recentMessagesDictionary[recentMessage.uid] = recentMessage
       
       strongSelf.resetMessages()
     }
   }
   
   func removeListener() {
-    listener?.remove()
+    firestoreService.removeListener()
   }
   
   func navigateBackHome() {

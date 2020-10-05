@@ -76,8 +76,9 @@ struct Strings {
   
   // MARK: - Errors
   
-  static let faileToRegister = "Failed to Register User"
+  static let faileToRegister = "Failed to Register User:"
   static let failedToFetchCurrentUser = "Failed to Fetch Current User:"
+  static let failedToFetchMessages = "Unable to Fetch Matched Messages:"
   static let failedToUplaodImage = "Failed to Upload Image to Firestore:"
   static let failedToFetchImageUrl = "Failed to Fetch Image Download Url:"
   static let failedToSaveUserSettingsInfo = "Failed to Save User Settings Info to Firestore:"

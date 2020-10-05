@@ -8,8 +8,6 @@
 
 import UIKit
 import SnapKit
-import FirebaseAuth
-import FirebaseFirestore
 
 final class MessagesViewController: UIViewController {
   
@@ -116,7 +114,7 @@ final class MessagesViewController: UIViewController {
   
   private func setupViewModel() {
     // Fetch Messages
-    viewModel.loadData()
+    viewModel.loadMessages()
     
     // Install Handler
     viewModel.messagesDidChange = { [weak self] in
@@ -144,10 +142,9 @@ final class MessagesViewController: UIViewController {
     let dictionary = [Strings.uid: userInfo.uid,
                       Strings.name: userInfo.name,
                       Strings.profileImageUrl: userInfo.profileImageUrl ?? ""]
-
-    let matchedUser = MatchedUser(dictionary: dictionary)
-    let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
-    navigationController?.pushViewController(chatCollectionViewController, animated: true)
+    
+    let user = MatchedUser(dictionary: dictionary)
+    didSelectMessage?(user)
   }
 }
 

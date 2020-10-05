@@ -17,6 +17,10 @@ final class MesagesCoordinator: Coordinator {
   
   // MARK: -
   
+  private let firestoreService = FirestoreService()
+  
+  // MARK: -
+  
   var didFinish: ((Coordinator) -> Void)?
   
   // MARK: - Initialization
@@ -50,7 +54,7 @@ final class MesagesCoordinator: Coordinator {
   
   private func showMessages() {
     // Initialize Messages View Model
-    let viewModel = MessagesViewModel()
+    let viewModel = MessagesViewModel(firestoreService: firestoreService)
     
     // Install Handler
     viewModel.didSelectBackButton = { [weak self] in
