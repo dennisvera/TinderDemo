@@ -8,7 +8,6 @@
 
 import UIKit
 import SnapKit
-import SDWebImage
 import JGProgressHUD
 
 protocol SettingsViewControllerDelegate {
@@ -119,40 +118,16 @@ final class SettingsViewController: UIViewController {
   }
   
   private func loadUserPhotos() {
-    if let imageUrl = viewModel.user?.imageUrl1, let url = URL(string: imageUrl) {
-      // The SDWebImageManager will handle chaching the image for us.
-      /// Chaching the image  saves the image on the phone  after  its been fetched the first time,
-      /// thiis will guarante we dont fetch an imagea again that  we have previously loaded..
-      SDWebImageManager.shared.loadImage(with: url,
-                                         options: .continueInBackground,
-                                         progress: nil) { [weak self] (image, _, _, _, _, _) in
-                                          
-                                          guard let strongSelf = self else { return }
-                                          strongSelf.imageButton1.setImage(image?.withRenderingMode(.alwaysOriginal),
-                                                                           for: .normal)
-      }
+    if let imageUrl = viewModel.user?.imageUrl1 {
+      viewModel.loadUserPhoto(with: imageUrl, imageButton: imageButton1)
     }
     
-    if let imageUrl = viewModel.user?.imageUrl2, let url = URL(string: imageUrl) {
-      SDWebImageManager.shared.loadImage(with: url,
-                                         options: .continueInBackground,
-                                         progress: nil) { [weak self] (image, _, _, _, _, _) in
-                                          
-                                          guard let strongSelf = self else { return }
-                                          strongSelf.imageButton2.setImage(image?.withRenderingMode(.alwaysOriginal),
-                                                                           for: .normal)
-      }
+    if let imageUrl = viewModel.user?.imageUrl2 {
+      viewModel.loadUserPhoto(with: imageUrl, imageButton: imageButton2)
     }
     
-    if let imageUrl = viewModel.user?.imageUrl3, let url = URL(string: imageUrl) {
-      SDWebImageManager.shared.loadImage(with: url,
-                                         options: .continueInBackground,
-                                         progress: nil) { [weak self] (image, _, _, _, _, _) in
-                                          
-                                          guard let strongSelf = self else { return }
-                                          strongSelf.imageButton3.setImage(image?.withRenderingMode(.alwaysOriginal),
-                                                                           for: .normal)
-      }
+    if let imageUrl = viewModel.user?.imageUrl3 {
+      viewModel.loadUserPhoto(with: imageUrl, imageButton: imageButton3)
     }
   }
   
@@ -345,6 +320,10 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
   
   func imagePickerController(_ picker: UIImagePickerController,
                              didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    
+    // Disable the Save button
+    navigationItem.rightBarButtonItem?.isEnabled = false
+    
     // Get selected image
     let selectedImage = info[.originalImage] as? UIImage
     
@@ -378,6 +357,7 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
       }
       
       strongSelf.progressHud.dismiss()
+      strongSelf.navigationItem.rightBarButtonItem?.isEnabled = true
     }
   }
 }

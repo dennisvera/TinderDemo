@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SDWebImage
 import Firebase
 
 final class SettingsViewModel {
@@ -104,6 +105,20 @@ final class SettingsViewModel {
         completion(url, nil)
         return
       }
+    }
+  }
+  
+  func loadUserPhoto(with imageUrl: String, imageButton: UIButton) {
+    /// SDWebImageManager will handle image chaching.
+    /// Chaching the image  saves the image on the phone  after  its been fetched the first time,
+    /// thiis will guarantee we dont fetch an imagea again that  was previously loaded..
+    guard let url = URL(string: imageUrl) else { return }
+    SDWebImageManager.shared.loadImage(with: url,
+                                       options: .continueInBackground,
+                                       progress: nil) { (image, _, _, _, _, _) in
+                                        
+                                        imageButton.setImage(image?.withRenderingMode(.alwaysOriginal),
+                                                             for: .normal)
     }
   }
   
