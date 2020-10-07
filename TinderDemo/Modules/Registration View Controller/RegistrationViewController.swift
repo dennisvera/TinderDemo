@@ -318,7 +318,7 @@ final class RegistrationViewController: UIViewController {
     
     // Configure Registration Error Hud
     let hud = JGProgressHUD(style: .dark)
-    hud.textLabel.text = Strings.faileToRegister
+    hud.textLabel.text = Strings.failedToRegister
     hud.detailTextLabel.text = error.localizedDescription
     hud.show(in: view)
     hud.dismiss(afterDelay: 4)

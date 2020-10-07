@@ -37,7 +37,6 @@ final class FirestoreService {
       .getDocument { (snapshot, error) in
         if let error = error {
           completion(nil, error)
-          return
         }
         
         // Fetch Current User
@@ -46,6 +45,8 @@ final class FirestoreService {
         completion(user, nil)
     }
   }
+  
+  // MARK: - Settings Helper Methods
   
   func saveCurrentUserSettingsInfo(with userId: String, documentData: [String: Any]) {
     firestore
@@ -81,6 +82,8 @@ final class FirestoreService {
     }
   }
   
+  // MARK: - Messages Helper Methods
+  
   func fetchMessages(completion: @escaping ([String: Any]?, Error?) -> Void) {
     guard let currentUserId = currentUserId else { return }
     
@@ -100,6 +103,115 @@ final class FirestoreService {
           completion(dictionary, nil)
         }
       })
+    }
+  }
+  
+  // MARK: - Chat Helper Methods
+  
+  func fetchChatMessages(with matchedUserId: String, completion: @escaping ([String: Any]?, Error?) -> Void) {
+    guard let currentUserId = currentUserId else { return }
+    
+    let query = firestore
+      .collection(Strings.matchesMessagesCollection)
+      .document(currentUserId)
+      .collection(matchedUserId)
+      .order(by: Strings.timestamp)
+    
+    listener = query.addSnapshotListener { querySnapshot, error in
+      if let error = error {
+        completion(nil, error)
+      }
+      
+      querySnapshot?.documentChanges.forEach({ change in
+        if change.type == .added {
+          let dictionary = change.document.data()
+          completion(dictionary, nil)
+        }
+      })
+    }
+  }
+  
+  func saveCurrentUserAndMatchedUserChatMesages(with matchedUser: MatchedUser,
+                             text: String,
+                             completion: @escaping (Error?) -> Void) {
+    guard let currentUserId = currentUserId else { return }
+    
+    // Save Chat Messages to Current User
+    let currentUserCollection = firestore
+      .collection(Strings.matchesMessagesCollection)
+      .document(currentUserId)
+      .collection(matchedUser.uid)
+    
+    let data: [String: Any] = [Strings.text: text,
+                               Strings.fromId: currentUserId,
+                               Strings.toId: matchedUser.uid,
+                               Strings.timestamp: Timestamp(date: Date())]
+    
+    currentUserCollection.addDocument(data: data) { error in
+      if let error = error {
+        completion(error)
+      }
+    }
+    
+    // Save Chat Messages to Matched User
+    let matchedUserCollection = firestore
+      .collection(Strings.matchesMessagesCollection)
+      .document(matchedUser.uid)
+      .collection(currentUserId)
+    
+    matchedUserCollection.addDocument(data: data) { error in
+      if let error = error {
+        completion(error)
+      }
+    }
+  }
+  
+  func saveCurrentUserRecentChatMessage(with matchedUser: MatchedUser,
+                                        text: String,
+                                        completion: @escaping (Error?) -> Void) {
+    guard let currentUserId = currentUserId else { return }
+    
+    // Save Most Recent Chat Message Sent to Current User
+    let data: [String: Any] = [Strings.uid: matchedUser.uid,
+                               Strings.name: matchedUser.name,
+                               Strings.timestamp: Timestamp(date: Date()),
+                               Strings.text: text,
+                               Strings.profileImageUrl: matchedUser.profileImageUrl ?? ""]
+    
+    firestore
+      .collection(Strings.matchesMessagesCollection)
+      .document(currentUserId)
+      .collection(Strings.recentMessagesCollection)
+      .document(matchedUser.uid)
+      .setData(data) { error in
+        if let error = error {
+          completion(error)
+        }
+    }
+  }
+  
+  func saveMatchedUserRecentChatMessage(with currentUser: User,
+                                           matchedUser: MatchedUser,
+                                           text: String,
+                                           completion: @escaping (Error?) -> Void) {
+    guard let currentUserId = currentUserId else { return }
+    
+    // Save Most Recent Chat Message Sent to Matched User
+    let currentUserData: [String: Any] = [Strings.uid: currentUserId,
+                                          Strings.name: currentUser.name ?? "",
+                                          Strings.timestamp: Timestamp(date: Date()),
+                                          Strings.text: text,
+                                          Strings.profileImageUrl: currentUser.imageUrl1 ?? ""]
+    
+    firestore
+      .collection(Strings.matchesMessagesCollection)
+      .document(matchedUser.uid)
+      .collection(Strings.recentMessagesCollection)
+      .document(currentUserId)
+      .setData(currentUserData) { error in
+        if let error = error {
+          completion(error)
+        }
     }
   }
 }

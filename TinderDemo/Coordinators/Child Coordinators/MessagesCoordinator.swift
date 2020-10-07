@@ -83,8 +83,11 @@ final class MesagesCoordinator: Coordinator {
   // MARK: - Chat Collection View Controller
   
   private func showChat(with matchedUser: MatchedUser) {
+    // Initialize Chat View Model
+    let viewModel = ChatViewModel(firestoreService: firestoreService, matchedUser: matchedUser)
+    
     // Initialize Chat Collection View Controller
-    let chatCollectionViewController = ChatCollectionViewController(matchedUser: matchedUser)
+    let chatCollectionViewController = ChatCollectionViewController(viewModel: viewModel)
     
     // Push Chat Collection View Controller Onto Navigation Stack
     navigationController.pushViewController(chatCollectionViewController, animated: true)

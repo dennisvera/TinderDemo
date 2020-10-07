@@ -16,6 +16,7 @@
 		E14F9ED624D8D2ED00D63A96 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14F9ED524D8D2ED00D63A96 /* SettingsViewController.swift */; };
 		E14F9EDA24D9DC1500D63A96 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14F9ED924D9DC1500D63A96 /* SettingsTableViewCell.swift */; };
 		E150A092252A79780000FBC2 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E150A091252A79780000FBC2 /* FirestoreService.swift */; };
+		E150A096252BCBEE0000FBC2 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E150A095252BCBEE0000FBC2 /* ChatViewModel.swift */; };
 		E1B55450250FD7CF00208E56 /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B5544F250FD7CF00208E56 /* SendMessageButton.swift */; };
 		E1B55452250FE10B00208E56 /* KeepSwippingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */; };
 		E1CB2DEA2512872600724A83 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DE92512872600724A83 /* MessagesViewController.swift */; };
@@ -76,6 +77,7 @@
 		E14F9ED524D8D2ED00D63A96 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		E14F9ED924D9DC1500D63A96 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		E150A091252A79780000FBC2 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
+		E150A095252BCBEE0000FBC2 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		E1B5544F250FD7CF00208E56 /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
 		E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwippingButton.swift; sourceTree = "<group>"; };
 		E1CB2DE92512872600724A83 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
@@ -216,6 +218,14 @@
 			path = "Firestore Service";
 			sourceTree = "<group>";
 		};
+		E150A094252BCBD00000FBC2 /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				E150A095252BCBEE0000FBC2 /* ChatViewModel.swift */,
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
 		E1CB2DE8251285C200724A83 /* Messages View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -249,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				E1CB2E00251A5C7F00724A83 /* ChatCollectionViewController.swift */,
+				E150A094252BCBD00000FBC2 /* View Model */,
 				E1CB2DFB25168EF900724A83 /* Chat Navigation Bar */,
 				E1CB2DF8251523CE00724A83 /* Chat Collection View Cell */,
 			);
@@ -681,6 +692,7 @@
 				E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */,
 				E1CF827E24E45F6F0041838D /* SettingsTextField.swift in Sources */,
 				E1B55452250FE10B00208E56 /* KeepSwippingButton.swift in Sources */,
+				E150A096252BCBEE0000FBC2 /* ChatViewModel.swift in Sources */,
 				E1D427ED24E9A74300AFACBC /* PagingPhotosViewController.swift in Sources */,
 				E1DFBBFB24B7A5710092622B /* HomeViewController.swift in Sources */,
 				E1CB2E03251A663400724A83 /* MessagesHeaderView.swift in Sources */,

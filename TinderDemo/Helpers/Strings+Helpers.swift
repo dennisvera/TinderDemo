@@ -16,15 +16,22 @@ struct Strings {
   static let bio = "bio"
   static let name = "name"
   static let fullName = "fullName"
+  static let profession = "profession"
+  
+  static let minSeekingAge = "minSeekingAge"
+  static let maxSeekingAge = "maxSeekingAge"
+    
   static let imagePath = "/images/"
   static let imageUrl1 = "imageUrl1"
   static let imageUrl2 = "imageUrl2"
   static let imageUrl3 = "imageUrl3"
-  static let profession = "profession"
-  static let minSeekingAge = "minSeekingAge"
-  static let maxSeekingAge = "maxSeekingAge"
-  static let matchedUserKey = "matchedUserKey"
   static let profileImageUrl = "profileImageUrl"
+  
+  static let text = "text"
+  static let toId = "toId"
+  static let fromId = "fromId"
+  static let timestamp = "timestamp"
+  static let matchedUserKey = "matchedUserKey"
   
   static let usersCollection = "users"
   static let matchesCollection = "matches"
@@ -75,12 +82,16 @@ struct Strings {
   static let matchesHorizontalControllerSegue = "matchesHorizontalControllerSegue"
   
   // MARK: - Errors
-  
-  static let faileToRegister = "Failed to Register User:"
+
+
+  static let failedToRegister = "Failed to Register User:"
   static let failedToFetchCurrentUser = "Failed to Fetch Current User:"
-  static let failedToFetchMessages = "Unable to Fetch Matched Messages:"
   static let failedToUplaodImage = "Failed to Upload Image to Firestore:"
+  static let failedToFetchChatMessages = "Unable to Fetch Chat Messages:"
   static let failedToFetchImageUrl = "Failed to Fetch Image Download Url:"
+  static let failedToFetchMessages = "Unable to Fetch Matched User Messages:"
   static let failedToSaveUserSettingsInfo = "Failed to Save User Settings Info to Firestore:"
+  static let failedToSaveCurrentUserRecentMessage = "Unable to Save Current User Most Recent Message:"
+  static let failedToSaveMatchedUserRecentMessage = "Unable to Save Matched User Most Recent Message:"
 
 }

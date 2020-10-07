@@ -8,20 +8,19 @@
 
 import UIKit
 import SnapKit
-import FirebaseAuth
-import FirebaseFirestore
 
 final class ChatCollectionViewController: UICollectionViewController {
   
   // MARK: - Properties
   
-  private lazy var chatNavigationBar = ChatNavigationBar(matchedUser: matchedUser)
+  private let viewModel: ChatViewModel
   
   // MARK: -
   
-  private var currentUser: User?
-  private var messages = [Message]()
-  private let matchedUser: MatchedUser
+  private lazy var chatNavigationBar = ChatNavigationBar(matchedUser: viewModel.matchedUser)
+  
+  // MARK: -
+  
   private let navigationBarHeight: CGFloat = 120
   
   // MARK: -
@@ -32,18 +31,15 @@ final class ChatCollectionViewController: UICollectionViewController {
                                                      width: self.view.frame.width,
                                                      height: 50))
     
-    view.sendButton.addTarget(self, action: #selector(handleSendButton), for: .touchUpInside)
+    view.sendButton.addTarget(self, action: #selector(handleSendButton),
+                              for: .touchUpInside)
     return view
   }()
   
-  // MARK: -
-
-  private var listener: ListenerRegistration?
-  
   // MARK: - Initialization
   
-  init(matchedUser: MatchedUser) {
-    self.matchedUser = matchedUser
+  init(viewModel: ChatViewModel) {
+    self.viewModel = viewModel
     
     super.init(collectionViewLayout: UICollectionViewFlowLayout())
   }
@@ -59,7 +55,7 @@ final class ChatCollectionViewController: UICollectionViewController {
     
     setupCollectionViewController()
     fetchCurrentUser()
-    fetchMessages()
+    fetchChatMessages()
     setupView()
   }
   
@@ -68,7 +64,7 @@ final class ChatCollectionViewController: UICollectionViewController {
     
     // Remove the listner to avoid memory leaks
     if isMovingFromParent {
-      listener?.remove()
+      viewModel.removeListener()
     }
   }
   
@@ -131,140 +127,30 @@ final class ChatCollectionViewController: UICollectionViewController {
   }
   
   private func fetchCurrentUser() {
-    guard let currentUserId = Auth.auth().currentUser?.uid else { return }
-    
-    Firestore.firestore()
-      .collection("users")
-      .document(currentUserId)
-      .getDocument { [weak self] snapshot, error in
-        guard let strongSelf = self else { return }
-        
-        if let error = error {
-          print("Unable to fethc current user:", error)
-          return
-        }
-        
-        let data = snapshot?.data() ?? [:]
-        strongSelf.currentUser = User(dictionary: data)
-    }
+    viewModel.fetchCurrentUser()
   }
   
-  private func fetchMessages() {
-    guard let currentUserId = Auth.auth().currentUser?.uid else { return }
-    
-    let query = Firestore.firestore()
-      .collection("matches_messages")
-      .document(currentUserId)
-      .collection(matchedUser.uid)
-      .order(by: "timestamp")
-    
-    listener = query.addSnapshotListener { [weak self] querySnapshot, error in
+  private func fetchChatMessages() {
+    viewModel.fetchChatMessages { [weak self] in
       guard let strongSelf = self else { return }
-      
-      if let error = error {
-        print("Unable to Fetch Messages:", error)
-        return
-      }
-      
-      querySnapshot?.documentChanges.forEach({ change in
-        if change.type == .added {
-          let dictionary = change.document.data()
-          strongSelf.messages.append(.init(dictionary: dictionary))
-        }
-      })
-      
       strongSelf.collectionView.reloadData()
-      strongSelf.collectionView.scrollToItem(at: [0, strongSelf.messages.count - 1], at: .bottom, animated: true)
+      strongSelf.collectionView.scrollToItem(at: [0, strongSelf.viewModel.numberOfMessages - 1],
+                                             at: .bottom,
+                                             animated: true)
     }
   }
   
   private func saveToFromMesages() {
-    guard let currentUserId = Auth.auth().currentUser?.uid else { return }
-    
-    // Save messages to current user acccount
-    let currentUserCollection = Firestore.firestore()
-      .collection("matches_messages")
-      .document(currentUserId)
-      .collection(matchedUser.uid)
-    
-    let data: [String: Any] = ["text": customInputAccessoryView.textView.text ?? "",
-                               "fromId": currentUserId,
-                               "toId": matchedUser.uid,
-                               "timestamp": Timestamp(date: Date())]
-    
-    currentUserCollection.addDocument(data: data) { [weak self] error in
+    viewModel.saveToFromChatMesage(with: customInputAccessoryView.textView.text) { [weak self] in
       guard let strongSelf = self else { return }
-      
-      if let error = error {
-        print("Unable to Save Message:", error)
-        return
-      }
-      
       strongSelf.customInputAccessoryView.textView.text = nil
       strongSelf.customInputAccessoryView.placeHolderLabel.isHidden = false
-    }
-    
-    // Save messages to matched user acccount
-    let matchedUserCollection = Firestore.firestore()
-      .collection("matches_messages")
-      .document(matchedUser.uid)
-      .collection(currentUserId)
-    
-    matchedUserCollection.addDocument(data: data) { [weak self] error in
-      guard let strongSelf = self else { return }
-      
-      if let error = error {
-        print("Unable to Save Message:", error)
-        return
-      }
-      
-      strongSelf.customInputAccessoryView.textView.text = nil
-      strongSelf.customInputAccessoryView.placeHolderLabel.isHidden = false
+
     }
   }
   
-  private func saveToFromRecentMessages() {
-    guard let currentUserId = Auth.auth().currentUser?.uid else { return }
-    
-    // Save most recent message to current user
-    let data: [String: Any] = ["uid": matchedUser.uid,
-                               "name": matchedUser.name,
-                               "timestamp": Timestamp(date: Date()),
-                               "text": customInputAccessoryView.textView.text ?? "",
-                               "profileImageUrl": matchedUser.profileImageUrl ?? ""]
-    
-    Firestore.firestore()
-      .collection("matches_messages")
-      .document(currentUserId)
-      .collection("recent_messages")
-      .document(matchedUser.uid)
-      .setData(data) { error in
-        if let error = error {
-          print("Unable to Save Last Message:", error)
-          return
-        }
-    }
-    
-    // Save most recent messages to matched user
-    guard let currentUser = currentUser else { return }
-    
-    let currentUserData: [String: Any] = ["uid": currentUserId,
-                                          "name": currentUser.name ?? "",
-                                          "timestamp": Timestamp(date: Date()),
-                                          "text": customInputAccessoryView.textView.text ?? "",
-                                          "profileImageUrl": currentUser.imageUrl1 ?? ""]
-    
-    Firestore.firestore()
-      .collection("matches_messages")
-      .document(matchedUser.uid)
-      .collection("recent_messages")
-      .document(currentUserId)
-      .setData(currentUserData) { error in
-        if let error = error {
-          print("Unable to Save Last Message:", error)
-          return
-        }
-    }
+  private func saveToFromChatRecentMessages() {
+    viewModel.saveToFromChatRecentMessages(with: customInputAccessoryView.textView.text)
   }
   
   // MARK: - Actions
@@ -275,11 +161,11 @@ final class ChatCollectionViewController: UICollectionViewController {
   
   @objc private func handleSendButton() {
     saveToFromMesages()
-    saveToFromRecentMessages()
+    saveToFromChatRecentMessages()
   }
   
   @objc private func handleKeyboardShow() {
-    self.collectionView.scrollToItem(at: [0, messages.count - 1], at: .bottom, animated: true)
+    self.collectionView.scrollToItem(at: [0, viewModel.numberOfMessages - 1], at: .bottom, animated: true)
   }
 }
 
@@ -288,7 +174,7 @@ final class ChatCollectionViewController: UICollectionViewController {
 extension ChatCollectionViewController {
   
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return messages.count
+    return viewModel.numberOfMessages
   }
   
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -296,7 +182,7 @@ extension ChatCollectionViewController {
                                                         for: indexPath) as? ChatCollectionViewCell else {
                                                           fatalError("Unable to Dequeue Cell") }
     
-    let message = messages[indexPath.item]
+    let message = viewModel.messages[indexPath.item]
     cell.configure(with: message)
     
     return cell
@@ -317,7 +203,7 @@ extension ChatCollectionViewController: UICollectionViewDelegateFlowLayout {
                                                                 width: view.frame.width,
                                                                 height: 1000))
     
-    estimatedSizeCell.configure(with: messages[indexPath.item])
+    estimatedSizeCell.configure(with: viewModel.messages[indexPath.item])
     estimatedSizeCell.layoutIfNeeded()
     
     let estimatedSize = estimatedSizeCell.systemLayoutSizeFitting(.init(width: view.frame.width, height: 1000))

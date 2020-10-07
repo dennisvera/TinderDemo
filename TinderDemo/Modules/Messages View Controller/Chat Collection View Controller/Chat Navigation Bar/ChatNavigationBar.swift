@@ -38,7 +38,6 @@ final class ChatNavigationBar: UIView {
   
   private let nameLabel: UILabel = {
     let label = UILabel()
-    label.text = "Kelly Ann Woods"
     label.font = .systemFont(ofSize: 16)
     return label
   }()
@@ -82,13 +81,13 @@ final class ChatNavigationBar: UIView {
       $0.width.equalTo(50)
     }
     
-    // Instantiate Vertical Stack View
+    // Initiallize Vertical Stack View
     let verticalStackView = UIStackView(arrangedSubviews: [profileImageView, nameLabel])
     verticalStackView.spacing = 8
     verticalStackView.axis = .vertical
     verticalStackView.alignment = .center
     
-    // Instantiate Main Stack View
+    // Initiallize Main Stack View
     let mainSatckView = UIStackView(arrangedSubviews: [backButton, verticalStackView, reportButton])
     mainSatckView.axis = .horizontal
     mainSatckView.alignment = .center
