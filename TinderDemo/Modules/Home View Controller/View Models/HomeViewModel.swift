@@ -20,6 +20,7 @@ final class HomeViewModel {
   var user: User?
   var users = [String: User]()
   var swipes = [String: Int]()
+  var currentUser = Auth.auth().currentUser?.uid
   
   // MARK: -
   

@@ -8,9 +8,7 @@
 
 import UIKit
 import SnapKit
-import FirebaseAuth
 import JGProgressHUD
-import FirebaseFirestore
 
 final class HomeViewController: UIViewController {
   
@@ -26,12 +24,12 @@ final class HomeViewController: UIViewController {
   
   // MARK: -
 
-  private var viewModel = [CardViewViewModel]()
+  private var cardViewModel = [CardViewViewModel]()
   private let progressHud = JGProgressHUD(style: .dark)
   
   // MARK: -
   
-  private var homeViewModel: HomeViewModel?
+  private var viewModel: HomeViewModel?
   
   // MARK: -
   
@@ -40,8 +38,8 @@ final class HomeViewController: UIViewController {
     
   // MARK: -  Initialization
   
-  init(homeViewModel: HomeViewModel) {
-    self.homeViewModel = homeViewModel
+  init(viewModel: HomeViewModel) {
+    self.viewModel = viewModel
     
     super.init(nibName: nil, bundle: .main)
   }
@@ -99,7 +97,7 @@ final class HomeViewController: UIViewController {
     
     cardsDeckView.subviews.forEach { $0.removeFromSuperview() }
     
-    homeViewModel?.fetchCurrentUser { [weak self] in
+    viewModel?.fetchCurrentUser { [weak self] in
       guard let strongSelf = self else { return }
       
       // Fetch Swiped Users
@@ -108,7 +106,7 @@ final class HomeViewController: UIViewController {
   }
   
   private func fetchSwipedUsers() {
-    homeViewModel?.fetchSwipedUsers { [weak self] in
+    viewModel?.fetchSwipedUsers { [weak self] in
       guard let strongSelf = self else { return }
       
       // Fetch All Users
@@ -119,7 +117,7 @@ final class HomeViewController: UIViewController {
   private func fetchUsersFromFirestore() {
     topCardView = nil
     
-    homeViewModel?.fetchUsersFromFirestore(completion: { [weak self] snapshot in
+    viewModel?.fetchUsersFromFirestore(completion: { [weak self] snapshot in
       guard let strongSelf = self else { return }
       
       // Dismiss ProgressHud
@@ -130,11 +128,11 @@ final class HomeViewController: UIViewController {
         let userDictionary = documentSnapshot.data()
         let user = User(dictionary: userDictionary)
         
-        strongSelf.homeViewModel?.users[user.uid ?? ""] = user
+        strongSelf.viewModel?.users[user.uid ?? ""] = user
         
         // Check that the user.uid is not the current user.
         // Current user does not need to see it's own profile.
-        let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
+        let isNotCurrentUser = user.uid != strongSelf.viewModel?.currentUser
         //        let hasNotSwipedBefore = strongSelf.swipes[user.uid ?? ""] == nil
         let hasNotSwipedBefore = true
         
@@ -173,7 +171,7 @@ final class HomeViewController: UIViewController {
   private func saveSwipeToFireStore(didLike: Int) {
     guard let cardUid = topCardView?.viewModel.uid else { return }
     
-    homeViewModel?.saveSwipeToFireStore(with: cardUid, didLike: didLike, completion: { [weak self]  didLike in
+    viewModel?.saveSwipeToFireStore(with: cardUid, didLike: didLike, completion: { [weak self]  didLike in
       guard let strongSelf = self else { return }
       
       if didLike == 1 {
@@ -183,7 +181,7 @@ final class HomeViewController: UIViewController {
   }
   
   private func checkIfMatchExists(cardUid: String) {
-    homeViewModel?.checkIfMatchExists(cardUid: cardUid, completion: { [weak self] hasMatched in
+    viewModel?.checkIfMatchExists(cardUid: cardUid, completion: { [weak self] hasMatched in
       guard let strongSelf = self else { return }
       
       if hasMatched {
@@ -197,7 +195,7 @@ final class HomeViewController: UIViewController {
   private func presentMatchView(with cardUid: String) {
     let matchView = MatchView()
     matchView.matchedUserUid = cardUid
-    matchView.currentUser = homeViewModel?.user
+    matchView.currentUser = viewModel?.user
     
     view.addSubview(matchView)
     matchView.snp.makeConstraints { make in
@@ -206,11 +204,11 @@ final class HomeViewController: UIViewController {
   }
   
   private func saveMatchedCurrentUserInfo(with cardUid: String) {
-    homeViewModel?.saveMatchedCurrentUserInfo(with: cardUid)
+    viewModel?.saveMatchedCurrentUserInfo(with: cardUid)
   }
   
   private func saveMatchedUserInfo(with cardUid: String) {
-    homeViewModel?.saveMatchedUserInfo(with: cardUid)
+    viewModel?.saveMatchedUserInfo(with: cardUid)
   }
   
   private func performSwipeAnimation(transform: CGFloat, angle: CGFloat) {
@@ -245,7 +243,7 @@ final class HomeViewController: UIViewController {
   private func showRegistrationViewController() {
     // Check if the currentUser is logged out.
     // If user is logged out, present the RegistrationViewController
-    if Auth.auth().currentUser == nil {
+    if viewModel?.currentUser == nil {
       let registrationViewController = RegistrationViewController()
       registrationViewController.delegate = self
       
@@ -267,11 +265,11 @@ final class HomeViewController: UIViewController {
   }
   
   @objc private func handleSettingsButton() {
-    homeViewModel?.showSettings()
+    viewModel?.showSettings()
   }
   
   @objc private func handleMessagesButton() {
-    homeViewModel?.showMessages()
+    viewModel?.showMessages()
   }
   
   @objc private func handleResfreshButton() {

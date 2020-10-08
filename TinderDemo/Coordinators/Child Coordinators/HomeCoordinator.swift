@@ -70,7 +70,7 @@ final class HomeCoordinator: Coordinator {
     }
     
     // Initialize Home View Controller
-    let homeViewController = HomeViewController(homeViewModel: viewModel)
+    let homeViewController = HomeViewController(viewModel: viewModel)
     
     // Push Home View Controller Onto Navigation Stack
     navigationController.pushViewController(homeViewController, animated: true)
