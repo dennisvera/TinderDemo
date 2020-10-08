@@ -63,6 +63,7 @@ struct Strings {
   
   // MARK: - ProgressHud
   
+  static let loading = "Loading ..."
   static let savingSetttings = "Saving Settings"
   static let uploadingImage = "Uploading Image ..."
   

@@ -56,6 +56,26 @@ final class HomeViewModel {
       completion()
     }
   }
+  
+  func fetchUsersFromFirestore(completion: @escaping (QuerySnapshot?) -> Void) {
+    let minSeekingAge = user?.minSeekingAge ?? SettingsViewController.defaultMinSeekingAge
+    let maxSeekingAge = user?.maxSeekingAge ?? SettingsViewController.defaultMinSeekingAge
+    
+    let query = Firestore.firestore()
+      .collection(Strings.usersCollection)
+      .whereField(Strings.age, isGreaterThanOrEqualTo: minSeekingAge)
+      .whereField(Strings.age, isLessThanOrEqualTo: maxSeekingAge)
+      .limit(to: 10)
+    
+    query.getDocuments { (snapshot, error) in
+      if let error = error {
+        print(Strings.failedToFetchUsers, error)
+        return
+      }
+      
+      completion(snapshot)
+    }
+  }
 
   func fetchSwipedUsers(completion: @escaping () -> Void) {
     firestoreService.fetchSwipedUsers { [weak self] (swipedUser, error) in

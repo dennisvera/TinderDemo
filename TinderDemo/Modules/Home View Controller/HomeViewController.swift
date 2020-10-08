@@ -31,7 +31,6 @@ final class HomeViewController: UIViewController {
   
   // MARK: -
   
-  private let firestoreService: FirestoreService
   private var homeViewModel: HomeViewModel?
   
   // MARK: -
@@ -41,9 +40,8 @@ final class HomeViewController: UIViewController {
     
   // MARK: -  Initialization
   
-  init(homeViewModel: HomeViewModel, firestoreService: FirestoreService) {
+  init(homeViewModel: HomeViewModel) {
     self.homeViewModel = homeViewModel
-    self.firestoreService = firestoreService
     
     super.init(nibName: nil, bundle: .main)
   }
@@ -96,7 +94,7 @@ final class HomeViewController: UIViewController {
   
   private func fetchCurrentUser() {
     // Show ProgressHud
-    progressHud.textLabel.text = "Loading"
+    progressHud.textLabel.text = Strings.loading
     progressHud.show(in: view)
     
     cardsDeckView.subviews.forEach { $0.removeFromSuperview() }
@@ -119,27 +117,13 @@ final class HomeViewController: UIViewController {
   }
   
   private func fetchUsersFromFirestore() {
-    let minSeekingAge = homeViewModel?.user?.minSeekingAge ?? SettingsViewController.defaultMinSeekingAge
-    let maxSeekingAge = homeViewModel?.user?.maxSeekingAge ?? SettingsViewController.defaultMinSeekingAge
-    
-    let query = Firestore.firestore()
-      .collection("users")
-      .whereField("age", isGreaterThanOrEqualTo: minSeekingAge)
-      .whereField("age", isLessThanOrEqualTo: maxSeekingAge)
-      .limit(to: 10)
-    
     topCardView = nil
     
-    query.getDocuments { [weak self] (snapshot, error) in
+    homeViewModel?.fetchUsersFromFirestore(completion: { [weak self] snapshot in
       guard let strongSelf = self else { return }
       
       // Dismiss ProgressHud
       strongSelf.progressHud.dismiss()
-      
-      if let error = error {
-        print("Failed to Fetch User:", error)
-        return
-      }
       
       // Fecth user documents
       snapshot?.documents.forEach({ documentSnapshot in
@@ -166,7 +150,7 @@ final class HomeViewController: UIViewController {
           }
         }
       })
-    }
+    })
   }
   
   private func setupCardView(with user: User) -> CardView {
