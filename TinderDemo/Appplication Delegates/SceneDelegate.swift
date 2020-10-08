@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   // MARK: - Application Life Cycle
   
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-    // Configure Firebase - this needs to be called before main window is initialized
+    // Configure Firebase - Must be Called Before Main Window is Initialized
     FirebaseApp.configure()
     let firestore = Firestore.firestore()
     let settings = firestore.settings
