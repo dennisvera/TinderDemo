@@ -46,6 +46,157 @@ final class FirestoreService {
     }
   }
   
+  // MARK: - Home Helper Methods
+  
+  func fetchSwipedUsers(completion: @escaping ([String: Int]?, Error?) -> Void) {
+    guard let currentUserId = currentUserId else { return }
+    
+    firestore
+      .collection(Strings.swipesCollection)
+      .document(currentUserId)
+      .getDocument { snapshot, error in
+        if let error = error {
+          completion(nil, error)
+        }
+        
+        guard let data = snapshot?.data() as? [String: Int] else { return }
+        completion(data, nil)
+    }
+  }
+  
+  // TO DO
+  func fetchUsers(with minSeekingAge: Int, maxSeekingAge: Int, completion: @escaping ([User]?, Error?) -> Void) {
+  }
+    
+  func saveSwipeToFireStore(with cardUid: String,
+                            didLike: Int,
+                            completion: @escaping (Int?, Error?) -> Void) {
+    guard let currentUserId = currentUserId else { return }
+    let documentData = [cardUid: didLike]
+    
+    firestore
+      .collection(Strings.swipesCollection)
+      .document(currentUserId)
+      .getDocument { [weak self] (snapshot, error) in
+        if let error = error {
+          completion(nil, error)
+        }
+        
+        if snapshot?.exists == true {
+          Firestore.firestore()
+            .collection(Strings.swipesCollection)
+            .document(currentUserId)
+            .updateData(documentData) { error in
+              
+              if let error = error {
+                completion(nil, error)
+              }
+              
+              if didLike == 1 {
+                completion(didLike, nil)
+              }
+          }
+        } else {
+          self?.saveSwipeToFireStoreHelper(with: cardUid, didLike: didLike) { (didLike, error) in
+            if let error = error {
+              print(Strings.failedToSaveSwipedData, error)
+              return
+            }
+            
+            if didLike == 1 {
+              completion(didLike, nil)
+            }
+          }
+        }
+    }
+  }
+  
+  private func saveSwipeToFireStoreHelper(with cardUid: String,
+                                          didLike: Int,
+                                          completion: @escaping (Int?, Error?) -> Void) {
+    guard let currentUserId = currentUserId else { return }
+    let documentData = [cardUid: didLike]
+    
+    Firestore.firestore()
+      .collection(Strings.swipesCollection)
+      .document(currentUserId)
+      .setData(documentData) { error in
+        
+        if let error = error {
+          completion(nil, error)
+        }
+        
+        if didLike == 1 {
+          completion(didLike, nil)
+        }
+    }
+  }
+
+  func checkIfMatchExists(cardUid: String, completion: @escaping (Bool, Error?) -> Void) {
+    firestore
+      .collection(Strings.swipesCollection)
+      .document(cardUid)
+      .getDocument { snapshot, error in
+        if let error = error {
+          completion(false, error)
+        }
+        
+        guard let data = snapshot?.data() else { return }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        let hasMatched = data[uid] as? Int == 1
+        
+        completion(hasMatched, nil)
+    }
+  }
+  
+  func saveMatchedCurrentUserInfo(with user: User?, cardUid: String, completion: @escaping (Error?) -> Void) {
+    guard let currentUserId = currentUserId else { return }
+    
+    // Get the Current User Name and Image Url
+    guard let currentUser = user else { return }
+    let currentUserData: [String: Any] = [Strings.uid: currentUser.uid ?? "",
+                                          Strings.name: currentUser.name ?? "",
+                                          Strings.profileImageUrl: currentUser.imageUrl1 ?? "",
+                                          Strings.timestamp: Timestamp(date: Date())]
+    
+    // Save the Current User Info to FireStore
+    firestore
+      .collection(Strings.matchesMessagesCollection)
+      .document(cardUid)
+      .collection(Strings.matchesCollection)
+      .document(currentUserId)
+      .setData(currentUserData) { error in
+        if let error = error {
+          completion(error)
+        }
+    }
+  }
+  
+  func saveMatchedUserInfo(with users: [String: User], cardUid: String, completion: @escaping (Error?) -> Void) {
+    guard let currentUserId = currentUserId else { return }
+    
+    // Get Mathed User Info
+    guard let matchedUser = users[cardUid] else { return }
+    let matchedUserdata: [String: Any] = [Strings.uid: matchedUser.uid ?? "",
+                                          Strings.name: matchedUser.name ?? "",
+                                          Strings.profileImageUrl: matchedUser.imageUrl1 ?? "",
+                                          Strings.timestamp: Timestamp(date: Date())]
+    
+    // Save Matched User Info to FireStore
+    Firestore.firestore()
+      .collection(Strings.matchesMessagesCollection)
+      .document(currentUserId)
+      .collection(Strings.matchesCollection)
+      .document(cardUid)
+      .setData(matchedUserdata) { error in
+        
+        if let error = error {
+          completion(error)
+        }
+    }
+  }
+  
   // MARK: - Settings Helper Methods
   
   func saveCurrentUserSettingsInfo(with userId: String, documentData: [String: Any]) {

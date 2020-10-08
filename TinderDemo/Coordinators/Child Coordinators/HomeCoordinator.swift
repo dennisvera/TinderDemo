@@ -56,7 +56,7 @@ final class HomeCoordinator: Coordinator {
   
   private func showHome() {
     // Initialize Home View Model
-    let viewModel = HomeViewModel()
+    let viewModel = HomeViewModel(firestoreService: firestoreService)
     
     // Install Handler
     viewModel.didShowMessages = { [weak self] in

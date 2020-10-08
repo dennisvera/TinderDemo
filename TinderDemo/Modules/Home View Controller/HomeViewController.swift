@@ -16,19 +16,16 @@ final class HomeViewController: UIViewController {
   
   // MARK: - Properties
   
+  private let topNavigationStackView = TopNavigationStackView()
+  private let bottomControlsStackView = HomeBottomControlStackView()
+  
   private let cardsDeckView: UIView = {
     let view = UIView()
     return view
   }()
   
-  private let topNavigationStackView = TopNavigationStackView()
-  private let bottomControlsStackView = HomeBottomControlStackView()
-  
   // MARK: -
-  
-  private var user: User?
-  private var lastFetchedUser: User?
-  private var users = [String: User]()
+
   private var viewModel = [CardViewViewModel]()
   private let progressHud = JGProgressHUD(style: .dark)
   
@@ -41,11 +38,7 @@ final class HomeViewController: UIViewController {
   
   private var topCardView: CardView?
   private var previousCardView: CardView?
-  
-  // MARK: -
-  
-  private var swipes = [String: Int]()
-  
+    
   // MARK: -  Initialization
   
   init(homeViewModel: HomeViewModel, firestoreService: FirestoreService) {
@@ -108,19 +101,8 @@ final class HomeViewController: UIViewController {
     
     cardsDeckView.subviews.forEach { $0.removeFromSuperview() }
     
-    firestoreService.fetchCurrentUser { [weak self] (user, error) in
+    homeViewModel?.fetchCurrentUser { [weak self] in
       guard let strongSelf = self else { return }
-      
-      // Dismiss ProgressHud
-      strongSelf.progressHud.dismiss()
-      
-      if let error = error {
-        print("Failed to Fetch User:", error)
-        return
-      }
-      
-      // Fetch current user
-      strongSelf.user = user
       
       // Fetch Swiped Users
       strongSelf.fetchSwipedUsers()
@@ -128,30 +110,17 @@ final class HomeViewController: UIViewController {
   }
   
   private func fetchSwipedUsers() {
-    guard let uid = Auth.auth().currentUser?.uid else { return }
-    
-    Firestore.firestore()
-      .collection(FireStoreConstants.swipes)
-      .document(uid)
-      .getDocument { [weak self] snapshot, error in
-        guard let strongSelf = self else { return }
-        
-        if let error = error {
-          print("Failed to Fetch Swip History for Currently Logged User:", error)
-          return
-        }
-        
-        guard let data = snapshot?.data() as? [String: Int] else { return }
-        strongSelf.swipes = data
-        
-        // Fetch All Users
-        strongSelf.fetchUsersFromFirestore()
+    homeViewModel?.fetchSwipedUsers { [weak self] in
+      guard let strongSelf = self else { return }
+      
+      // Fetch All Users
+      strongSelf.fetchUsersFromFirestore()
     }
   }
   
   private func fetchUsersFromFirestore() {
-    let minSeekingAge = user?.minSeekingAge ?? SettingsViewController.defaultMinSeekingAge
-    let maxSeekingAge = user?.maxSeekingAge ?? SettingsViewController.defaultMinSeekingAge
+    let minSeekingAge = homeViewModel?.user?.minSeekingAge ?? SettingsViewController.defaultMinSeekingAge
+    let maxSeekingAge = homeViewModel?.user?.maxSeekingAge ?? SettingsViewController.defaultMinSeekingAge
     
     let query = Firestore.firestore()
       .collection("users")
@@ -177,7 +146,7 @@ final class HomeViewController: UIViewController {
         let userDictionary = documentSnapshot.data()
         let user = User(dictionary: userDictionary)
         
-        strongSelf.users[user.uid ?? ""] = user
+        strongSelf.homeViewModel?.users[user.uid ?? ""] = user
         
         // Check that the user.uid is not the current user.
         // Current user does not need to see it's own profile.
@@ -218,88 +187,33 @@ final class HomeViewController: UIViewController {
   }
   
   private func saveSwipeToFireStore(didLike: Int) {
-    guard let uid = Auth.auth().currentUser?.uid else { return }
     guard let cardUid = topCardView?.viewModel.uid else { return }
     
-    let documentData = [cardUid: didLike]
-    
-    Firestore.firestore()
-      .collection(FireStoreConstants.swipes)
-      .document(uid)
-      .getDocument { [weak self] (snapshot, error) in
-        guard let strongSelf = self else { return }
-        
-        if let error = error {
-          print("Unable to Fetch Swipe Document:", error)
-          return
-        }
-        
-        if snapshot?.exists == true {
-          Firestore.firestore()
-            .collection(FireStoreConstants.swipes)
-            .document(uid)
-            .updateData(documentData) { error in
-              
-              if let error = error {
-                print("Failed to Update Data:", error)
-                return
-              }
-              
-              if didLike == 1 {
-                strongSelf.checkIfMatchExists(cardUid: cardUid)
-              }
-          }
-        } else {
-          Firestore.firestore()
-            .collection(FireStoreConstants.swipes)
-            .document(uid)
-            .setData(documentData) { [weak self] error in
-              guard let strongSelf = self else { return }
-              
-              if let error = error {
-                print("Failed to Save Swipe Data:", error)
-                return
-              }
-              
-              if didLike == 1 {
-                strongSelf.checkIfMatchExists(cardUid: cardUid)
-              }
-          }
-        }
-    }
+    homeViewModel?.saveSwipeToFireStore(with: cardUid, didLike: didLike, completion: { [weak self]  didLike in
+      guard let strongSelf = self else { return }
+      
+      if didLike == 1 {
+        strongSelf.checkIfMatchExists(cardUid: cardUid)
+      }
+    })
   }
   
   private func checkIfMatchExists(cardUid: String) {
-    Firestore.firestore()
-      .collection(FireStoreConstants.swipes)
-      .document(cardUid)
-      .getDocument { [weak self] snapshot, error in
-        guard let strongSelf = self else { return }
-        
-        if let error = error {
-          print("Failed to Fetch Document for Card User:", error)
-          return
-        }
-        
-        guard let data = snapshot?.data() else { return }
-        print(data)
-        
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        
-        let hasMatched = data[uid] as? Int == 1
-        
-        if hasMatched {
-          strongSelf.presentMatchView(with: cardUid)
-          strongSelf.saveMatchedUserInfo(with: cardUid)
-          strongSelf.saveMatchedCurrentUserInfo(with: cardUid)
-        }
-    }
+    homeViewModel?.checkIfMatchExists(cardUid: cardUid, completion: { [weak self] hasMatched in
+      guard let strongSelf = self else { return }
+      
+      if hasMatched {
+        strongSelf.presentMatchView(with: cardUid)
+        strongSelf.saveMatchedUserInfo(with: cardUid)
+        strongSelf.saveMatchedCurrentUserInfo(with: cardUid)
+      }
+    })
   }
   
   private func presentMatchView(with cardUid: String) {
     let matchView = MatchView()
     matchView.matchedUserUid = cardUid
-    matchView.currentUser = user
+    matchView.currentUser = homeViewModel?.user
     
     view.addSubview(matchView)
     matchView.snp.makeConstraints { make in
@@ -308,51 +222,11 @@ final class HomeViewController: UIViewController {
   }
   
   private func saveMatchedCurrentUserInfo(with cardUid: String) {
-    guard let uid = Auth.auth().currentUser?.uid else { return }
-    
-    // Get the current user name and image url
-    guard let currentUser = user else { return }
-    
-    let currentUserData: [String: Any] = ["uid": currentUser.uid ?? "",
-                                          "name": currentUser.name ?? "",
-                                          "profileImageUrl": currentUser.imageUrl1 ?? "",
-                                          "timestamp": Timestamp(date: Date())]
-    
-    // Save the current user info to FireStore
-    Firestore.firestore()
-      .collection("matches_messages")
-      .document(cardUid)
-      .collection("matches")
-      .document(uid)
-      .setData(currentUserData) { error in
-        if let error = error {
-          print("Unable to Save Current User Info:", error)
-        }
-    }
+    homeViewModel?.saveMatchedCurrentUserInfo(with: cardUid)
   }
   
   private func saveMatchedUserInfo(with cardUid: String) {
-    guard let uid = Auth.auth().currentUser?.uid else { return }
-    
-    // Get the mathed user name and image url
-    guard let matchedUser = users[cardUid] else { return }
-    
-    let matchedUserdata: [String: Any] = ["uid": matchedUser.uid ?? "",
-                                          "name": matchedUser.name ?? "",
-                                          "profileImageUrl": matchedUser.imageUrl1 ?? "",
-                                          "timestamp": Timestamp(date: Date())]
-    
-    // Save the matched user info to FireStore
-    Firestore.firestore()
-      .collection("matches_messages")
-      .document(uid)
-      .collection("matches")
-      .document(cardUid)
-      .setData(matchedUserdata) { error in
-        if let error = error {
-          print("Unable to Save Matched User Info:", error)
-        }
-    }
+    homeViewModel?.saveMatchedUserInfo(with: cardUid)
   }
   
   private func performSwipeAnimation(transform: CGFloat, angle: CGFloat) {
@@ -487,9 +361,5 @@ extension HomeViewController {
   enum Layout {
     static let zero: CGFloat = 0
     static let leadingMarging: CGFloat = 8
-  }
-  
-  enum FireStoreConstants {
-    static let swipes = "swipes"
   }
 }

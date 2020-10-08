@@ -34,6 +34,7 @@ struct Strings {
   static let matchedUserKey = "matchedUserKey"
   
   static let usersCollection = "users"
+  static let swipesCollection = "swipes"
   static let matchesCollection = "matches"
   static let recentMessagesCollection = "recent_messages"
   static let matchesMessagesCollection = "matches_messages"
@@ -83,15 +84,20 @@ struct Strings {
   
   // MARK: - Errors
 
-
   static let failedToRegister = "Failed to Register User:"
+  static let failedToFetchUsers = "Failed to Fetch Users:"
+  static let failedToUpdateData = "Failed to Update Data:"
+  static let failedToSaveSwipedData = "Failed to Save Swipe Data:"
   static let failedToFetchCurrentUser = "Failed to Fetch Current User:"
   static let failedToUplaodImage = "Failed to Upload Image to Firestore:"
-  static let failedToFetchChatMessages = "Unable to Fetch Chat Messages:"
+  static let failedToFetchChatMessages = "Failed to Fetch Chat Messages:"
   static let failedToFetchImageUrl = "Failed to Fetch Image Download Url:"
-  static let failedToFetchMessages = "Unable to Fetch Matched User Messages:"
+  static let failedToFetchMessages = "Failed to Fetch Matched User Messages:"
+  static let failedToSaveMatchedUserInfo = "Failed to Save Matched User Info:"
+  static let failedToSaveCurrentUserInfo = "Failed to Save Current User Info:"
+  static let failedToFetchUserDocumentCard = "Failed to Fetch User Card Document:"
   static let failedToSaveUserSettingsInfo = "Failed to Save User Settings Info to Firestore:"
-  static let failedToSaveCurrentUserRecentMessage = "Unable to Save Current User Most Recent Message:"
-  static let failedToSaveMatchedUserRecentMessage = "Unable to Save Matched User Most Recent Message:"
-
+  static let failedToSaveMatchedUserRecentMessage = "Failed to Save Matched User Most Recent Message:"
+  static let failedToSaveCurrentUserRecentMessage = "Failed to Save Current User Most Recent Message:"
+  static let failedToFethcSwipedHistoryForCurrentUser = "Failed to Fetch Swip History for Current User:"
 }
