@@ -26,6 +26,7 @@ final class HomeViewModel {
   
   var didShowMessages: (() -> Void)?
   var didShowSettings: (() -> Void)?
+  var didShowProfile: ((CardViewViewModel) -> Void)?
   
   // MARK: - Initialization
   
@@ -41,6 +42,10 @@ final class HomeViewModel {
   
   func showSettings() {
     didShowSettings?()
+  }
+  
+  func showProfile(with cardViewmodel: CardViewViewModel) {
+    didShowProfile?(cardViewmodel)
   }
   
   func fetchCurrentUser(completion: @escaping () -> Void) {

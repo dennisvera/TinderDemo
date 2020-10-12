@@ -69,10 +69,25 @@ final class HomeCoordinator: Coordinator {
       strongSelf.didSelectSettings?()
     }
     
+    viewModel.didShowProfile = { [weak self] cardViewModel in
+      guard let strongSelf = self else { return }
+      strongSelf.showProfile(with: cardViewModel)
+    }
+    
     // Initialize Home View Controller
     let homeViewController = HomeViewController(viewModel: viewModel)
     
     // Push Home View Controller Onto Navigation Stack
     navigationController.pushViewController(homeViewController, animated: true)
+  }
+  
+  private func showProfile(with cardViewmodel: CardViewViewModel) {
+    // Initialize Profile Detail View Controller
+    let profileDetailViewController = ProfileDetailViewController()
+    profileDetailViewController.cardViewModel = cardViewmodel
+    profileDetailViewController.modalPresentationStyle = .fullScreen
+    
+    // Present Profile Detail View Controller Onto Navigation Stack
+    navigationController.present(profileDetailViewController, animated: true)
   }
 }
