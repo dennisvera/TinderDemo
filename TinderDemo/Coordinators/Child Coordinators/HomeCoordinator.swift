@@ -74,6 +74,11 @@ final class HomeCoordinator: Coordinator {
       strongSelf.showProfile(with: cardViewModel)
     }
     
+    viewModel.didShowRegistration = { [weak self] in
+      guard let strongSelf = self else { return }
+      strongSelf.showRegistration()
+    }
+    
     // Initialize Home View Controller
     let homeViewController = HomeViewController(viewModel: viewModel)
     
@@ -89,5 +94,14 @@ final class HomeCoordinator: Coordinator {
     
     // Present Profile Detail View Controller Onto Navigation Stack
     navigationController.present(profileDetailViewController, animated: true)
+  }
+  
+  private func showRegistration() {
+    // Initialize Registration View Controller
+    let registrationViewController = RegistrationViewController()
+    registrationViewController.modalPresentationStyle = .fullScreen
+    
+    // Present Registration View Controller Onto Navigation Stack
+    navigationController.present(registrationViewController, animated: true)
   }
 }

@@ -108,11 +108,14 @@ final class RegistrationViewController: UIViewController {
   
   // MARK: -
   
-  var delegate: LoginViewControllerDelegate?
-  private let progressHud = JGProgressHUD()
-  private let gradientLayer = CAGradientLayer()
+  private var delegate: LoginViewControllerDelegate?
   private var viewModel = RegistrationViewModel()
   
+  // MARK: -
+
+  private let progressHud = JGProgressHUD()
+  private let gradientLayer = CAGradientLayer()
+    
   // MARK: - Deinitialization
   
   deinit {

@@ -26,6 +26,7 @@ final class HomeViewModel {
   
   var didShowMessages: (() -> Void)?
   var didShowSettings: (() -> Void)?
+  var didShowRegistration: (() -> Void)?
   var didShowProfile: ((CardViewViewModel) -> Void)?
   
   // MARK: - Initialization
@@ -46,6 +47,14 @@ final class HomeViewModel {
   
   func showProfile(with cardViewmodel: CardViewViewModel) {
     didShowProfile?(cardViewmodel)
+  }
+  
+  func showRegistration() {
+    // Check if the currentUser is logged out.
+    // If user is logged out, present the RegistrationViewController
+    if currentUser == nil {
+      didShowRegistration?()
+    }
   }
   
   func fetchCurrentUser(completion: @escaping () -> Void) {
