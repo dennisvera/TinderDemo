@@ -17,7 +17,6 @@
 		E14F9EDA24D9DC1500D63A96 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14F9ED924D9DC1500D63A96 /* SettingsTableViewCell.swift */; };
 		E150A092252A79780000FBC2 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E150A091252A79780000FBC2 /* FirestoreService.swift */; };
 		E150A096252BCBEE0000FBC2 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E150A095252BCBEE0000FBC2 /* ChatViewModel.swift */; };
-		E16A9D032536780F00BD076D /* RegsitrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16A9D022536780F00BD076D /* RegsitrationCoordinator.swift */; };
 		E1B55450250FD7CF00208E56 /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B5544F250FD7CF00208E56 /* SendMessageButton.swift */; };
 		E1B55452250FE10B00208E56 /* KeepSwippingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */; };
 		E1CB2DEA2512872600724A83 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DE92512872600724A83 /* MessagesViewController.swift */; };
@@ -79,7 +78,6 @@
 		E14F9ED924D9DC1500D63A96 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		E150A091252A79780000FBC2 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		E150A095252BCBEE0000FBC2 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
-		E16A9D022536780F00BD076D /* RegsitrationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegsitrationCoordinator.swift; sourceTree = "<group>"; };
 		E1B5544F250FD7CF00208E56 /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
 		E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwippingButton.swift; sourceTree = "<group>"; };
 		E1CB2DE92512872600724A83 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
@@ -532,7 +530,6 @@
 				E1FF9CEC252691B300520CBC /* HomeCoordinator.swift */,
 				E1FF9CEE25269E6E00520CBC /* SettingsCoordinator.swift */,
 				E1FF9CE72526317C00520CBC /* MessagesCoordinator.swift */,
-				E16A9D022536780F00BD076D /* RegsitrationCoordinator.swift */,
 			);
 			path = "Child Coordinators";
 			sourceTree = "<group>";
@@ -690,7 +687,6 @@
 				E1CF828824E62B6A0041838D /* LoginViewController.swift in Sources */,
 				E1CB2DFD25168F3100724A83 /* ChatNavigationBar.swift in Sources */,
 				E1FF9CE225252F2A00520CBC /* HomeViewModel.swift in Sources */,
-				E16A9D032536780F00BD076D /* RegsitrationCoordinator.swift in Sources */,
 				E1FF9CD7251AF40600520CBC /* RecentMessages.swift in Sources */,
 				E1FF9CED252691B300520CBC /* HomeCoordinator.swift in Sources */,
 				E1CF828B24E632920041838D /* LoginViewModel.swift in Sources */,

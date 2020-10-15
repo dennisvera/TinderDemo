@@ -241,7 +241,17 @@ final class HomeViewController: UIViewController {
   }
   
   private func showRegistrationViewController() {
-    viewModel?.showRegistration()
+    // Check if the currentUser is logged out.
+    // If user is logged out, present the RegistrationViewController
+    if viewModel?.currentUser == nil {
+      let registrationViewController = RegistrationViewController()
+      registrationViewController.delegate = self
+      
+      // Navigate to the RegistrationViewController
+      let navigationController = UINavigationController(rootViewController: registrationViewController)
+      navigationController.modalPresentationStyle = .fullScreen
+      present(navigationController, animated: true)
+    }
   }
   
   // MARK: - Actions
