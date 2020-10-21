@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import JGProgressHUD
+import Firebase
 
 final class HomeViewController: UIViewController {
   
@@ -243,7 +244,7 @@ final class HomeViewController: UIViewController {
   private func showRegistrationViewController() {
     // Check if the currentUser is logged out.
     // If user is logged out, present the RegistrationViewController
-    if viewModel?.currentUser == nil {
+    if Auth.auth().currentUser == nil {
       let registrationViewController = RegistrationViewController()
       registrationViewController.delegate = self
       
