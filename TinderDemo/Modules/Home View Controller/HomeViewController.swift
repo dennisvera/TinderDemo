@@ -62,7 +62,7 @@ final class HomeViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    showRegistrationViewController()
+    showRegistration()
   }
   
   // MARK: - Helper Methods
@@ -241,7 +241,7 @@ final class HomeViewController: UIViewController {
     CATransaction.commit()
   }
   
-  private func showRegistrationViewController() {
+  private func showRegistration() {
     // Check if the currentUser is logged out.
     // If user is logged out, present the RegistrationViewController
     if Auth.auth().currentUser == nil {
