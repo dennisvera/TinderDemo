@@ -48,12 +48,53 @@ final class FirestoreService {
   
   // MARK: - Registration Helper Methods
   
-  func createUser(with email: String, password: String, completion: @escaping (Error) -> Void) {
+  func createUser(with email: String, password: String, completion: @escaping (Error?) -> Void) {
     // Create New User With Email and Password
     Auth.auth().createUser(withEmail: email, password: password) { (_, error) in
-      if let error = error {
-        completion(error)
+      completion(error)
+    }
+  }
+  
+  func uploadImageToFirebase(with imageData: Data, completion: @escaping ((URL?, Error?) -> Void)) {
+    // Upload user profile image after the user has successfully created an account
+    let fileName = UUID().uuidString
+    let reference = Storage.storage().reference(withPath: "/images/\(fileName)")
+    
+    reference.putData(imageData, metadata: nil) { (_, error) in
+      completion(nil, error)
+      
+      // Downnload Firebase image url
+      reference.downloadURL { (imageUrl, error) in
+        if let imageUrl = imageUrl {
+          completion(imageUrl, error)
+        }
       }
+    }
+  }
+  
+  func saveUserInfoToFireStore(with fullName: String?, imageUrl: String, completion: @escaping ((Error?) -> Void)) {
+    let uid = Auth.auth().currentUser?.uid ?? ""
+    
+    let documentData: [String: Any] = [
+      Strings.age: 18,
+      Strings.uid: uid,
+      Strings.imageUrl1: imageUrl,
+      Strings.fullName: fullName ?? "",
+      Strings.minSeekingAge: SettingsViewController.defaultMinSeekingAge,
+      Strings.maxSeekingAge: SettingsViewController.defaultMaxSeekingAge
+    ]
+    
+    firestore
+      .collection(Strings.usersCollection)
+      .document(uid)
+      .setData(documentData) { error in
+        
+        if let error = error {
+          completion(error)
+          return
+        }
+        
+        completion(nil)
     }
   }
   
@@ -62,7 +103,7 @@ final class FirestoreService {
   func fetchSwipedUsers(completion: @escaping (Bool, Error?) -> Void) {
     guard let currentUserId = currentUserId else { return }
     
-    Firestore.firestore()
+    firestore
       .collection(Strings.swipesCollection)
       .document(currentUserId)
       .getDocument { (_, error) in
@@ -127,7 +168,7 @@ final class FirestoreService {
     guard let currentUserId = currentUserId else { return }
     let documentData = [cardUid: didLike]
     
-    Firestore.firestore()
+    firestore
       .collection(Strings.swipesCollection)
       .document(currentUserId)
       .setData(documentData) { error in
@@ -194,7 +235,7 @@ final class FirestoreService {
                                           Strings.timestamp: Timestamp(date: Date())]
     
     // Save Matched User Info to FireStore
-    Firestore.firestore()
+    firestore
       .collection(Strings.matchesMessagesCollection)
       .document(currentUserId)
       .collection(Strings.matchesCollection)

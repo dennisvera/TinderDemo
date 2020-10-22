@@ -6,10 +6,7 @@
 //  Copyright © 2020 Dennis Vera. All rights reserved.
 //
 
-import Foundation
-import Firebase
-import FirebaseAuth
-import FirebaseFirestore
+import UIKit
 
 final class RegistrationViewModel {
   
@@ -61,26 +58,6 @@ final class RegistrationViewModel {
   
   // MARK: - Public Methods
   
-  func registerUser(completion: @escaping Completion) {
-    guard let email = email else { return }
-    guard let password = password else { return }
-    
-    // Set the isRegistering observer to true
-    isRegistering?(true)
-    
-    // Create user with email and password
-    Auth.auth().createUser(withEmail: email, password: password) { [weak self] (_, error) in
-      guard let strongSelf = self else { return }
-      
-      if let error = error {
-        completion(error)
-        return
-      }
-      
-      strongSelf.uploadImageToFirebase(completion: completion)
-    }
-  }
-  
   func checkRegistrationIsValid() {
     let emailIsValid = email?.isEmpty == false
     let fullNameIsValid = fullName?.isEmpty == false
@@ -92,60 +69,54 @@ final class RegistrationViewModel {
     isRegistrationValidObserver?(isFormValid)
   }
   
-  // MARK: Private Methods
-  
-  private func uploadImageToFirebase(completion: @escaping Completion) {
-    // Upload user profile image after the user has successfully created an account
-    let fileName = UUID().uuidString
-    let reference = Storage.storage().reference(withPath: "/images/\(fileName)")
-    let imageData = image?.jpegData(compressionQuality: 0.75) ?? Data()
+  func registerUser(completion: @escaping Completion) {
+    guard let email = email, let password = password else { return }
     
-    reference.putData(imageData, metadata: nil) { [weak self] (_, error) in
+    // Set the isRegistering observer to true
+    isRegistering?(true)
+    
+    // Create user with email and password
+    firestoreService.createUser(with: email, password: password) { [weak self] error in
       guard let strongSelf = self else { return }
       
       if let error = error {
         completion(error)
-        return
       }
       
-      // Downnload Firebase image url
-      reference.downloadURL { (url, error) in
-        if let error = error {
-          completion(error)
-          return
-        }
-        
-        // Save User Info to FireStore
-        let imageUrl = url?.absoluteString ?? ""
-        strongSelf.saveUserInfoToFireStore(with: imageUrl, completion: completion)
-        
-        // Set the isRegistering observer to false
-        strongSelf.isRegistering?(false)
+      strongSelf.uploadImageToFirebase(completion: completion)
+    }
+  }
+  
+  // MARK: Private Methods
+  
+  private func uploadImageToFirebase(completion: @escaping Completion) {
+    let imageData = image?.jpegData(compressionQuality: 0.75) ?? Data()
+    
+    firestoreService.uploadImageToFirebase(with: imageData) { [weak self] (imageUrl, error) in
+      guard let strongSelf = self else { return }
+      
+      if let error = error {
+        completion(error)
       }
+      
+      // Save User Info to FireStore
+      let imageUrl = imageUrl?.absoluteString ?? ""
+      strongSelf.saveUserInfoToFireStore(with: imageUrl, completion: completion)
     }
   }
   
   private func saveUserInfoToFireStore(with imageUrl: String, completion: @escaping Completion) {
-    let uid = Auth.auth().currentUser?.uid ?? ""
-    let documentData: [String: Any] = [
-      Strings.age: 18,
-      Strings.uid: uid,
-      Strings.imageUrl1: imageUrl,
-      Strings.fullName: fullName ?? "",
-      Strings.minSeekingAge: SettingsViewController.defaultMinSeekingAge,
-      Strings.maxSeekingAge: SettingsViewController.defaultMaxSeekingAge
-    ]
-    
-    Firestore.firestore()
-      .collection(Strings.usersCollection)
-      .document(uid)
-      .setData(documentData) { error in
-        if let error = error {
-          completion(error)
-          return
-        }
-        
-        completion(nil)
+    firestoreService.saveUserInfoToFireStore(with: fullName, imageUrl: imageUrl) { [weak self] error in
+      guard let strongSelf = self else { return }
+      
+      if let error = error {
+        completion(error)
+      }
+      
+      // Set the isRegistering observer to false
+      strongSelf.isRegistering?(false)
+      
+      completion(nil)
     }
   }
 }
