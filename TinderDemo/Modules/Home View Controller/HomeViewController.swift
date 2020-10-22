@@ -245,7 +245,8 @@ final class HomeViewController: UIViewController {
     // Check if the currentUser is logged out.
     // If user is logged out, present the RegistrationViewController
     if Auth.auth().currentUser == nil {
-      let registrationViewController = RegistrationViewController()
+      let viewModel = RegistrationViewModel(firestoreService: FirestoreService())
+      let registrationViewController = RegistrationViewController(viewModel: viewModel)
       registrationViewController.delegate = self
       
       // Navigate to the RegistrationViewController

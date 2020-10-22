@@ -19,7 +19,6 @@ final class HomeViewModel {
   
   var user: User?
   var users = [String: User]()
-  var swipes = [String: Int]()
   var currentUser = Auth.auth().currentUser?.uid
   
   // MARK: -
@@ -84,17 +83,12 @@ final class HomeViewModel {
   }
 
   func fetchSwipedUsers(completion: @escaping () -> Void) {
-    firestoreService.fetchSwipedUsers { [weak self] (swipedUser, error) in
-      guard let strongSelf = self else { return }
-
+    firestoreService.fetchSwipedUsers { (_, error) in
       if let error = error {
         print(Strings.failedToFethcSwipedHistoryForCurrentUser, error)
         return
       }
-
-      guard let swipedUser = swipedUser else { return }
-      strongSelf.swipes = swipedUser
-
+      
       completion()
     }
   }

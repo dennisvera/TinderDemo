@@ -46,21 +46,31 @@ final class FirestoreService {
     }
   }
   
+  // MARK: - Registration Helper Methods
+  
+  func createUser(with email: String, password: String, completion: @escaping (Error) -> Void) {
+    // Create New User With Email and Password
+    Auth.auth().createUser(withEmail: email, password: password) { (_, error) in
+      if let error = error {
+        completion(error)
+      }
+    }
+  }
+  
   // MARK: - Home Helper Methods
   
-  func fetchSwipedUsers(completion: @escaping ([String: Int]?, Error?) -> Void) {
+  func fetchSwipedUsers(completion: @escaping (Bool, Error?) -> Void) {
     guard let currentUserId = currentUserId else { return }
     
-    firestore
+    Firestore.firestore()
       .collection(Strings.swipesCollection)
       .document(currentUserId)
-      .getDocument { snapshot, error in
+      .getDocument { (_, error) in
         if let error = error {
-          completion(nil, error)
+          completion(false, error)
         }
         
-        guard let data = snapshot?.data() as? [String: Int] else { return }
-        completion(data, nil)
+        completion(true, nil)
     }
   }
   

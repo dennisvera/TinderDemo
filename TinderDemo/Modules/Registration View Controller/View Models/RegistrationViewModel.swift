@@ -19,6 +19,10 @@ final class RegistrationViewModel {
   
   // MARK: - Properties
   
+  private let firestoreService: FirestoreService
+
+  // MARK: -
+  
   var fullName: String? {
     didSet {
       checkRegistrationIsValid()
@@ -48,6 +52,12 @@ final class RegistrationViewModel {
   var isRegistering: ((Bool) -> ())?
   var imageObserver: ((UIImage?) -> ())?
   var isRegistrationValidObserver: ((Bool) -> ())?
+  
+  // MARK: - Initialization
+  
+  init(firestoreService: FirestoreService) {
+    self.firestoreService = firestoreService
+  }
   
   // MARK: - Public Methods
   
@@ -83,7 +93,6 @@ final class RegistrationViewModel {
   }
   
   // MARK: Private Methods
-  
   
   private func uploadImageToFirebase(completion: @escaping Completion) {
     // Upload user profile image after the user has successfully created an account

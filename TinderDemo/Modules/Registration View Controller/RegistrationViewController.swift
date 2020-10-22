@@ -111,7 +111,22 @@ final class RegistrationViewController: UIViewController {
   var delegate: LoginViewControllerDelegate?
   private let progressHud = JGProgressHUD()
   private let gradientLayer = CAGradientLayer()
-  private var viewModel = RegistrationViewModel()
+
+  // MARK: -
+  
+  private let viewModel: RegistrationViewModel
+  
+  // MARK: -  Initialization
+  
+  init(viewModel: RegistrationViewModel) {
+    self.viewModel = viewModel
+    
+    super.init(nibName: nil, bundle: .main)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   // MARK: - Deinitialization
   
