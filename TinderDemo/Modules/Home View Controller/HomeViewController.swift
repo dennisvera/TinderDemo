@@ -98,11 +98,15 @@ final class HomeViewController: UIViewController {
     
     cardsDeckView.subviews.forEach { $0.removeFromSuperview() }
     
-    viewModel?.fetchCurrentUser { [weak self] in
-      guard let strongSelf = self else { return }
-      
-      // Fetch Swiped Users
-      strongSelf.fetchSwipedUsers()
+    if Auth.auth().currentUser != nil {
+      viewModel?.fetchCurrentUser { [weak self] in
+        guard let strongSelf = self else { return }
+        
+        // Fetch Swiped Users
+        strongSelf.fetchSwipedUsers()
+      }
+    } else {
+      showRegistration()
     }
   }
   
