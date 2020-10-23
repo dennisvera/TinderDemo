@@ -10,8 +10,9 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import FirebaseFirestore
+import UserNotifications
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCenterDelegate {
   
   // MARK: - Properties
   
@@ -39,7 +40,31 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     // Start Coordinator
     appCoordinator.start()
+    
+    // Setup Push Notifications
+    setupPushNotifications()
   }
+  
+  // MARK: - Push Notifications Methods
+  
+  private func setupPushNotifications() {
+    UNUserNotificationCenter.current().delegate = self
+    
+    // Request Permission to Show Push Notifications
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) {(granted, error) in
+      // Make sure permission to receive push notifications is granted
+      print("Permission is granted: \(granted)")
+    }
+  }
+  
+  func userNotificationCenter(_ center: UNUserNotificationCenter,
+                              willPresent notification: UNNotification,
+                              withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    print("Push notification received in foreground.")
+    completionHandler([.alert, .sound, .badge])
+  }
+  
+  // MARK: - Scene Helper methods
   
   func sceneDidDisconnect(_ scene: UIScene) {
     // Called as the scene is being released by the system.
@@ -68,7 +93,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // Use this method to save data, release shared resources, and store enough scene-specific state information
     // to restore the scene back to its current state.
   }
-  
-  
 }
-
