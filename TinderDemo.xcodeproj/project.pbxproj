@@ -17,6 +17,7 @@
 		E14F9EDA24D9DC1500D63A96 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14F9ED924D9DC1500D63A96 /* SettingsTableViewCell.swift */; };
 		E150A092252A79780000FBC2 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E150A091252A79780000FBC2 /* FirestoreService.swift */; };
 		E150A096252BCBEE0000FBC2 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E150A095252BCBEE0000FBC2 /* ChatViewModel.swift */; };
+		E16A9E762543703D00BD076D /* SnapshotTestingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16A9E752543703D00BD076D /* SnapshotTestingTests.swift */; };
 		E1B55450250FD7CF00208E56 /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B5544F250FD7CF00208E56 /* SendMessageButton.swift */; };
 		E1B55452250FE10B00208E56 /* KeepSwippingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */; };
 		E1CB2DEA2512872600724A83 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB2DE92512872600724A83 /* MessagesViewController.swift */; };
@@ -65,6 +66,16 @@
 		E1FF9CF52527AB0C00520CBC /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FF9CF42527AB0C00520CBC /* SettingsViewModel.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E16A9E6F2543700100BD076D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E1DFBBEB24B7A5710092622B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E1DFBBF224B7A5710092622B;
+			remoteInfo = TinderDemo;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		76E7BA82D785F0F7602998E0 /* Pods_TinderDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinderDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		858FFD1C708859F93C632539 /* Pods-TinderDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderDemo.debug.xcconfig"; path = "Target Support Files/Pods-TinderDemo/Pods-TinderDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -78,6 +89,9 @@
 		E14F9ED924D9DC1500D63A96 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		E150A091252A79780000FBC2 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		E150A095252BCBEE0000FBC2 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		E16A9E6A2543700100BD076D /* TinderDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TinderDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E16A9E6E2543700100BD076D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E16A9E752543703D00BD076D /* SnapshotTestingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTestingTests.swift; sourceTree = "<group>"; };
 		E1B5544F250FD7CF00208E56 /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
 		E1B55451250FE10B00208E56 /* KeepSwippingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwippingButton.swift; sourceTree = "<group>"; };
 		E1CB2DE92512872600724A83 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +143,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E16A9E672543700100BD076D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E1DFBBF024B7A5710092622B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -224,6 +245,23 @@
 				E150A095252BCBEE0000FBC2 /* ChatViewModel.swift */,
 			);
 			path = "View Model";
+			sourceTree = "<group>";
+		};
+		E16A9E6B2543700100BD076D /* TinderDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				E16A9E742543702200BD076D /* Test Cases */,
+				E16A9E6E2543700100BD076D /* Info.plist */,
+			);
+			path = TinderDemoTests;
+			sourceTree = "<group>";
+		};
+		E16A9E742543702200BD076D /* Test Cases */ = {
+			isa = PBXGroup;
+			children = (
+				E16A9E752543703D00BD076D /* SnapshotTestingTests.swift */,
+			);
+			path = "Test Cases";
 			sourceTree = "<group>";
 		};
 		E1CB2DE8251285C200724A83 /* Messages View Controller */ = {
@@ -347,6 +385,7 @@
 			isa = PBXGroup;
 			children = (
 				E1DFBBF524B7A5710092622B /* TinderDemo */,
+				E16A9E6B2543700100BD076D /* TinderDemoTests */,
 				E1DFBBF424B7A5710092622B /* Products */,
 				0B187D21A8A8408C45745D98 /* Pods */,
 				9E7629A0D8A369625C193FA8 /* Frameworks */,
@@ -357,6 +396,7 @@
 			isa = PBXGroup;
 			children = (
 				E1DFBBF324B7A5710092622B /* TinderDemo.app */,
+				E16A9E6A2543700100BD076D /* TinderDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -553,6 +593,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		E16A9E692543700100BD076D /* TinderDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E16A9E732543700100BD076D /* Build configuration list for PBXNativeTarget "TinderDemoTests" */;
+			buildPhases = (
+				E16A9E662543700100BD076D /* Sources */,
+				E16A9E672543700100BD076D /* Frameworks */,
+				E16A9E682543700100BD076D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E16A9E702543700100BD076D /* PBXTargetDependency */,
+			);
+			name = TinderDemoTests;
+			productName = TinderDemoTests;
+			productReference = E16A9E6A2543700100BD076D /* TinderDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		E1DFBBF224B7A5710092622B /* TinderDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E1DFBC0724B7A5740092622B /* Build configuration list for PBXNativeTarget "TinderDemo" */;
@@ -579,10 +637,15 @@
 		E1DFBBEB24B7A5710092622B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1150;
+				LastSwiftUpdateCheck = 1170;
 				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = "Dennis Vera";
 				TargetAttributes = {
+					E16A9E692543700100BD076D = {
+						CreatedOnToolsVersion = 11.7;
+						LastSwiftMigration = 1170;
+						TestTargetID = E1DFBBF224B7A5710092622B;
+					};
 					E1DFBBF224B7A5710092622B = {
 						CreatedOnToolsVersion = 11.5;
 					};
@@ -602,11 +665,19 @@
 			projectRoot = "";
 			targets = (
 				E1DFBBF224B7A5710092622B /* TinderDemo */,
+				E16A9E692543700100BD076D /* TinderDemoTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E16A9E682543700100BD076D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E1DFBBF124B7A5710092622B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -678,6 +749,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E16A9E662543700100BD076D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E16A9E762543703D00BD076D /* SnapshotTestingTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E1DFBBEF24B7A5710092622B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -740,7 +819,60 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		E16A9E702543700100BD076D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E1DFBBF224B7A5710092622B /* TinderDemo */;
+			targetProxy = E16A9E6F2543700100BD076D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		E16A9E712543700100BD076D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B426D3XC5Q;
+				INFOPLIST_FILE = TinderDemoTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.DennisVera.TinderDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TinderDemo.app/TinderDemo";
+			};
+			name = Debug;
+		};
+		E16A9E722543700100BD076D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B426D3XC5Q;
+				INFOPLIST_FILE = TinderDemoTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.DennisVera.TinderDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TinderDemo.app/TinderDemo";
+			};
+			name = Release;
+		};
 		E1DFBC0524B7A5740092622B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -896,6 +1028,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E16A9E732543700100BD076D /* Build configuration list for PBXNativeTarget "TinderDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E16A9E712543700100BD076D /* Debug */,
+				E16A9E722543700100BD076D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E1DFBBEE24B7A5710092622B /* Build configuration list for PBXProject "TinderDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

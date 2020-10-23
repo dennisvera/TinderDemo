@@ -20,7 +20,5 @@ target 'TinderDemo' do
 
     #JGProgressHUD
     pod 'JGProgressHUD', '~> 2.1'
-
-    # SnapshotTesting
-    pod 'SnapshotTesting', '~> 1.8'
+    
 end
