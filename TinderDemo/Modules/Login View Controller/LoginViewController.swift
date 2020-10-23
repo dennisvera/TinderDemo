@@ -75,7 +75,10 @@ class LoginViewController: UIViewController {
   // MARK: -
   
   var delegate: LoginViewControllerDelegate?
-  private var viewModel = LoginViewModel()
+  
+  // MARK: -
+
+  private var viewModel = LoginViewModel(firestoreService: FirestoreService())
   
   // MARK: -
   

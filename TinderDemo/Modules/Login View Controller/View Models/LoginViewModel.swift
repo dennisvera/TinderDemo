@@ -7,11 +7,14 @@
 //
 
 import Foundation
-import Firebase
 
 final class LoginViewModel {
   
   // MARK: - Properties
+  
+  private let firestoreService: FirestoreService
+
+  // MARK: -
   
   var email: String? {
     didSet {
@@ -30,6 +33,12 @@ final class LoginViewModel {
   var isLoggingInObserver: ((Bool) -> ())?
   var isFormValidObserver: ((Bool) -> ())?
   
+  // MARK: - Initialization
+  
+  init(firestoreService: FirestoreService) {
+    self.firestoreService = firestoreService
+  }
+  
   // MARK: - Private Methods
   
   private func checkFormValidity() {
@@ -41,13 +50,10 @@ final class LoginViewModel {
   
   func performLogin(_ completion: @escaping (Error?) -> ()) {
     isLoggingInObserver?(true)
-
+    
     guard let email = email, let password = password else { return }
-    Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
-            
-      if let error = error {
-        completion(error)
-      }
+    firestoreService.signIn(with: email, password: password) { error in
+      completion(error)
     }
   }
 }

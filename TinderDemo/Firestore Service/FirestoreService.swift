@@ -72,6 +72,14 @@ final class FirestoreService {
     }
   }
   
+  // MARK: - Login Helper Methods
+  
+  func signIn(with email: String, password: String, completion: @escaping (Error?) -> Void) {
+    Auth.auth().signIn(withEmail: email, password: password) { (_, error) in
+      completion(error)
+    }
+  }
+  
   func saveUserInfoToFireStore(with fullName: String?, imageUrl: String, completion: @escaping ((Error?) -> Void)) {
     let uid = Auth.auth().currentUser?.uid ?? ""
     
