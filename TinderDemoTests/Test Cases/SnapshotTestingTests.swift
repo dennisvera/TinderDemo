@@ -32,7 +32,7 @@ class SnapshotTestingTests: XCTestCase {
   func test_LoginViewController() {
     let loginViewController = LoginViewController()
     
-    verifyViewController(loginViewController, named: "Default", testName: "LoginViewController")
+    verifyViewController(loginViewController, testName: "LoginViewController")
   }
   
   // MARK: - Test Registration View Controller
@@ -41,12 +41,30 @@ class SnapshotTestingTests: XCTestCase {
     let viewModel = RegistrationViewModel(firestoreService: firestoreService)
     let registrationViewController = RegistrationViewController(viewModel: viewModel)
     
-    verifyViewController(registrationViewController, named: "Default", testName: "RegistrationViewController")
+    verifyViewController(registrationViewController, testName: "RegistrationViewController")
+  }
+  
+  // MARK: - Test Home View Controller
+  
+  func test_HomeViewController_Loading() {
+    let viewModel = HomeViewModel(firestoreService: firestoreService)
+    let homeViewController = HomeViewController(viewModel: viewModel)
+    
+    verifyViewController(homeViewController, testName: "HomeViewController-Loading")
+  }
+  
+  // MARK: - Settings Home View Controller
+  
+  func test_SettingsViewController() {
+    let viewModel = SettingsViewModel(firestoreService: firestoreService)
+    let settingsViewController = SettingsViewController(viewModel: viewModel)
+        
+    verifyViewController(settingsViewController, testName: "SettingsViewController")
   }
   
   // MARK: - Helper Method
   
-  private func verifyViewController(_ viewController: UIViewController, named: String, testName: String) {
+  private func verifyViewController(_ viewController: UIViewController, testName: String) {
     let devices: [String: ViewImageConfig] = ["iPhoneX": .iPhoneX,
                                               "iPhone8": .iPhone8,
                                               "iPhoneSe": .iPhoneSe,
@@ -55,7 +73,7 @@ class SnapshotTestingTests: XCTestCase {
     let results = devices.map { device in
       verifySnapshot(matching: viewController,
                      as: .image(on: device.value),
-                     named: "\(named)-\(device.key)",
+                     named: "Default-\(device.key)",
         testName: testName)
     }
     
