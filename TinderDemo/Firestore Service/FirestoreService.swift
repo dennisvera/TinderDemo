@@ -342,8 +342,8 @@ final class FirestoreService {
   }
   
   func saveCurrentUserAndMatchedUserChatMesages(with matchedUser: MatchedUser,
-                             text: String,
-                             completion: @escaping (Error?) -> Void) {
+                                                text: String,
+                                                completion: @escaping (Error?) -> Void) {
     guard let currentUserId = currentUserId else { return }
     
     // Save Chat Messages to Current User
@@ -401,9 +401,9 @@ final class FirestoreService {
   }
   
   func saveMatchedUserRecentChatMessage(with currentUser: User,
-                                           matchedUser: MatchedUser,
-                                           text: String,
-                                           completion: @escaping (Error?) -> Void) {
+                                        matchedUser: MatchedUser,
+                                        text: String,
+                                        completion: @escaping (Error?) -> Void) {
     guard let currentUserId = currentUserId else { return }
     
     // Save Most Recent Chat Message Sent to Matched User

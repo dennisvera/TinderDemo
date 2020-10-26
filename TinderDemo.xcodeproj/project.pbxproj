@@ -645,6 +645,7 @@
 				E1DFBBF124B7A5710092622B /* Resources */,
 				40B8856F8F818B8D7717237B /* [CP] Embed Pods Frameworks */,
 				AE0B5EFE7844767FBB5B7ABC /* [CP] Copy Pods Resources */,
+				E16A9E822547886000BD076D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -773,6 +774,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TinderDemo/Pods-TinderDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		E16A9E822547886000BD076D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

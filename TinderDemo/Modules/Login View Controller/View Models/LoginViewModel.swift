@@ -30,8 +30,8 @@ final class LoginViewModel {
   
   // MARK: - Observers
   
-  var isLoggingInObserver: ((Bool) -> ())?
-  var isFormValidObserver: ((Bool) -> ())?
+  var isLoggingInObserver: ((Bool) -> Void)?
+  var isFormValidObserver: ((Bool) -> Void)?
   
   // MARK: - Initialization
   
@@ -48,7 +48,7 @@ final class LoginViewModel {
   
   // MARK: - Public Methods
   
-  func performLogin(_ completion: @escaping (Error?) -> ()) {
+  func performLogin(_ completion: @escaping (Error?) -> Void) {
     isLoggingInObserver?(true)
     
     guard let email = email, let password = password else { return }

@@ -37,7 +37,7 @@ final class HomeViewController: UIViewController {
   private var topCardView: CardView?
   private var previousCardView: CardView?
     
-  // MARK: -  Initialization
+  // MARK: - Initialization
   
   init(viewModel: HomeViewModel) {
     self.viewModel = viewModel
@@ -161,8 +161,8 @@ final class HomeViewController: UIViewController {
     cardView.viewModel = user.toCardViewModel()
     cardView.delegate = self
     
-    /// `BUG:` calling this function is causing the card to show images from other users on the card.
-    //   cardView.viewModel = user.toCardViewModel()
+    // BUG: calling this function is causing the card to show images from other users on the card.
+    // cardView.viewModel = user.toCardViewModel()
     
     cardsDeckView.addSubview(cardView)
     cardsDeckView.sendSubviewToBack(cardView)

@@ -21,4 +21,7 @@ target 'TinderDemo' do
     #JGProgressHUD
     pod 'JGProgressHUD', '~> 2.1'
     
+    #SwiftLint
+    pod 'SwiftLint'
+    
 end

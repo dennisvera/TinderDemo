@@ -76,16 +76,16 @@ final class SettingsViewModel {
     guard let user = user, let currentUserUid = Auth.auth().currentUser?.uid else { return }
     
     let documentData: [String: Any] = [
-      Strings.uid : currentUserUid,
-      Strings.age : user.age ?? -1,
-      Strings.bio : user.bio ?? "",
-      Strings.fullName : user.name ?? "",
-      Strings.imageUrl1 : user.imageUrl1 ?? "",
-      Strings.imageUrl2 : user.imageUrl2 ?? "",
-      Strings.imageUrl3 : user.imageUrl3 ?? "",
-      Strings.profession : user.profession ?? "",
-      Strings.minSeekingAge : user.minSeekingAge ?? -1,
-      Strings.maxSeekingAge : user.maxSeekingAge ?? -1
+      Strings.uid: currentUserUid,
+      Strings.age: user.age ?? -1,
+      Strings.bio: user.bio ?? "",
+      Strings.fullName: user.name ?? "",
+      Strings.imageUrl1: user.imageUrl1 ?? "",
+      Strings.imageUrl2: user.imageUrl2 ?? "",
+      Strings.imageUrl3: user.imageUrl3 ?? "",
+      Strings.profession: user.profession ?? "",
+      Strings.minSeekingAge: user.minSeekingAge ?? -1,
+      Strings.maxSeekingAge: user.maxSeekingAge ?? -1
     ]
     
     firestoreService.saveCurrentUserSettingsInfo(with: currentUserUid, documentData: documentData)
@@ -109,9 +109,9 @@ final class SettingsViewModel {
   }
   
   func loadUserPhoto(with imageUrl: String, imageButton: UIButton) {
-    /// SDWebImageManager will handle image chaching.
-    /// Chaching the image  saves the image on the phone  after  its been fetched the first time,
-    /// thiis will guarantee we dont fetch an imagea again that  was previously loaded..
+    // SDWebImageManager will handle image chaching.
+    // Chaching the image  saves the image on the phone  after  its been fetched the first time,
+    // thiis will guarantee we dont fetch an imagea again that  was previously loaded..
     guard let url = URL(string: imageUrl) else { return }
     SDWebImageManager.shared.loadImage(with: url,
                                        options: .continueInBackground,

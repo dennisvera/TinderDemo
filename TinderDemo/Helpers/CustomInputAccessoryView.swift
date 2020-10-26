@@ -109,6 +109,6 @@ final class CustomInputAccessoryView: UIView {
   }
   
   @objc private func handleTextChange() {
-    placeHolderLabel.isHidden = textView.text.count != 0
+    placeHolderLabel.isHidden = !textView.text.isEmpty
   }
 }

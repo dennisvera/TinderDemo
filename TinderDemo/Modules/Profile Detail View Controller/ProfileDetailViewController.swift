@@ -105,7 +105,6 @@ final class ProfileDetailViewController: UIViewController {
     guard let pagingPhotosView = pagingPhotosViewController.view else { return }
     scrollView.addSubview(pagingPhotosView)
     
-    
     let stackView = UIStackView(arrangedSubviews: [infoLabel, bioLabel])
     stackView.axis = .vertical
     stackView.spacing = 14
@@ -145,7 +144,6 @@ final class ProfileDetailViewController: UIViewController {
   private func setupVisualEffectBlurView() {
     let blurEffect = UIBlurEffect(style: .regular)
     let visualEffectView = UIVisualEffectView(effect: blurEffect)
-    
     
     view.addSubview(visualEffectView)
     visualEffectView.snp.makeConstraints { make in

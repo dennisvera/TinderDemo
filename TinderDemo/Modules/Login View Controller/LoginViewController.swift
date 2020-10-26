@@ -9,7 +9,7 @@
 import UIKit
 import JGProgressHUD
 
-protocol LoginViewControllerDelegate {
+protocol LoginViewControllerDelegate: class {
   
   func didFinishLoggingIn()
 }
@@ -57,7 +57,6 @@ class LoginViewController: UIViewController {
     return button
   }()
   
-  
   // MARK: -
   
   private lazy var mainStackView: UIStackView = {
@@ -70,7 +69,6 @@ class LoginViewController: UIViewController {
     stackView.spacing = 8
     return stackView
   }()
-  
   
   // MARK: -
   

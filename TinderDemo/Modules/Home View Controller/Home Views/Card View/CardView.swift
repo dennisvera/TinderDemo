@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import SDWebImage
 
-protocol CardViewDelegate {
+protocol CardViewDelegate: class {
   
   func didSwipeLeft()
   func didSwipeRight()
@@ -42,7 +42,7 @@ class CardView: UIView {
   // MARK: -
   
   var nextCardView: CardView?
-  var delegate: CardViewDelegate?
+  weak var delegate: CardViewDelegate?
   
   // MARK: - Public Properties
   

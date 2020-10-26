@@ -51,7 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
     UNUserNotificationCenter.current().delegate = self
     
     // Request Permission to Show Push Notifications
-    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) {(granted, error) in
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) {(granted, _) in
       // Make sure permission to receive push notifications is granted
       print("Permission is granted: \(granted)")
     }

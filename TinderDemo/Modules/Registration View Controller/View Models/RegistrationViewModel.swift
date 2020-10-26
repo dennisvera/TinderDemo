@@ -12,7 +12,7 @@ final class RegistrationViewModel {
   
   // MARK: - TypeAlias
   
-  typealias Completion = (Error?) -> ()
+  typealias Completion = (Error?) -> Void
   
   // MARK: - Properties
   
@@ -46,9 +46,9 @@ final class RegistrationViewModel {
   
   // MARK: - Observers
   
-  var isRegistering: ((Bool) -> ())?
-  var imageObserver: ((UIImage?) -> ())?
-  var isRegistrationValidObserver: ((Bool) -> ())?
+  var isRegistering: ((Bool) -> Void)?
+  var imageObserver: ((UIImage?) -> Void)?
+  var isRegistrationValidObserver: ((Bool) -> Void)?
   
   // MARK: - Initialization
   

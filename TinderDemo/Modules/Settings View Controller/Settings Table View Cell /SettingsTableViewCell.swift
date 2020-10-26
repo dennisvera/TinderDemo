@@ -17,7 +17,7 @@ final class SettingsTableViewCell: UITableViewCell {
     return String(describing: self)
   }
   
-  // MARK - Properties
+  // MARK: - Properties
   
   let textField: UITextField = {
     let textField = SettingsTextField()

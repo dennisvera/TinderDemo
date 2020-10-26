@@ -47,7 +47,7 @@ struct User: CardViewViewModelProtocol {
     
     let ageString = age != nil ? "\(age!)" : "N\\A"
     attributedText.append(NSAttributedString(string: "  \(ageString)",
-      attributes: [.font : UIFont.systemFont(ofSize: 18, weight: .regular)]))
+      attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .regular)]))
     
     let professionString = profession != nil ? "\(profession!)" : "Not Available"
     attributedText.append(NSAttributedString(string: "\n\(professionString)",

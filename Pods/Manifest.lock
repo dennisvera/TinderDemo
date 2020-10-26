@@ -112,6 +112,7 @@ PODS:
     - SDWebImage/Core (= 5.8.4)
   - SDWebImage/Core (5.8.4)
   - SnapKit (5.0.1)
+  - SwiftLint (0.40.3)
 
 DEPENDENCIES:
   - Firebase/Auth (~> 5.15.0)
@@ -122,6 +123,7 @@ DEPENDENCIES:
   - JGProgressHUD (~> 2.1)
   - SDWebImage (~> 5.8)
   - SnapKit (~> 5.0.1)
+  - SwiftLint
 
 SPEC REPOS:
   trunk:
@@ -145,6 +147,7 @@ SPEC REPOS:
     - Protobuf
     - SDWebImage
     - SnapKit
+    - SwiftLint
 
 SPEC CHECKSUMS:
   BoringSSL: e10f92a27043805c01071fe815a5cd98ae8212e7
@@ -167,7 +170,8 @@ SPEC CHECKSUMS:
   Protobuf: 2793fcd0622a00b546c60e7cbbcc493e043e9bb9
   SDWebImage: cf6922231e95550934da2ada0f20f2becf2ceba9
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  SwiftLint: dfd554ff0dff17288ee574814ccdd5cea85d76f7
 
-PODFILE CHECKSUM: be41082158232736456abfe130911381bc48704b
+PODFILE CHECKSUM: 5f6730164f2ea308fcf4ead3654d4aa2a47ca536
 
 COCOAPODS: 1.9.3

@@ -107,7 +107,7 @@ final class RegistrationViewController: UIViewController {
   
   // MARK: -
   
-  var delegate: LoginViewControllerDelegate?
+  weak var delegate: LoginViewControllerDelegate?
   private let progressHud = JGProgressHUD()
   private let gradientLayer = CAGradientLayer()
 
@@ -115,7 +115,7 @@ final class RegistrationViewController: UIViewController {
   
   private let viewModel: RegistrationViewModel
   
-  // MARK: -  Initialization
+  // MARK: - Initialization
   
   init(viewModel: RegistrationViewModel) {
     self.viewModel = viewModel
@@ -341,10 +341,10 @@ final class RegistrationViewController: UIViewController {
 
 // MARK: - UIImagePickerControllerDelegate
 
-extension RegistrationViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate  {
+extension RegistrationViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
   
   func imagePickerController(_ picker: UIImagePickerController,
-                             didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+                             didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
     let selectedImage = info[.originalImage] as? UIImage
     
     viewModel.image = selectedImage

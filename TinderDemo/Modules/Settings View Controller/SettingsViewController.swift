@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import JGProgressHUD
 
-protocol SettingsViewControllerDelegate {
+protocol SettingsViewControllerDelegate: class {
   func didSaveSettings()
 }
 
@@ -29,7 +29,7 @@ final class SettingsViewController: UIViewController {
   
   // MARK: -
   
-  private var delegate: SettingsViewControllerDelegate?
+  private weak var delegate: SettingsViewControllerDelegate?
   
   // MARK: -
   
@@ -41,7 +41,7 @@ final class SettingsViewController: UIViewController {
   static let defaultMinSeekingAge = 18
   static let defaultMaxSeekingAge = 50
   
-  // MARK: -  Initialization
+  // MARK: - Initialization
   
   init(viewModel: SettingsViewModel) {
     self.viewModel = viewModel
@@ -319,7 +319,7 @@ extension SettingsViewController: UITableViewDelegate {
 extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   
   func imagePickerController(_ picker: UIImagePickerController,
-                             didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+                             didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
     
     // Disable the Save button
     navigationItem.rightBarButtonItem?.isEnabled = false
