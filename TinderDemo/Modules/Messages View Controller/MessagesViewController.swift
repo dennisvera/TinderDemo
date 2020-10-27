@@ -40,6 +40,7 @@ final class MessagesViewController: UIViewController {
   // MARK: - Deinitialization
   
   deinit {
+    // swiftlint:disable unneeded_notification_center_removal
     NotificationCenter.default.removeObserver(self)
   }
   

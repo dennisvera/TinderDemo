@@ -136,7 +136,8 @@ final class MatchView: UIView {
     }
     
     visualEffectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
-    
+
+    // swiftlint:disable multiple_closures_with_trailing_closure
     UIView.animate(withDuration: 0.5,
                    delay: 0,
                    usingSpringWithDamping: 1,

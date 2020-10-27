@@ -72,7 +72,7 @@ class LoginViewController: UIViewController {
   
   // MARK: -
   
-  var delegate: LoginViewControllerDelegate?
+  weak var delegate: LoginViewControllerDelegate?
   
   // MARK: -
 

@@ -69,7 +69,8 @@ final class ChatCollectionViewController: UICollectionViewController {
   }
   
   // MARK: - Overrides
-  
+
+  // swiftlint:disable implicit_getter
   override var inputAccessoryView: UIView? {
     get {
       return customInputAccessoryView
