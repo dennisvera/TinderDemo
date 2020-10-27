@@ -1,10 +1,15 @@
-disabled_rules:
+disabled_rules: # rule identifiers to exclude from running
 - trailing_whitespace
-- nesting #Disabling: I use nested enums for handling hard coded numbers. 
-opt_in_rules:
+- nesting # Disabling: I use nested enums for handling hard coded numbers. 
+
+opt_in_rules: # some rules are only opt-in
 - empty_count
 - empty_string
-excluded:
+
+included: # paths to include during linting. `--path` is ignored if present.
+- TinderDemo
+
+excluded: # paths to ignore during linting. Takes precedence over `included`.
 - Carthage
 - Pods
 - SwiftLint/Common/3rdPartyLib
